@@ -1429,13 +1429,13 @@ body{background:#F3F7FF;color:#1B2A45;}
 #home .plan-card,#music .track,#work .plan-card,#work .clip-card,#pillow .composer{background:rgba(255,255,255,.72);}
 /* ===== 前四页顶图：圆角大图 + 卡片遮挡（与「我的」一致） ===== */
 #home .banner,#music .banner,#work .banner,#pillow .banner{
-  margin:14px 16px -118px;border-radius:26px;overflow:hidden;
+  width:calc(100% - 32px);margin:14px auto -118px;border-radius:26px;overflow:hidden;
   box-shadow:0 22px 56px rgba(18,38,88,.20);
   border:1px solid rgba(255,255,255,.18);
 }
 #home .banner-img,#music .banner-img,#work .banner-img,#pillow .banner-img{border-radius:26px;}
 #home .banner + section,#music .banner + section,#work .banner + section,#pillow .banner + section{
-  margin:0 26px;border-radius:26px;padding:40px 30px 44px;
+  width:calc(100% - 52px);margin:0 auto;border-radius:26px;padding:40px 30px 44px;
   border:1px solid rgba(217,229,248,.95);
 }
 /* ===== 现场视频三卡 ===== */
@@ -1472,8 +1472,8 @@ body{background:#F3F7FF;color:#1B2A45;}
 	#home .card,#work .card{width:100%;}
 	#work .video-wrap,#music .music-grid{grid-template-columns:1fr;}
 	.banner{height:58vh;min-height:380px;}
-	#home .banner,#music .banner,#work .banner,#pillow .banner{margin:10px 10px -88px;border-radius:20px;}
-	#home .banner + section,#music .banner + section,#work .banner + section,#pillow .banner + section{margin:0 12px;border-radius:20px;padding:30px 18px 34px;}
+	#home .banner,#music .banner,#work .banner,#pillow .banner{width:calc(100% - 20px);margin:10px auto -88px;border-radius:20px;}
+	#home .banner + section,#music .banner + section,#work .banner + section,#pillow .banner + section{width:calc(100% - 24px);margin:0 auto;border-radius:20px;padding:30px 18px 34px;}
 	.banner h1{font-size:27px;line-height:1.35;}
 	.banner-sub{font-size:14px;line-height:1.7;}
 	.section-title{font-size:23px;}
