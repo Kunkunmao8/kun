@@ -1557,7 +1557,7 @@ body{background:#F3F7FF;color:#1B2A45;}
 			<p class="ag-msg" id="agRegMsg"></p>
 		</div>
 
-		<p class="ag-foot">登录之后可以看全部的图片和舞台影像，也能在社区说话、投稿。<br>第一次来先注册，验证码会显示在页面上。</p>
+		<p class="ag-foot">登录之后可以看全部的图片和舞台影像，也能在社区说话、投稿。<br>第一次来先注册，6 位验证码会发到你填的邮箱。</p>
 	</div>
 </div>
 <script>
@@ -1645,7 +1645,7 @@ body{background:#F3F7FF;color:#1B2A45;}
 		if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){ $('agCodeTip').textContent='先填一个像样的邮箱'; return; }
 		pendMail=mail;
 		pendCode=String(Math.floor(100000+Math.random()*900000));
-		if(!ready()){ $('agCodeTip').textContent='验证码：'+pendCode+'（还没接发信服务，先在页面显示）'; return; }
+		if(!ready()){ $('agCodeTip').textContent='验证码：'+pendCode+'（发信服务暂时不可用，先临时显示）'; return; }
 		$('agCodeTip').textContent='正在发到 '+mail+' …';
 		$('agSendCode').disabled=true;
 		fetch('https://api.emailjs.com/api/v1.0/email/send',{
@@ -1657,7 +1657,7 @@ body{background:#F3F7FF;color:#1B2A45;}
 			$('agCodeTip').textContent='验证码已经发到 '+mail+'，去邮箱收一下（找不到看垃圾箱）';
 		}).catch(function(){
 			$('agSendCode').disabled=false;
-			$('agCodeTip').textContent='发信没成功，先在页面显示验证码：'+pendCode;
+			$('agCodeTip').textContent='发信没成功，先临时把验证码放这儿：'+pendCode;
 		});
 	};
 
@@ -2389,7 +2389,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){ $('codeTip').textContent='先填一个像样的邮箱'; return; }
 		pendingMail=mail;
 		pendingCode=String(Math.floor(100000+Math.random()*900000));
-		if(!mailReady()){ $('codeTip').textContent='验证码：'+pendingCode+'（还没接发信服务，先在页面显示）'; return; }
+		if(!mailReady()){ $('codeTip').textContent='验证码：'+pendingCode+'（发信服务暂时不可用，先临时显示）'; return; }
 		$('codeTip').textContent='正在发到 '+mail+' …';
 			document.getElementById('sendCode').disabled=true;
 		sendMailCode(mail,pendingCode).then(function(){
@@ -2397,7 +2397,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 			$('codeTip').textContent='验证码已经发到 '+mail+'，去邮箱收一下（找不到看垃圾箱）';
 		}).catch(function(){
 			document.getElementById('sendCode').disabled=false;
-			$('codeTip').textContent='发信没成功，先在页面显示验证码：'+pendingCode;
+			$('codeTip').textContent='发信没成功，先临时把验证码放这儿：'+pendingCode;
 		});
 	};
 
