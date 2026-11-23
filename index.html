@@ -1593,6 +1593,39 @@ body{background:#F3F7FF;color:#1B2A45;}
 	.hall-btn{padding:6px 9px;font-size:11.5px;letter-spacing:0;}
 	.hall-controls{gap:6px;}
 }
+
+/* ===== 翻牌配对 ===== */
+.flip-wrap{max-width:1000px;margin:0 auto;background:#FFFFFF;border:1px solid #D9E5F8;border-radius:22px;padding:22px 24px 24px;box-shadow:0 20px 50px rgba(31,60,120,.09);}
+.flip-bar{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:18px;font-size:13.5px;color:#5B6E92;}
+.flip-bar b{color:#2F5CD4;font-size:17px;font-weight:700;}
+.flip-restart{padding:8px 18px;border:1px solid #C9D9F5;background:#F5F8FF;color:#24479F;border-radius:999px;font-size:13px;letter-spacing:1px;font-family:inherit;cursor:pointer;transition:.2s;}
+.flip-restart:hover{border-color:#2F5CD4;background:#EAF1FF;color:#1B2A45;}
+.flip-tip{display:none;margin:0 0 12px;text-align:center;font-size:13px;letter-spacing:1px;color:#6C7C99;}
+.flip-tip.show{display:block;}
+.flip-tip b{color:#2F5CD4;}
+.flip-board{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;max-width:860px;margin:0 auto;}
+.flip-card{position:relative;aspect-ratio:3/4;perspective:1000px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s ease;}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-card.matched{cursor:default;}
+.flip-face{position:absolute;inset:0;border-radius:12px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;}
+.flip-back{display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#2F5CD4,#24479F);color:rgba(255,255,255,.92);font-size:19px;letter-spacing:5px;box-shadow:0 8px 20px rgba(36,71,159,.22);}
+.flip-back::after{content:"";position:absolute;inset:7px;border:1px solid rgba(255,255,255,.32);border-radius:8px;}
+.flip-front{transform:rotateY(180deg);background:#0E1830;border:1px solid #C9D9F5;box-shadow:0 8px 20px rgba(36,71,159,.16);}
+.flip-front img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none;}
+.flip-card.matched .flip-front{outline:3px solid #2F5CD4;outline-offset:-3px;box-shadow:0 0 22px rgba(47,92,212,.45);}
+.flip-win{display:none;margin:18px 0 0;text-align:center;font-size:14px;letter-spacing:1px;color:#24479F;}
+.flip-win.show{display:block;}
+@media(max-width:760px){
+.flip-wrap{padding:14px 12px 16px;border-radius:18px;}
+.flip-bar{gap:10px;margin-bottom:12px;font-size:12px;}
+.flip-bar b{font-size:15px;}
+.flip-restart{padding:7px 14px;font-size:12px;}
+.flip-tip{font-size:12px;margin-bottom:8px;}
+.flip-board{grid-template-columns:repeat(3,1fr);gap:8px;}
+.flip-back{font-size:13px;letter-spacing:2px;}
+.flip-card.matched .flip-front{outline-width:2px;}
+}
 </style>
 </head>
 <body>
@@ -2948,6 +2981,20 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 				<button class="hall-btn primary" type="button" id="hallPlay">▶ 自动放映</button>
 				<button class="hall-btn" type="button" id="hallNext">下一幕 ›</button>
 			</div>
+		</div>
+		<div class="section-head">
+			<h3 class="section-title">翻牌配对</h3>
+			<span class="section-note">翻开两张，找出成对的舞台瞬间</span>
+		</div>
+		<div class="flip-wrap">
+			<div class="flip-bar">
+				<span>步数 <b id="flipMoves">0</b></span>
+				<span>已配对 <b id="flipMatched">0</b> / <b id="flipTotal">9</b></span>
+				<button class="flip-restart" type="button" id="flipRestart">重新洗牌</button>
+			</div>
+			<p class="flip-tip" id="flipTip">先记住位置，<b id="flipCount">4</b> 秒后开始配对…</p>
+			<div class="flip-board" id="flipBoard"></div>
+			<p class="flip-win" id="flipWin">全部配对成功 · 这九帧都找齐了</p>
 		</div>
 	</section>
 </div>
@@ -4952,6 +4999,72 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 		if(e.key==="ArrowRight"){stop();go(cur+1);}
 	});
 	render();
+})();
+</script>
+<script>
+(function(){
+	var FILES=["images/hero-kotw.jpg","images/stage-opening.jpg","images/stage-main-mv.jpg","images/goldsea-macau.jpg","images/hero-sg-live.jpg","images/portrait-black.jpg","images/tour-feather.jpg","images/gallery-car.jpg","images/stage-macau3.jpg"];
+	var PAIRS=FILES.map(function(f,i){return {id:i,img:f};});
+	var PREVIEW_MS=4000;
+	var board=document.getElementById("flipBoard");
+	if(!board) return;
+	var movesEl=document.getElementById("flipMoves"),matchedEl=document.getElementById("flipMatched"),totalEl=document.getElementById("flipTotal"),
+		winEl=document.getElementById("flipWin"),restartBtn=document.getElementById("flipRestart"),
+		previewTip=document.getElementById("flipTip"),countEl=document.getElementById("flipCount");
+	var firstCard=null,lockBoard=false,matchedCount=0,moves=0,previewTimer=null,tickTimer=null;
+	totalEl.textContent=PAIRS.length;
+	function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+	function build(){
+		clearTimeout(previewTimer);clearInterval(tickTimer);
+		var deck=shuffle(PAIRS.concat(PAIRS).map(function(c){return {id:c.id,img:c.img};}));
+		board.innerHTML="";
+		firstCard=null;lockBoard=false;matchedCount=0;moves=0;
+		movesEl.textContent="0";matchedEl.textContent="0";winEl.classList.remove("show");
+		deck.forEach(function(c){
+			var el=document.createElement("div");
+			el.className="flip-card";el.dataset.id=c.id;
+			el.innerHTML='<div class="flip-inner"><div class="flip-face flip-back">KUN</div><div class="flip-face flip-front"></div></div>';
+			var im=document.createElement("img");
+			im.src=c.img;im.alt="配对照片";im.decoding="async";
+			el.querySelector(".flip-front").appendChild(im);
+			el.addEventListener("click",function(){flip(el);});
+			board.appendChild(el);
+		});
+		startPreview();
+	}
+	function startPreview(){
+		var cards=board.querySelectorAll(".flip-card");
+		lockBoard=true;previewTip.classList.add("show");
+		cards.forEach(function(c){c.classList.add("flipped");});
+		var remain=Math.round(PREVIEW_MS/1000);countEl.textContent=remain;
+		tickTimer=setInterval(function(){remain--;if(remain>0){countEl.textContent=remain;}else{clearInterval(tickTimer);}},1000);
+		previewTimer=setTimeout(function(){
+			clearInterval(tickTimer);
+			cards.forEach(function(c){c.classList.remove("flipped");});
+			previewTip.classList.remove("show");
+			lockBoard=false;
+		},PREVIEW_MS);
+	}
+	function flip(el){
+		if(lockBoard) return;
+		if(el===firstCard) return;
+		if(el.classList.contains("matched")||el.classList.contains("flipped")) return;
+		el.classList.add("flipped");
+		if(!firstCard){firstCard=el;return;}
+		moves++;movesEl.textContent=moves;
+		var match=firstCard.dataset.id===el.dataset.id;
+		if(match){
+			firstCard.classList.add("matched");el.classList.add("matched");
+			firstCard=null;matchedCount++;matchedEl.textContent=matchedCount;
+			if(matchedCount===PAIRS.length){setTimeout(function(){winEl.classList.add("show");},400);}
+		}else{
+			lockBoard=true;
+			var a=firstCard,b=el;
+			setTimeout(function(){a.classList.remove("flipped");b.classList.remove("flipped");firstCard=null;lockBoard=false;},800);
+		}
+	}
+	restartBtn.addEventListener("click",build);
+	build();
 })();
 </script>
 </body>
