@@ -1104,9 +1104,6 @@ th,td{font-size:12.5px;padding:10px 5px;}
 #home .card{display:flex;flex-direction:column;}
 #home .card img{flex:0 0 330px;height:330px;object-fit:cover;}
 #home .card-text{flex:1;display:flex;flex-direction:column;}
-/* 精选图集：整排横图 */
-.gallery-grid.landscape{grid-template-columns:1fr;}
-.gallery-grid.landscape .gallery-item{grid-column:1/-1;aspect-ratio:16 / 9;}
 @media(max-width:600px){.album-main-player img{height:260px;}}
 /* ===== 音乐页 ===== */
 .music-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;}
@@ -2162,11 +2159,11 @@ body{background:#F3F7FF;color:#1B2A45;}
 			<h3 class="section-title">精选图集</h3>
 			<span class="section-note">写真、后台、舞台，点开看大图</span>
 		</div>
-				<div class="gallery-grid landscape">
-			<div class="gallery-item wide" data-src="images/hero-kotw.jpg"><img decoding="async" src="images/t/hero-kotw.jpg" alt="站在城市屋顶上，黑色皮衣、浅金长发" loading="lazy"><span>城市屋顶 · 黑色皮衣</span></div>
-			<div class="gallery-item wide" data-src="images/hero-sg-dance.jpg"><img decoding="async" src="images/t/hero-sg-dance.jpg" alt="THE DEADMAN 新加坡站，82 号球衣和舞群一起跳" loading="lazy"><span>THE DEADMAN 新加坡 · 舞群</span></div>
-			<div class="gallery-item wide" data-src="images/hero-sg-live.jpg"><img decoding="async" src="images/t/hero-sg-live.jpg" alt="THE DEADMAN 新加坡站，单膝点地举麦唱" loading="lazy"><span>THE DEADMAN 新加坡 · 台上</span></div>
-			<div class="gallery-item wide" data-src="images/hero-sg-fans.jpg"><img decoding="async" src="images/t/hero-sg-fans.jpg" alt="白色西装、金框墨镜，在台边和台下击掌" loading="lazy"><span>台边 · 和台下击掌</span></div>
+				<div class="gallery-grid">
+			<div class="gallery-item" data-src="images/gallery-fur.jpg"><img decoding="async" src="images/t/gallery-fur.jpg" alt="豹纹皮草披在酒红衬衫外，金边眼镜，低头整理衣襟" loading="lazy"><span>豹纹皮草 · 酒红</span></div>
+			<div class="gallery-item" data-src="images/gallery-selfie.jpg"><img decoding="async" src="images/t/gallery-selfie.jpg" alt="练习室里的自拍，黑发微乱，手举到镜前" loading="lazy"><span>练习室 · 自拍</span></div>
+			<div class="gallery-item" data-src="images/gallery-suit.jpg"><img decoding="async" src="images/t/gallery-suit.jpg" alt="金属条纹西装、黑框眼镜，抬手打招呼" loading="lazy"><span>条纹西装 · 打招呼</span></div>
+			<div class="gallery-item wide" data-src="images/gallery-car.jpg"><img decoding="async" src="images/t/gallery-car.jpg" alt="车内夜色，城市灯火在窗外，身边卧着一只长毛猫" loading="lazy"><span>车里 · 和猫一起</span></div>
 		</div><div id="galleryViewer" aria-hidden="true">
 			<img decoding="async" loading="lazy" src="" alt="大图">
 			<button type="button" class="gv-close" aria-label="关闭">×</button>
