@@ -1104,6 +1104,9 @@ th,td{font-size:12.5px;padding:10px 5px;}
 #home .card{display:flex;flex-direction:column;}
 #home .card img{flex:0 0 330px;height:330px;object-fit:cover;}
 #home .card-text{flex:1;display:flex;flex-direction:column;}
+/* 精选图集：整排横图 */
+.gallery-grid.landscape{grid-template-columns:1fr;}
+.gallery-grid.landscape .gallery-item{grid-column:1/-1;aspect-ratio:16 / 9;}
 @media(max-width:600px){.album-main-player img{height:260px;}}
 /* ===== 音乐页 ===== */
 .music-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;}
@@ -1139,6 +1142,9 @@ th,td{font-size:12.5px;padding:10px 5px;}
 #galleryViewer.open{display:flex;}
 #galleryViewer img{max-width:94vw;max-height:88vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5);}
 #galleryViewer .gv-close{position:absolute;top:16px;right:20px;width:42px;height:42px;border:none;border-radius:50%;background:rgba(255,255,255,.14);color:#FFF;font-size:26px;line-height:1;cursor:pointer;}
+#galleryViewer .gv-dl{position:absolute;top:16px;right:74px;height:42px;padding:0 18px;border:1px solid rgba(255,255,255,.38);border-radius:21px;background:rgba(255,255,255,.12);color:#FFF;font-size:13px;letter-spacing:1px;cursor:pointer;}
+#galleryViewer .gv-dl:hover{background:rgba(255,255,255,.24);}
+img.dl-ready{cursor:pointer;}
 
 
 
@@ -2156,14 +2162,15 @@ body{background:#F3F7FF;color:#1B2A45;}
 			<h3 class="section-title">精选图集</h3>
 			<span class="section-note">写真、后台、舞台，点开看大图</span>
 		</div>
-				<div class="gallery-grid">
-			<div class="gallery-item" data-src="images/fine-cover.jpg"><img decoding="async" src="images/t/fine-cover.jpg" alt="《时尚先生 fine》秋季刊封面，手持蕨叶" loading="lazy"><span>《时尚先生 fine》· 封面</span></div>
-			<div class="gallery-item" data-src="images/fine-wall.jpg"><img decoding="async" src="images/t/fine-wall.jpg" alt="石墙前穿黑西装的侧身大片" loading="lazy"><span>石墙前 · 黑西装</span></div>
-			<div class="gallery-item" data-src="images/bw-shirt.jpg"><img decoding="async" src="images/t/bw-shirt.jpg" alt="白衬衫的黑白写真，低头系扣" loading="lazy"><span>黑白 · 白衬衫</span></div>
-			<div class="gallery-item wide" data-src="images/stage-opening.jpg"><img decoding="async" src="images/t/stage-opening.jpg" alt="《You Can Be My Girlfriend》舞台，红色巨幕与豹纹亮片" loading="lazy"><span>彩色豹纹亮片 · 红色巨幕</span></div>
+				<div class="gallery-grid landscape">
+			<div class="gallery-item wide" data-src="images/hero-kotw.jpg"><img decoding="async" src="images/t/hero-kotw.jpg" alt="站在城市屋顶上，黑色皮衣、浅金长发" loading="lazy"><span>城市屋顶 · 黑色皮衣</span></div>
+			<div class="gallery-item wide" data-src="images/hero-sg-dance.jpg"><img decoding="async" src="images/t/hero-sg-dance.jpg" alt="THE DEADMAN 新加坡站，82 号球衣和舞群一起跳" loading="lazy"><span>THE DEADMAN 新加坡 · 舞群</span></div>
+			<div class="gallery-item wide" data-src="images/hero-sg-live.jpg"><img decoding="async" src="images/t/hero-sg-live.jpg" alt="THE DEADMAN 新加坡站，单膝点地举麦唱" loading="lazy"><span>THE DEADMAN 新加坡 · 台上</span></div>
+			<div class="gallery-item wide" data-src="images/hero-sg-fans.jpg"><img decoding="async" src="images/t/hero-sg-fans.jpg" alt="白色西装、金框墨镜，在台边和台下击掌" loading="lazy"><span>台边 · 和台下击掌</span></div>
 		</div><div id="galleryViewer" aria-hidden="true">
 			<img decoding="async" loading="lazy" src="" alt="大图">
 			<button type="button" class="gv-close" aria-label="关闭">×</button>
+			<button type="button" class="gv-dl" aria-label="下载这张图">下载原图</button>
 		</div>
 
 <div class="section-head">
@@ -2979,14 +2986,14 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		<h2 class="album-modal-title">舞台现场</h2>
 		<p class="album-subtitle">从出道夜到世界巡演</p>
 		<div class="album-main-player">
-			<img decoding="async" loading="lazy" src="images/ol-wide.jpg" alt="2018 年《偶像练习生》的舞台全景" style="width:100%;border-radius:14px;display:block;object-position:center 14%;">
+			<img decoding="async" loading="lazy" src="images/t/stage-main-mv.jpg" alt="镜头前回头的一瞬，逆光把浅金头发打得发白" style="width:100%;border-radius:14px;display:block;object-position:center 40%;">
 		</div>
 		<p class="album-main-meta">2018</p>
-		<p class="album-main-desc">“灯光亮起来的那一刻，台下是一整片合唱”</p>
+		<p class="album-main-desc">“镜头停在他回头的那一瞬，逆光把头发打得发白”</p>
 		<h3 class="album-section-title">舞台记录</h3>
 		<div class="album-grid chrono">
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/debut-night2.jpg" alt="偶像练习生出道夜，灰制服白边、胸前 9 号名牌，彩带飘落" loading="eager" style="object-position:center 6%;">
+				<img decoding="async" class="album-cover" src="images/t/debut-party.jpg" alt="出道夜，灰制服白滚边，彩带落下时抬头笑着鼓掌" loading="eager" style="object-position:center 6%;">
 				<div class="album-info">
 					<div class="album-date">2018.04.06</div>
 					<h5>出道夜</h5>
@@ -2994,11 +3001,11 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 				</div>
 			</div>
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/stage-fur.jpg" alt="跨年舞台" loading="eager">
+				<img decoding="async" class="album-cover" src="images/t/newyear-snow.jpg" alt="跨年舞台，黑色亮片外套配银色刺绣，雪景布景前握麦" loading="eager" style="object-position:center 8%;">
 				<div class="album-info">
 					<div class="album-date">2018.12.31</div>
-					<h5>跨年首秀</h5>
-					<p>《Wait Wait Wait》《You Can Be My Girlfriend》连着唱，立麦、裘袍，一口气把场子点燃。</p>
+					<h5>跨年</h5>
+					<p>黑色亮片外套、银色刺绣，站在雪一样的布景里握麦；《Wait Wait Wait》《You Can Be My Girlfriend》连着唱，一口气把场子点燃。</p>
 				</div>
 			</div>
 			<div class="album-card">
@@ -4697,6 +4704,52 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
  function apply(v){ document.documentElement.style.setProperty('--veil',(Number(v)/100).toFixed(2)); }
  if(saved){ if(el) el.value=saved; apply(saved); }
  if(el){ el.addEventListener('input',function(){ apply(el.value); localStorage.setItem('kunVeil',el.value); }); }
+})();
+</script>
+<script>
+/* 图片下载：点任意图片即可保存原图；精选图集的大图另带「下载原图」按钮 */
+(function () {
+	function fullOf(src) {
+		if (!src) { return src; }
+		return src.indexOf('/images/t/') > -1 ? src.replace('/images/t/', '/images/') : src;
+	}
+	function grab(src, name) {
+		if (!src) { return; }
+		var fname = name || src.split('/').pop().split('?')[0];
+		fetch(src, { credentials: 'same-origin' }).then(function (r) {
+			if (!r.ok) { throw new Error('bad'); }
+			return r.blob();
+		}).then(function (b) {
+			var a = document.createElement('a');
+			a.href = URL.createObjectURL(b);
+			a.download = fname;
+			document.body.appendChild(a);
+			a.click();
+			a.remove();
+			setTimeout(function () { URL.revokeObjectURL(a.href); }, 3000);
+		}).catch(function () { window.open(src, '_blank'); });
+	}
+	var current = '';
+	var gv = document.getElementById('galleryViewer');
+	var gimg = gv ? gv.querySelector('img') : null;
+	if (gv && gimg) {
+		var dl = gv.querySelector('.gv-dl');
+		var items = document.querySelectorAll('.gallery-item');
+		items.forEach(function (it) {
+			it.addEventListener('click', function () { current = it.getAttribute('data-src') || ''; });
+		});
+		if (dl) { dl.addEventListener('click', function (e) { e.stopPropagation(); grab(current || gimg.src); }); }
+	}
+	document.addEventListener('click', function (e) {
+		var t = e.target;
+		if (!t || t.tagName !== 'IMG') { return; }
+		if (t.closest('.gallery-item') || t.closest('#galleryViewer')) { return; }
+		var src = t.getAttribute('data-full') || fullOf(t.getAttribute('src'));
+		if (!src) { return; }
+		e.preventDefault();
+		grab(src);
+	}, true);
+	document.querySelectorAll('img').forEach(function (im) { im.classList.add('dl-ready'); im.title = im.title || '点击可保存原图'; });
 })();
 </script>
 </body>
