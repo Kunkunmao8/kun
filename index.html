@@ -1092,6 +1092,12 @@ th,td{font-size:12.5px;padding:10px 5px;}
 /* 音乐坐标 / 影像记录：卡片加长，整张照片完整显示 */
 #relModal .album-grid.chrono .album-cover,
 #vlogModal .album-grid.chrono .album-cover{height:auto;aspect-ratio:3 / 4;object-fit:contain;object-position:center;background:#FFF;}
+/* 作品/单曲类弹窗：卡片加长，整张照片完整显示 */
+#firstModal .album-cover,
+#familyMeetingModal .album-cover,
+#snowModal .album-cover,
+#qixiModal .album-cover,
+#oneyearModal .album-cover{height:auto;aspect-ratio:3 / 4;object-fit:contain;object-position:center;background:#FFF;}
 .album-main-player img{height:440px;}
 @media(max-width:600px){.album-main-player img{height:260px;}}
 /* ===== 音乐页 ===== */
@@ -3086,11 +3092,11 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 				</div>
 			</div>
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/deadman-mv.jpg" alt="《Deadman》MV 剧照：雪地里戴皮帽骑马" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/deadman-lake.jpg" alt="宽檐帽、长风衣，抱着吉他站在湖水里，天刚亮" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2025.05.28</div>
 					<h5>《Deadman》</h5>
-					<p>冷调的西部片质感：雪原、皮帽、一匹马，把「结束」和「重新开始」放在同一支片子里。</p>
+					<p>冷调的西部片质感：天亮前的湖面、宽檐帽、一把吉他插在水里，把「结束」和「重新开始」放在同一支片子里。</p>
 				</div>
 			</div>
 			<div class="album-card">
@@ -3119,73 +3125,49 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		<p class="album-subtitle">2018 · 偶像练习生时期</p>
 		<div class="album-grid chrono">
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/ol-01.jpg" alt="蓝色条纹衬衫的舞台" loading="lazy">
-				<div class="album-info">
-					<div class="album-date">2018.03.30</div>
-					<h5>《MASK》合作舞台</h5>
-					<p>白金色头发，蓝色条纹衬衫，导师合作舞台那一场。后来很多人就是从这套造型开始记住他的。</p>
-				</div>
-			</div>
-			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/ol-02.jpg" alt="蓝衬衫舞台近景" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/first-watermelon.jpg" alt="抱着一只西瓜" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2018</div>
-					<h5>舞台定格</h5>
-					<p>耳返、立麦、蓝色衬衫，抬手的那一帧被站姐留了下来。</p>
+					<h5>抱着一只西瓜</h5>
+					<p>拍外景那天很冷，白围巾裹到下巴，手里还抱着道具西瓜。</p>
 				</div>
 			</div>
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/ol-08.jpg" alt="灰色制服，胸前别着名字牌的近景" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/first-sweatshirt.jpg" alt="个人练习生" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2018</div>
-					<h5>制服与名字牌</h5>
-					<p>灰色制服、胸前别着自己的名字，抬头对台下说了一句谢谢。</p>
+					<h5>个人练习生</h5>
+					<p>白色卫衣，胸前号码牌上写着「个人练习生 蔡徐坤」，坐在练习室的椅子上。</p>
 				</div>
 			</div>
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/ol-04.jpg" alt="红蓝灯光下的舞台" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/first-grey.jpg" alt="灰制服侧脸" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2018</div>
-					<h5>走位</h5>
-					<p>红蓝两色灯扫过舞台，他站在中间偏左的位置。</p>
+					<h5>灰制服侧脸</h5>
+					<p>灰色制服、白色滚边，侧脸转过来的一瞬，灯刚好打在下颌。</p>
 				</div>
 			</div>
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/ol-05.jpg" alt="灰色练习生制服" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/first-redvelvet.jpg" alt="开场那一下" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2018</div>
-					<h5>练习生制服</h5>
-					<p>灰色西装制服、白衬衫，胸前别着名牌，那会儿他还不太会面对镜头。</p>
+					<h5>开场那一下</h5>
+					<p>红丝绒外套、黑色亮片内搭，蓝光扫过舞台，抬手握麦的那一下。</p>
 				</div>
 			</div>
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/ol-06.jpg" alt="白色卫衣比心" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/first-mvstill.jpg" alt="镜头前回头" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2018</div>
-					<h5>主题曲时期</h5>
-					<p>白色卫衣，袖口露出格纹衬衫，双手比了个心。</p>
-				</div>
-			</div>
-			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/ol-07.jpg" alt="后台自拍" loading="lazy">
-				<div class="album-info">
-					<div class="album-date">2018</div>
-					<h5>后台自拍</h5>
-					<p>灰制服、浅金头发，后台随手拍的一张，被存了很多年。</p>
-				</div>
-			</div>
-			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/ol-09.jpg" alt="彩带落下的出道夜" loading="lazy">
-				<div class="album-info">
-					<div class="album-date">2018.04.06</div>
-					<h5>出道夜</h5>
-					<p>《偶像练习生》总决赛，以总票数第一正式出道，成为 NINE PERCENT 的中心位。彩带落下来的时候，他站在中间。</p>
-					<div class="album-links"><a href="https://weibo.com/caizicaixukun" target="_blank" rel="noopener">微博主页</a></div>
+					<h5>镜头前回头</h5>
+					<p>MV 里回头的一格，逆光把头发打得发白。</p>
 				</div>
 			</div>
 		</div>
+		</div>
 	</div>
-</div>
+
 
 <div class="modal" id="qixiModal">
 	<div class="album-modal-inner">
@@ -3194,7 +3176,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		<p class="album-subtitle">2019.02.18 · 第一支独立中文作词单曲</p>
 		<div class="album-grid single">
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/noaccident.jpg" alt="《没有意外》MV 画面：黑色造型与白色光弧" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/noaccident2.jpg" alt="黑白拼接西装、波点领巾与白玫瑰，抬头看向灯" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2019.02.18</div>
 					<h5>《没有意外》</h5>
@@ -3213,7 +3195,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		<p class="album-subtitle">2020.05.24 · 一首被记住很久的歌</p>
 		<div class="album-grid single">
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/lover-mv.jpg" alt="《情人》MV 画面：红色背景与蓝色玫瑰" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/lover2.jpg" alt="黑色缎面西装、蕾丝内搭与心形项链" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2020.05.24</div>
 					<h5>《情人》</h5>
@@ -3251,11 +3233,11 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		<p class="album-subtitle">2025.05.28 · 生日前的一首</p>
 		<div class="album-grid single">
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/deadman-mv.jpg" alt="《Deadman》MV 剧照：雪地里戴皮帽骑马" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/deadman-lake.jpg" alt="宽檐帽、长风衣，抱着吉他站在湖水里" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2025.05.28</div>
 					<h5>《Deadman》</h5>
-					<p>5 月 28 日上线，15 分钟内 QQ 音乐在线听歌人数冲上高位。8 月 2 日生日当天，在洛杉矶 The Fonda Theatre 开了一场 One Night Only。</p>
+					<p>湖水没过膝盖，宽檐帽、长风衣，抱着吉他在水里弹，天刚亮。5 月 28 日上线，15 分钟内 QQ 音乐在线听歌人数冲上高位；8 月 2 日生日当天，在洛杉矶 The Fonda Theatre 开了一场 One Night Only。</p>
 					<div class="album-links"><a href="https://y.qq.com/n/ryqq/songDetail/000e5ren4ZiL3U" target="_blank" rel="noopener">在 QQ 音乐听这首</a><a href="https://weibo.com/caizicaixukun" target="_blank" rel="noopener">微博</a></div>
 				</div>
 			</div>
@@ -3270,42 +3252,42 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		<p class="album-subtitle">2026 · 一张专辑，一次往远处的出发</p>
 		<div class="album-grid chrono">
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/cover-kun.jpg" alt="《KUN》专辑官方封面" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/kun-bw.jpg" alt="黑白写真，头巾遮到眼下，画面左下是 KUN 字样" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2026.02.06</div>
 					<h5>全英文专辑《KUN》</h5>
-					<p>11 首作品，按「有声电影」的概念排成一条完整的线，风格从 R&amp;B 一路走到摇滚和电子。</p>
+					<p>11 首作品，按「有声电影」的概念排成一条完整的线，风格从 R&amp;B 一路走到摇滚和电子；封面是一帧黑白，头巾遮到眼下。</p>
 				</div>
 			</div>
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/portrait-face.jpg" alt="近景写真" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/tour-feather.jpg" alt="黑色羽片与银流苏外套，握麦唱，冷蓝灯光" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2026</div>
-					<h5>红幕前的丝绒礼服</h5>
-					<p>欧美八城巡演，把专辑里的歌重新编曲，搬到不同的场馆里唱。</p>
+					<h5>巡演舞台</h5>
+					<p>欧美八城巡演，黑羽和银流苏压在肩上，一束光从侧面切过来，把专辑里的歌搬到不同的场馆里唱。</p>
 				</div>
 			</div>
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/stage-jersey.jpg" alt="球衣造型" loading="lazy">
-				<div class="album-info">
-					<div class="album-date">2026.08.06</div>
-					<h5>THE DEADMAN · 澳门</h5>
-					<p>纯白未来风的机能造型，冰雪质感的舞台，把《Deadman》的冷调做到极处。</p>
-				</div>
-			</div>
-			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/stage-color.jpg" alt="彩色亮片外套舞台" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/sg-white-jacket.jpg" alt="白色军装式流苏外套、白 T 恤与银色腰带，站在蓝色灯海里" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2026.10.28</div>
-					<h5>新加坡场</h5>
-					<p>第一次穿高跟鞋上台，唱到一半坐在舞台边跟台下聊脚痛，全场笑出声。</p>
+					<h5>THE DEADMAN · 新加坡</h5>
+					<p>白色军装式流苏外套，白 T 恤束进银色腰带，蓝色灯海里站在台上，把《Deadman》的冷调唱到最沉。</p>
+				</div>
+			</div>
+			<div class="album-card">
+				<img decoding="async" class="album-cover" src="images/t/stage-bluework.jpg" alt="蓝色反光条工装外套、黑手套、墨镜，抬手跟台下打招呼" loading="lazy">
+				<div class="album-info">
+					<div class="album-date">2026</div>
+					<h5>舞台上的另一面</h5>
+					<p>蓝色反光条工装外套、黑手套，戴着墨镜抬手跟台下打招呼，笑起来还是那个样子。</p>
 				</div>
 			</div>			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/redcarpet-blue.jpg" alt="蓝色西装红毯" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/u30-bw.jpg" alt="黑白肖像，黑色立领上衣、侧脸朝光" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2026.11.22</div>
 					<h5>亚太 U30</h5>
-					<p>入选 2026 亚太 U30 杰出青年领袖，理由写的是「以音乐为炬，向世界传递华语之声」。</p>
+					<p>入选 2026 亚太 U30 杰出青年领袖，理由写的是「以音乐为炬，向世界传递华语之声」；这张黑白侧脸是那年领奖时拍的。</p>
 				</div>
 			</div>
 		</div>
