@@ -1558,6 +1558,7 @@ body{background:#F3F7FF;color:#1B2A45;}
 		</div>
 
 		<p class="ag-foot">登录之后可以看全部的图片和舞台影像，也能在社区说话、投稿。<br>第一次来先注册，6 位验证码会发到你填的邮箱。</p>
+		<p class="ag-foot" style="margin-top:8px;"><a href="#" id="agGuest" style="color:#2F5CD4;font-weight:600;text-decoration:none;">先随便逛逛，不登录 →</a></p>
 	</div>
 </div>
 <script>
@@ -1568,8 +1569,10 @@ body{background:#F3F7FF;color:#1B2A45;}
 	if(/[?&]open=1/.test(location.search)){ g.parentNode.removeChild(g); return; }
 	var sess=null;
 	try{ sess=JSON.parse(localStorage.getItem('kun_site_user')||'null'); }catch(e){}
-	if(sess&&sess.mail){ g.parentNode.removeChild(g); return; }
+	if(sess&&(sess.mail||sess.guest)){ g.parentNode.removeChild(g); return; }
 	document.documentElement.style.overflow='hidden';
+	var guestBtn=document.getElementById('agGuest');
+	if(guestBtn){ guestBtn.onclick=function(e){ e.preventDefault(); try{ localStorage.setItem('kun_site_user',JSON.stringify({mail:'guest@local',name:'游客',avatar:'',guest:true})); }catch(err){} location.reload(); }; }
 
 	var U='data/users.json';
 	var CFG=window.AYLIO_MAIL||{};
