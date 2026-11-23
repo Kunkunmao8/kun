@@ -1089,6 +1089,9 @@ th,td{font-size:12.5px;padding:10px 5px;}
 #collabModal .album-grid.chrono .album-cover{height:auto;aspect-ratio:4 / 5;object-fit:cover;background:#FFF;}
 @media(max-width:900px){#collabModal .album-grid.chrono .album-cover{height:auto;aspect-ratio:4 / 5;}}
 @media(max-width:600px){#collabModal .album-grid.chrono .album-cover{height:auto;aspect-ratio:4 / 5;}}
+/* 音乐坐标 / 影像记录：卡片加长，整张照片完整显示 */
+#relModal .album-grid.chrono .album-cover,
+#vlogModal .album-grid.chrono .album-cover{height:auto;aspect-ratio:3 / 4;object-fit:contain;object-position:center;background:#FFF;}
 .album-main-player img{height:440px;}
 @media(max-width:600px){.album-main-player img{height:260px;}}
 /* ===== 音乐页 ===== */
@@ -1898,7 +1901,7 @@ body{background:#F3F7FF;color:#1B2A45;}
 
 <div class="page" id="music">
 		<section class="banner">
-			<img decoding="async" class="banner-img" src="images/hero-sg-dance.jpg" alt="THE DEADMAN 新加坡站，白色短发、82 号球衣配迷彩裤，和舞群一起跳" style="object-position:center 42%;">
+			<img decoding="async" class="banner-img" src="images/mu-sequin.jpg" alt="黑色亮片翻领西装、粉色幕布前，握着麦唱" style="object-position:center 36%;">
 			<div class="banner-text">
 				<div class="container">
 					<p class="banner-kicker">DISCOGRAPHY</p>
@@ -2031,7 +2034,7 @@ body{background:#F3F7FF;color:#1B2A45;}
 		</div>
 		<div class="card-wrap">
 			<div class="card">
-				<img decoding="async" loading="lazy" src="images/goldsea2.jpg" alt="舞台上举着奖杯，身后是满场金色灯牌">
+				<img decoding="async" loading="lazy" src="images/t/goldsea-macau.jpg" alt="澳门站，白色西装坐在舞台前沿，抬手指向台上，身后是整片金色灯海">
 				<div class="card-text">
 					<h4>金海</h4>
 					<p>灯亮起来，看台先变成一片金色，然后音乐才响。</p>
@@ -2039,10 +2042,10 @@ body{background:#F3F7FF;color:#1B2A45;}
 				</div>
 			</div>
 			<div class="card">
-				<img decoding="async" loading="lazy" src="images/stage-opening.jpg" alt="红色巨幕前，彩色豹纹亮片西装，唱《You Can Be My Girlfriend》">
+				<img decoding="async" loading="lazy" src="images/t/opening-guitar.jpg" alt="新加坡站开场，白色铆钉流苏牛仔装，抱着电吉他站在台上">
 				<div class="card-text">
 					<h4>开场</h4>
-					<p>《You Can Be My Girlfriend》的前奏一落地，红色巨幕亮起来，场馆先醒了一半。</p>
+					<p>《You Can Be My Girlfriend》的前奏一落地，灯亮起来，他抱着吉他先走上台。</p>
 					<span class="tag">现场</span>
 				</div>
 			</div>
@@ -2925,7 +2928,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 				</div>
 			</div>
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/bw-button.jpg" alt="白衬衫黑白写真，侧身整理衣襟" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/single-burgundy.jpg" alt="酒红色双排扣大衣、红皮手套，举着打火机点烟" loading="lazy" style="object-position:center 6%;">
 				<div class="album-info">
 					<div class="album-date">03 · 单曲</div>
 					<h5>《Wait Wait Wait》《没有意外》《情人》</h5>
@@ -2949,7 +2952,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 				</div>
 			</div>
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/award-stage.jpg" alt="白西装站在台上，手里捧着奖杯" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/honor-black.jpg" alt="黑色盘扣立领外套、黑手套，举着一只香槟杯" loading="lazy" style="object-position:center 6%;">
 				<div class="album-info">
 					<div class="album-date">06 · 荣誉</div>
 					<h5>制作人奖、Billboard、亚太 U30</h5>
@@ -3043,7 +3046,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		<h3 class="album-section-title">MV 与概念影像</h3>
 		<div class="album-grid chrono">
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/photo-03.jpg" alt="黑白光影里的侧脸" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/iwgl-pink.jpg" alt="粉色西装、珍珠项链，紫光里握着麦" loading="lazy" style="object-position:center 6%;">
 				<div class="album-info">
 					<div class="album-date">2018</div>
 					<h5>《I Wanna Get Love》</h5>
@@ -3051,7 +3054,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 				</div>
 			</div>
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/noaccident.jpg" alt="《没有意外》MV 画面：黑色造型与白色光弧" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/noaccident2.jpg" alt="黑白拼接西装、波点领巾与白玫瑰，抬头看向灯" loading="lazy" style="object-position:center 6%;">
 				<div class="album-info">
 					<div class="album-date">2019.02.18</div>
 					<h5>《没有意外》</h5>
@@ -3059,7 +3062,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 				</div>
 			</div>
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/lover-mv.jpg" alt="《情人》MV 画面：红色背景、蓝色玫瑰与 KUN 情人字幕" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/lover2.jpg" alt="黑色缎面西装、蕾丝内搭与心形项链" loading="lazy" style="object-position:center 6%;">
 				<div class="album-info">
 					<div class="album-date">2020.05.24</div>
 					<h5>《情人》</h5>
