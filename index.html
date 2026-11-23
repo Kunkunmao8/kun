@@ -3707,7 +3707,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 <script>
 
 /* 照片墙存储配置（GitHub 仓库）：填 token 即可全站共享；留空则只存在本机 */
-window.AYLIO_CLOUD = { provider: "", bucket: "", region: "", dir: "kun-photos" };
+window.AYLIO_CLOUD = { provider: "supabase", url: "https://yzzktnkfprpystxbhnln.supabase.co", key: "sb_publishable_TwGiULzD9sdEX9p_laO9ow_rVQw8O3w", photoBucket: "photos", bucket: "", region: "", dir: "kun-photos" };
 /* IKUN 留言箱的邮箱验证码发信（EmailJS）：把三个值填上，验证码就会真的发到用户邮箱 */
 window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9v", publicKey: "oWUnwDNjmReeW1-UX" };
 
@@ -3727,21 +3727,24 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 	if(!wall||!input||!viewer||!bodyEl) return;
 	var IS_WX=/MicroMessenger/i.test(navigator.userAgent||'');
 	if(IS_WX){ try{ input.removeAttribute('accept'); }catch(e){} }   /* 微信里放开类型限制，否则有时只给拍照、进不去相册 */
-	var cloud=!!(CFG.bucket);
-	var COSBASE='https://'+CFG.bucket+'.cos.'+(CFG.region||'ap-guangzhou')+'.myqcloud.com';
+	var SB=(CFG.provider==='supabase'&&CFG.url&&CFG.key)?{url:String(CFG.url).replace(/\/$/,''),key:CFG.key,bucket:(CFG.photoBucket||'photos')}:null;
+	var cloud=!!SB||!!(CFG.bucket);
+	var COSBASE='https://'+(CFG.bucket||'')+'.cos.'+(CFG.region||'ap-guangzhou')+'.myqcloud.com';
 	var DIR=(CFG.dir||'photos');
 	var RAW=COSBASE+'/'+DIR+'/';
 	var MANIFEST=RAW+'_index.json';
+	var rtOn=false, pollTimer=null;
 	var MYID=(function(){try{var k='aylio_owner_id',v=localStorage.getItem(k);if(!v){v='u'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);localStorage.setItem(k,v);}return v;}catch(e){return 'anon';}})();
 	var urls=[], dbp=null;
 
 	function setStatus(){
 		if(!statusEl) return;
-		if(cloud){ statusEl.className='photo-status'; statusEl.innerHTML='<i></i>共享模式：所有人上传的都看得见'; }
+		if(SB){ statusEl.className='photo-status'; statusEl.innerHTML='<i></i>实时共享：别人一上传，这里立刻出现'; }
+		else if(cloud){ statusEl.className='photo-status'; statusEl.innerHTML='<i></i>共享模式：所有人上传的都看得见'; }
 		else { statusEl.className='photo-status off'; statusEl.innerHTML='<i></i>本机模式：只有这台设备看得到'; }
-		if(hint) hint.innerHTML = cloud
-			? '单个文件：图片 60MB、视频 50MB 以内'
-			: '单个文件在 200MB 以内';
+		if(hint) hint.innerHTML = SB
+			? '单张图片 5MB 以内；视频暂不支持上传，用“视频投稿”'
+			: (cloud ? '单个文件：图片 60MB、视频 50MB 以内' : '单个文件在 200MB 以内');
 	}
 
 	/* ---------- 本机存储 ---------- */
@@ -3887,6 +3890,91 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 			.catch(function(){ return removeFromManifest(item.name); });
 	}
 
+	/* ---------- Supabase 云存储（实时照片墙） ---------- */
+	function sbHead(extra){
+		var h={apikey:SB.key, Authorization:'Bearer '+SB.key};
+		if(extra){ for(var k in extra){ if(extra.hasOwnProperty(k)) h[k]=extra[k]; } }
+		return h;
+	}
+	function sbNick(){
+		try{ var n=localStorage.getItem('aylio_pillow_nick'); if(n) return n; }catch(e){}
+		return 'IKUN';
+	}
+	function sbPublic(path){
+		return SB.url+'/storage/v1/object/public/'+SB.bucket+'/'+path.split('/').map(encodeURIComponent).join('/');
+	}
+	function sbList(){
+		return fetch(SB.url+'/rest/v1/photos?select=id,created_at,author,caption,url,storage_path&order=created_at.desc&limit=300',{headers:sbHead(),cache:'no-store'})
+			.then(function(r){ if(!r.ok) throw new Error('list '+r.status); return r.json(); })
+			.then(function(rows){
+				return (rows||[]).map(function(x){
+					var p=String(x.storage_path||'');
+					var m=p.match(/\.[a-z0-9]+$/i);
+					var ext=m?m[0].toLowerCase():'';
+					var type=/\.(mp4|mov|webm)$/.test(ext)?'video/mp4':(ext==='.png'?'image/png':ext==='.webp'?'image/webp':ext==='.gif'?'image/gif':'image/jpeg');
+					return { id:'p'+x.id, name:p||('kun-'+x.id+'.jpg'), type:type, src:x.url||sbPublic(p), owner:x.author||'', ts:Date.parse(x.created_at)||0, caption:x.caption||'' };
+				});
+			});
+	}
+	function sbUpload(file){
+		return shrinkImage(file).then(function(f){
+			var m=String(f.name||'').match(/\.[a-zA-Z0-9]+$/);
+			var ext=m?m[0].toLowerCase():'.jpg';
+			var path=MYID+'-'+Date.now()+'-'+Math.random().toString(36).slice(2,7)+ext;
+			var ct=ctypeOf('x'+ext);
+			return fetch(SB.url+'/storage/v1/object/'+SB.bucket+'/'+path.split('/').map(encodeURIComponent).join('/'),{
+				method:'POST',
+				headers:sbHead({'Content-Type':ct,'x-upsert':'true','cache-control':'max-age=31536000'}),
+				body:f
+			}).then(function(r){
+				if(!r.ok) throw new Error('upload '+r.status);
+				var pub=sbPublic(path);
+				return fetch(SB.url+'/rest/v1/photos',{
+					method:'POST',
+					headers:sbHead({'Content-Type':'application/json','Prefer':'return=representation'}),
+					body:JSON.stringify([{author:sbNick(), storage_path:path, url:pub, caption:''}])
+				}).then(function(r2){ if(!r2.ok) throw new Error('row '+r2.status); });
+			});
+		});
+	}
+	function sbDel(item){
+		var chain=Promise.resolve();
+		if(item.id&&/^p\d+$/.test(item.id)){
+			chain=chain.then(function(){ return fetch(SB.url+'/rest/v1/photos?id=eq.'+item.id.slice(1),{method:'DELETE',headers:sbHead()}); });
+		}
+		var p=item.name||'';
+		if(p&&p.indexOf('/')<0){
+			chain=chain.then(function(){ return fetch(SB.url+'/storage/v1/object/'+SB.bucket+'/'+encodeURIComponent(p),{method:'DELETE',headers:sbHead()}); });
+		}
+		return chain;
+	}
+	function sbRealtime(){
+		if(rtOn||!SB) return;
+		rtOn=true;
+		try{
+			var ws=new WebSocket(String(SB.url).replace(/^https/,'wss')+'/realtime/v1/websocket?apikey='+encodeURIComponent(SB.key)+'&vsn=1.0.0');
+			var r=1;
+			ws.onopen=function(){
+				try{
+					ws.send(JSON.stringify({
+						topic:'realtime:public:photos',
+						event:'phx_join',
+						payload:{config:{postgres_changes:[{event:'INSERT',schema:'public',table:'photos'}]},access_token:null},
+						ref:String(r), join_ref:String(r)
+					}));
+				}catch(e){}
+			};
+			ws.onmessage=function(ev){
+				try{
+					var m=JSON.parse(ev.data);
+					if(m&&m.event==='postgres_changes') refresh();
+				}catch(e){}
+			};
+			ws.onclose=function(){ rtOn=false; setTimeout(function(){ if(!document.hidden) sbRealtime(); },6000); };
+			ws.onerror=function(){ try{ ws.close(); }catch(e){} rtOn=false; };
+		}catch(e){ rtOn=false; }
+	}
+
 	/* 视频打开时先显示"加载中"，能播了就撤掉 */
 	function boxViewLoad(vp){
 		var tip=document.createElement('div');
@@ -3951,7 +4039,8 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 		b.addEventListener('click',function(ev){
 			ev.stopPropagation();
 			if(!confirm(item.owner&&item.owner!==MYID?'删掉这张别人传的照片？':'删掉这一张？')) return;
-			(cloud?cosDel(item):localDel(item.id)).then(refresh);
+			var job = SB ? sbDel(item) : (cloud ? cosDel(item) : localDel(item.id));
+			Promise.resolve(job).then(refresh);
 		});
 		/* 照片墙的删除权限：所有人都能删（包括别人传的） */
 		box.appendChild(b);
@@ -3988,17 +4077,26 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 	}
 	function cacheSave(rows){
 		try{
-			localStorage.setItem('aylio_wall_list', JSON.stringify(rows.map(function(r){ return {name:r.name,id:r.id,owner:r.owner,ts:r.ts,type:r.type}; })));
+			localStorage.setItem('aylio_wall_list', JSON.stringify(rows.map(function(r){ return {name:r.name,id:r.id,owner:r.owner,ts:r.ts,type:r.type,src:r.src}; })));
 		}catch(e){}
 	}
 	function cacheRead(){
 		try{
 			var v=JSON.parse(localStorage.getItem('aylio_wall_list')||'[]');
-			if(Array.isArray(v)&&v.length) return v.map(function(r){ r=Object.assign({},r); r.src=RAW+r.name; return r; });
+			if(Array.isArray(v)&&v.length) return v.map(function(r){ r=Object.assign({},r); r.src=r.src||(RAW+r.name); return r; });
 		}catch(e){}
 		return [];
 	}
 	function refresh(){
+		if(SB){
+			var c0=cacheRead();
+			if(c0.length) paint(c0);
+			return sbList().then(function(rows){ cacheSave(rows); paint(rows); return rows; })
+				.catch(function(e){
+					if(statusEl){ statusEl.className='photo-status off'; statusEl.innerHTML='<i></i>暂时连不上云端，几秒后自动重试'; }
+					if(!c0.length) return localAll().then(paint);
+				});
+		}
 		if(cloud){
 			var cached=cacheRead();
 			if(cached.length) paint(cached);          /* 先用上次的清单秒出图，云端连不上也照样能看 */
@@ -4049,7 +4147,7 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 				? toJpeg(f)
 				: Promise.resolve(new File([f], f.name||('p'+Date.now()), {type:t}));
 			var task = prep.then(function(g){
-				return cloud ? cosUpload(g) : localAdd({id:Date.now()+done, type:t, name:g.name, blob:g});
+				return SB ? sbUpload(g) : (cloud ? cosUpload(g) : localAdd({id:Date.now()+done, type:t, name:g.name, blob:g}));
 			});
 			task.then(function(){ done++; }).catch(function(e){
 				fail++; done++;
@@ -4083,7 +4181,12 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 
 	setStatus();
 	refresh();
-	if(cloud) setInterval(function(){ if(!viewer.classList.contains('on')) refresh(); },15000);
+	if(SB){
+		sbRealtime();
+		pollTimer=setInterval(function(){ if(!viewer.classList.contains('on')&&!document.hidden) refresh(); },10000);
+	}else if(cloud){
+		setInterval(function(){ if(!viewer.classList.contains('on')) refresh(); },15000);
+	}
 })();
 
 
