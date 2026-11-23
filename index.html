@@ -1525,6 +1525,19 @@ body{background:#F3F7FF;color:#1B2A45;}
 .track-pill .qq-mini{display:inline-block;font-size:11px;letter-spacing:.5px;color:#2F5CD4;text-decoration:none;padding:5px 9px;margin-right:5px;border-radius:999px;background:#E9F1FE;white-space:nowrap;}
 .track-pill .qq-mini:hover{background:#2F5CD4;color:#fff;}
 .me-row input[type=range]{flex:1;min-width:120px;accent-color:#2F5CD4;}
+
+/* ===== 手机端：顶部导航常驻（滚动时不动，随时可点） ===== */
+@media (max-width:760px){
+	html{scroll-padding-top:calc(var(--hdr, 58px) + 10px);}
+	.site-header{position:fixed;top:0;left:0;right:0;z-index:900;padding-top:env(safe-area-inset-top,0px);background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid #D9E5F8;box-shadow:0 4px 16px rgba(14,24,48,.07);}
+	.site-header .header-inner{flex-direction:row;align-items:center;justify-content:flex-start;height:auto;min-height:56px;padding:6px 0;gap:10px;}
+	.site-header .logo{flex:0 0 auto;font-size:17px;letter-spacing:3px;text-align:left;white-space:nowrap;}
+	.site-header .nav{flex:1 1 auto;width:auto;max-width:none;justify-content:flex-start!important;overflow-x:auto;overflow-y:hidden;padding:2px 0;gap:2px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+	.site-header .nav::-webkit-scrollbar{display:none;}
+	.site-header .nav li a{padding:7px 10px;font-size:13px;letter-spacing:0;white-space:nowrap;border-radius:18px;}
+	body{padding-top:var(--hdr, 58px);}
+	#pillow .bar{top:var(--hdr, 58px);}
+}
 </style>
 </head>
 <body>
@@ -4776,6 +4789,24 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 	}, true);
 	document.querySelectorAll('img').forEach(function (im) { im.classList.add('dl-ready'); });
 	window.kunOpenImage = openViewer;
+})();
+</script>
+<script>
+(function(){
+	var hdr=document.querySelector('.site-header');
+	function fit(){
+		if(!hdr) return;
+		var mq=window.matchMedia('(max-width:760px)').matches;
+		var h=mq?Math.round(hdr.getBoundingClientRect().height):0;
+		document.documentElement.style.setProperty('--hdr', h+'px');
+		document.body.style.paddingTop = mq? h+'px' : '';
+	}
+	fit();
+	window.addEventListener('resize', fit);
+	window.addEventListener('orientationchange', fit);
+	if(window.ResizeObserver){ try{ new ResizeObserver(fit).observe(hdr); }catch(e){} }
+	setTimeout(fit, 250);
+	setTimeout(fit, 1200);
 })();
 </script>
 </body>
