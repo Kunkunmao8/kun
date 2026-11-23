@@ -4757,9 +4757,19 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 	});
 	document.addEventListener('click', function (e) {
 		var t = e.target;
-		if (!t || t.tagName !== 'IMG') { return; }
+		if (!t || !t.tagName) { return; }
 		if (t.closest('#imgViewer') || t.closest('#galleryViewer') || t.closest('#photoViewer') || t.closest('.photo-item')) { return; }
-		var src = (t.closest('.gallery-item') && t.closest('.gallery-item').getAttribute('data-src')) || t.getAttribute('data-src') || t.getAttribute('data-full') || t.getAttribute('src');
+		var img = null;
+		if (t.tagName === 'IMG') {
+			img = t;
+		} else {
+			/* 横幅文字层、卡片文字层盖在图片上时，也按“点这张图”处理 */
+			var host = t.closest('.banner, .card, .album-card, .clip-card, .stage-card, .hero, .gallery-item, .card-wrap');
+			if (host) { img = host.querySelector('img'); }
+		}
+		if (!img) { return; }
+		var host2 = img.closest('.gallery-item');
+		var src = (host2 && host2.getAttribute('data-src')) || img.getAttribute('data-src') || img.getAttribute('data-full') || img.getAttribute('src');
 		if (!src) { return; }
 		e.preventDefault();
 		e.stopPropagation();
