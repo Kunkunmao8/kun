@@ -4183,7 +4183,7 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 	refresh();
 	if(SB){
 		sbRealtime();
-		pollTimer=setInterval(function(){ if(!viewer.classList.contains('on')&&!document.hidden) refresh(); },10000);
+		pollTimer=setInterval(function(){ if(!viewer.classList.contains('on')&&!document.hidden) refresh(); },5000);
 	}else if(cloud){
 		setInterval(function(){ if(!viewer.classList.contains('on')) refresh(); },15000);
 	}
