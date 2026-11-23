@@ -1142,7 +1142,7 @@ th,td{font-size:12.5px;padding:10px 5px;}
 #galleryViewer .gv-dl{position:absolute;top:16px;right:74px;height:42px;padding:0 18px;border:1px solid rgba(255,255,255,.38);border-radius:21px;background:rgba(255,255,255,.12);color:#FFF;font-size:13px;letter-spacing:1px;cursor:pointer;}
 #galleryViewer .gv-dl:hover{background:rgba(255,255,255,.24);}
 img.dl-ready{cursor:pointer;}
-#imgViewer{position:fixed;inset:0;z-index:2100;background:rgba(7,14,32,.94);display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:28px;}
+#imgViewer{position:fixed;inset:0;z-index:3000;background:rgba(7,14,32,.94);display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:28px;}
 #imgViewer.open{display:flex;}
 #imgViewer img{max-width:94vw;max-height:76vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5);background:#0B1B33;}
 #imgViewer .iv-dl{display:inline-block;padding:11px 30px;border-radius:22px;background:#FFF;color:#0B1B33;font-size:14px;letter-spacing:2px;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);}
@@ -4719,10 +4719,15 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 (function () {
 	function fullOf(src) {
 		if (!src) { return src; }
-		return src.indexOf('/images/t/') > -1 ? src.replace('/images/t/', '/images/') : src;
+		/* 缩略图 images/t/xxx.jpg → 原图 images/xxx.jpg */
+		return src.replace(/images\/t\//, 'images/');
 	}
 	var iv = document.getElementById('imgViewer');
 	if (!iv) { return; }
+	/* 挂到 body 末尾，避免被外层容器的层叠上下文压在弹窗下面 */
+	if (iv.parentNode !== document.body) { document.body.appendChild(iv); }
+	var gv = document.getElementById('galleryViewer');
+	if (gv && gv.parentNode !== document.body) { document.body.appendChild(gv); }
 	var ivImg = iv.querySelector('img');
 	var ivDl = iv.querySelector('.iv-dl');
 	function openViewer(src) {
@@ -4739,25 +4744,29 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 		iv.classList.remove('open');
 		iv.setAttribute('aria-hidden', 'true');
 		document.body.classList.remove('modal-open');
-		ivImg.src = '';
+		ivImg.removeAttribute('src');
 	}
+	iv.addEventListener('click', function (e) {
+		var t = e.target;
+		if (t === iv || t.classList.contains('iv-close')) { closeViewer(); return; }
+		if (t.classList.contains('iv-dl')) { return; }
+		if (t.tagName === 'IMG') { closeViewer(); }
+	});
+	document.addEventListener('keydown', function (e) {
+		if (e.key === 'Escape' && iv.classList.contains('open')) { closeViewer(); }
+	});
 	document.addEventListener('click', function (e) {
 		var t = e.target;
 		if (!t || t.tagName !== 'IMG') { return; }
-		if (t.closest('#imgViewer') || t.closest('#photoViewer') || t.closest('.photo-item') || t.closest('#photoViewerBody')) { return; }
-		var src = t.getAttribute('data-src') || t.getAttribute('data-full') || t.getAttribute('src');
+		if (t.closest('#imgViewer') || t.closest('#galleryViewer') || t.closest('#photoViewer') || t.closest('.photo-item')) { return; }
+		var src = (t.closest('.gallery-item') && t.closest('.gallery-item').getAttribute('data-src')) || t.getAttribute('data-src') || t.getAttribute('data-full') || t.getAttribute('src');
 		if (!src) { return; }
 		e.preventDefault();
 		e.stopPropagation();
 		openViewer(src);
 	}, true);
-	iv.addEventListener('click', function (e) {
-		if (e.target === iv || e.target.classList.contains('iv-close')) { closeViewer(); }
-	});
-	document.addEventListener('keydown', function (e) {
-		if (e.key === 'Escape' && iv.classList.contains('open')) { closeViewer(); }
-	});
 	document.querySelectorAll('img').forEach(function (im) { im.classList.add('dl-ready'); });
+	window.kunOpenImage = openViewer;
 })();
 </script>
 </body>
