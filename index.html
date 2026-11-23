@@ -461,7 +461,7 @@ tr:nth-child(even){background:#F8FAFF;}
 .modal.is-open{display:block;}
 body.modal-open{overflow:hidden;}
 .close{
-	position:absolute;
+	position:fixed;
 	top:16px;
 	right:18px;
 	width:44px;
@@ -473,7 +473,8 @@ body.modal-open{overflow:hidden;}
 	font-size:26px;
 	line-height:1;
 	cursor:pointer;
-	z-index:10;
+	z-index:1002;
+	box-shadow:0 8px 22px rgba(11,24,52,.32);
 	transition:.2s;
 }
 .close:hover{background:#2F5CD4;}
@@ -1558,7 +1559,6 @@ body{background:#F3F7FF;color:#1B2A45;}
 		</div>
 
 		<p class="ag-foot">登录之后可以看全部的图片和舞台影像，也能在社区说话、投稿。<br>第一次来先注册，6 位验证码会发到你填的邮箱。</p>
-		<p class="ag-foot" style="margin-top:8px;"><a href="#" id="agGuest" style="color:#2F5CD4;font-weight:600;text-decoration:none;">先随便逛逛，不登录 →</a></p>
 	</div>
 </div>
 <script>
@@ -1569,10 +1569,8 @@ body{background:#F3F7FF;color:#1B2A45;}
 	if(/[?&]open=1/.test(location.search)){ g.parentNode.removeChild(g); return; }
 	var sess=null;
 	try{ sess=JSON.parse(localStorage.getItem('kun_site_user')||'null'); }catch(e){}
-	if(sess&&(sess.mail||sess.guest)){ g.parentNode.removeChild(g); return; }
+	if(sess&&sess.mail){ g.parentNode.removeChild(g); return; }
 	document.documentElement.style.overflow='hidden';
-	var guestBtn=document.getElementById('agGuest');
-	if(guestBtn){ guestBtn.onclick=function(e){ e.preventDefault(); try{ localStorage.setItem('kun_site_user',JSON.stringify({mail:'guest@local',name:'游客',avatar:'',guest:true})); }catch(err){} location.reload(); }; }
 
 	var U='data/users.json';
 	var CFG=window.AYLIO_MAIL||{};
@@ -3002,11 +3000,11 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 				</div>
 			</div>
 			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/deadman-la.jpg" alt="洛杉矶 HITC 音乐节舞台，白色短袖与亮片长裤，站在栏杆后唱歌" loading="lazy" style="object-position:center 16%;">
+				<img decoding="async" class="album-cover" src="images/t/deadman-la.jpg" alt="洛杉矶 HITC 音乐节舞台，白T恤配黑色皮草大衣，仰头唱歌" loading="lazy" style="object-position:center top;">
 				<div class="album-info">
 					<div class="album-date">2025.06.02</div>
 					<h5>《Deadman》</h5>
-					<p>洛杉矶 HITC 音乐节，88rising 十周年场，《Deadman》第一次在现场唱；白衣站在栏杆后，台下是整片灯海。</p>
+					<p>洛杉矶 HITC 音乐节，88rising 十周年场，《Deadman》第一次在现场唱；白 T 恤外罩一件黑色皮草大衣，仰头唱到副歌，身后是整片红色的光。</p>
 				</div>
 			</div>
 			<div class="album-card">
