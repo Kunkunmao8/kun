@@ -1099,6 +1099,11 @@ th,td{font-size:12.5px;padding:10px 5px;}
 #qixiModal .album-cover,
 #oneyearModal .album-cover{height:auto;aspect-ratio:3 / 4;object-fit:contain;object-position:center;background:#FFF;}
 .album-main-player img{height:440px;}
+/* 首页三张卡片：等宽等高、底边对齐 */
+#home .card-wrap{align-items:stretch;}
+#home .card{display:flex;flex-direction:column;}
+#home .card img{flex:0 0 330px;height:330px;object-fit:cover;}
+#home .card-text{flex:1;display:flex;flex-direction:column;}
 @media(max-width:600px){.album-main-player img{height:260px;}}
 /* ===== 音乐页 ===== */
 .music-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;}
@@ -1843,7 +1848,7 @@ body{background:#F3F7FF;color:#1B2A45;}
 				</div>
 			</div>
 			<div class="card">
-				<img decoding="async" loading="lazy" src="images/stage-blue.jpg" alt="蓝色灯光下的舞台">
+				<img decoding="async" loading="lazy" src="images/t/music-portrait.jpg" alt="黑色衬衫、波点领巾，微仰头的近景肖像">
 				<div class="card-text">
 					<h4>音乐</h4>
 					<p>从《Wait Wait Wait》到《情人》《迷》，再到 2026 年的《KUN》，词曲、制作、MV 大多自己上手。</p>
@@ -3283,11 +3288,11 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 					<p>蓝色反光条工装外套、黑手套，戴着墨镜抬手跟台下打招呼，笑起来还是那个样子。</p>
 				</div>
 			</div>			<div class="album-card">
-				<img decoding="async" class="album-cover" src="images/t/u30-bw.jpg" alt="黑白肖像，黑色立领上衣、侧脸朝光" loading="lazy">
+				<img decoding="async" class="album-cover" src="images/t/u30-poster.jpg" alt="APEA 亚太 U30 官方海报，黑色皮衣、浅金长发" loading="lazy">
 				<div class="album-info">
 					<div class="album-date">2026.11.22</div>
 					<h5>亚太 U30</h5>
-					<p>入选 2026 亚太 U30 杰出青年领袖，理由写的是「以音乐为炬，向世界传递华语之声」；这张黑白侧脸是那年领奖时拍的。</p>
+					<p>入选 2026 亚太 U30 杰出青年领袖（APEA Leaders' Initiative），海报上的头衔写着「歌手 / 亚太 U30 杰出青年领袖」。</p>
 				</div>
 			</div>
 		</div>
