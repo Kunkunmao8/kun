@@ -1541,7 +1541,57 @@ body{background:#F3F7FF;color:#1B2A45;}
 }
 @media (max-width:380px){
 	.site-header .logo{font-size:16px;letter-spacing:2px;}
-	.site-header .nav li a{font-size:12px;padding:6px 6px;}
+	.site-header .nav li a{font-size:12px;padding:6px 5px;}
+	.site-header .nav{gap:0;}
+	.hall-btn{padding:6px 9px;font-size:11.5px;letter-spacing:0;}
+	.hall-controls{gap:6px;}
+}
+
+/* ===== 时光放映厅 ===== */
+.hall-wrap{position:relative;max-width:1000px;margin:0 auto;background:#FFFFFF;border:1px solid #D9E5F8;border-radius:22px;padding:22px 44px 20px;box-shadow:0 20px 50px rgba(31,60,120,.09);overflow:hidden;}
+.hall-perf{position:absolute;top:0;bottom:0;width:22px;background:repeating-linear-gradient(to bottom,#EEF3FD 0 12px,#CBDDF9 12px 22px);opacity:.9;pointer-events:none;}
+.hall-perf.l{left:0;border-right:1px solid #D9E5F8;}
+.hall-perf.r{right:0;border-left:1px solid #D9E5F8;}
+.hall-screen{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#0E1830;cursor:zoom-in;box-shadow:inset 0 0 50px rgba(0,0,0,.5),0 16px 36px rgba(14,24,48,.16);}
+.hall-frame{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.05);transition:opacity .7s ease,transform 1.1s ease;pointer-events:none;}
+.hall-frame.active{opacity:1;transform:scale(1);pointer-events:auto;}
+.hall-screen::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background-image:repeating-linear-gradient(to bottom,rgba(255,255,255,.035) 0 1px,transparent 1px 3px);mix-blend-mode:overlay;}
+.hall-screen::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(circle at center,transparent 58%,rgba(4,10,24,.55) 100%);}
+.hall-caption{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:38px 26px 20px;pointer-events:none;background:linear-gradient(to top,rgba(10,20,44,.92) 0%,rgba(10,20,44,.5) 48%,rgba(10,20,44,0) 100%);}
+.hall-year{font-size:12px;letter-spacing:5px;color:#A9C4FF;}
+.hall-title{font-size:clamp(18px,2.5vw,26px);letter-spacing:2px;color:#FFFFFF;margin:6px 0 6px;line-height:1.4;}
+.hall-desc{max-width:660px;margin:0;font-size:13.5px;line-height:1.75;color:#D3E0F8;}
+.hall-tl{position:relative;margin:24px 2px 0;height:40px;display:flex;align-items:center;}
+.hall-tl::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;transform:translateY(-50%);background:#E1EAF9;}
+.hall-progress{position:absolute;left:0;top:50%;height:2px;transform:translateY(-50%);background:linear-gradient(90deg,#2F5CD4,#8FB0FF);transition:width .45s ease;box-shadow:0 0 10px rgba(47,92,212,.35);}
+.hall-nodes{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;width:100%;}
+.hall-node{flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:1.5px solid #C9D9F5;background:#F5F8FF;color:#5B6E92;font-size:10px;letter-spacing:0;font-family:inherit;cursor:pointer;transition:.22s;}
+.hall-node:hover{border-color:#2F5CD4;color:#24479F;}
+.hall-node.active{background:#2F5CD4;border-color:#2F5CD4;color:#FFFFFF;box-shadow:0 8px 18px rgba(47,92,212,.3);}
+.hall-controls{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin-top:20px;}
+.hall-btn{padding:9px 22px;border:1px solid #C9D9F5;background:#F5F8FF;color:#24479F;border-radius:999px;font-size:13.5px;letter-spacing:1px;font-family:inherit;cursor:pointer;transition:.2s;}
+.hall-btn:hover{border-color:#2F5CD4;color:#1B2A45;}
+.hall-btn.primary{background:#2F5CD4;border-color:#2F5CD4;color:#FFFFFF;box-shadow:0 8px 18px rgba(47,92,212,.24);}
+.hall-btn.primary:hover{background:#24479F;}
+@media(max-width:760px){
+.hall-wrap{padding:12px 16px 14px;border-radius:18px;}
+.hall-perf{width:10px;}
+.hall-screen{border-radius:10px;}
+.hall-caption{padding:22px 12px 10px;}
+.hall-year{font-size:10px;letter-spacing:3px;}
+.hall-title{font-size:18px;letter-spacing:1px;}
+.hall-desc{font-size:11.5px;line-height:1.6;}
+.hall-tl{margin-top:16px;height:32px;}
+.hall-node{width:27px;height:27px;font-size:9px;}
+.hall-controls{gap:8px;margin-top:14px;}
+.hall-btn{padding:8px 14px;font-size:12.5px;}
+}
+@media (max-width:380px){
+	.site-header .logo{font-size:16px;letter-spacing:2px;}
+	.site-header .nav li a{font-size:12px;padding:6px 5px;}
+	.site-header .nav{gap:0;}
+	.hall-btn{padding:6px 9px;font-size:11.5px;letter-spacing:0;}
+	.hall-controls{gap:6px;}
 }
 </style>
 </head>
@@ -1843,6 +1893,7 @@ body{background:#F3F7FF;color:#1B2A45;}
 				<li><a href="#music" class="nav-link" data-target="music">音乐</a></li>
 				<li><a href="#work" class="nav-link" data-target="work">作品与舞台</a></li>
 				<li><a href="#pillow" class="nav-link" data-target="pillow">社区</a></li>
+				<li><a href="#cinema" class="nav-link" data-target="cinema">时光放映厅</a></li>
 				<li><a href="#mine" class="nav-link" data-target="mine">我的</a></li>
 			</ul>
 		</nav>
@@ -2870,6 +2921,36 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 
 
 </script>
+
+<div class="page" id="cinema">
+	<section class="container">
+		<div class="section-head">
+			<h3 class="section-title">时光放映厅</h3>
+			<span class="section-note">八幕，从出道夜放映到今天</span>
+		</div>
+		<div class="hall-wrap">
+			<div class="hall-perf l"></div>
+			<div class="hall-perf r"></div>
+			<div class="hall-screen" id="hallScreen">
+				<div id="hallFrames"></div>
+				<div class="hall-caption">
+					<div class="hall-year" id="hallYear"></div>
+					<h4 class="hall-title" id="hallTitle"></h4>
+					<p class="hall-desc" id="hallDesc"></p>
+				</div>
+			</div>
+			<div class="hall-tl">
+				<div class="hall-progress" id="hallProgress"></div>
+				<div class="hall-nodes" id="hallNodes"></div>
+			</div>
+			<div class="hall-controls">
+				<button class="hall-btn" type="button" id="hallPrev">‹ 上一幕</button>
+				<button class="hall-btn primary" type="button" id="hallPlay">▶ 自动放映</button>
+				<button class="hall-btn" type="button" id="hallNext">下一幕 ›</button>
+			</div>
+		</div>
+	</section>
+</div>
 
 <div class="page" id="mine">
 	<section class="container">
@@ -4812,6 +4893,65 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 	if(window.ResizeObserver){ try{ new ResizeObserver(fit).observe(hdr); }catch(e){} }
 	setTimeout(fit, 250);
 	setTimeout(fit, 1200);
+})();
+</script>
+<script>
+(function(){
+	var REELS=[
+		{y:"2018.04.06",n:"18",t:"出道夜",d:"《偶像练习生》总决赛第一，C 位出道的那一晚。",img:"images/debut-party.jpg",pos:"50% 16%",alt:"出道夜灰色制服与白色滚边，侧脸笑着"},
+		{y:"2019.02.18",n:"19",t:"《没有意外》",d:"第一支独立作词的中文单曲，上线 24 小时就冲到各大榜单首位。",img:"images/noaccident2.jpg",pos:"60% 14%",alt:"黑白拼接西装、波点领巾与白玫瑰"},
+		{y:"2020.05.24",n:"20",t:"《情人》",d:"单曲上线，刷新十几项榜单冠军，后来成了演唱会上必唱的一首。",img:"images/lover2.jpg",pos:"46% 12%",alt:"黑色缎面西装、蕾丝内搭与心形项链"},
+		{y:"2021",n:"21",t:"《迷》",d:"首张个人创作专辑，也是拿下 TMEA 年度最具影响力制作人的一年。",img:"images/cover-lost.jpg",pos:"50% 38%",alt:"《迷》专辑封面，红蓝光影里的侧脸"},
+		{y:"2025.05.28",n:"25",t:"Deadman · 洛杉矶",d:"单曲上线；生日当天在洛杉矶唱 One Night Only。",img:"images/deadman-lake.jpg",pos:"50% 46%",alt:"湖面上抱着吉他，远处是山影"},
+		{y:"2026.02.06",n:"26·2",t:"专辑《KUN》",d:"全英文专辑 11 首，随后开启欧美八城巡演。",img:"images/kun-bw.jpg",pos:"50% 28%",alt:"黑白近景，银色礼帽造型"},
+		{y:"2026.08.02",n:"26·8",t:"澳门 · THE DEADMAN",d:"威尼斯人综艺馆连开两晚，红金色灯光里满场。",img:"images/stage-macau3.jpg",pos:"50% 42%",alt:"澳门站舞台，红衣仰头举麦"},
+		{y:"2026.10.24",n:"26·10",t:"新加坡 · THE DEADMAN",d:"新加坡室内体育馆两晚，82 号篮球服跳 Old School Hiphop。",img:"images/singapore.jpg",pos:"50% 32%",alt:"新加坡站 82 号篮球服，坐在台边"}
+	];
+	var frames=document.getElementById("hallFrames"),nodeBox=document.getElementById("hallNodes");
+	if(!frames||!nodeBox) return;
+	var yearEl=document.getElementById("hallYear"),titleEl=document.getElementById("hallTitle"),descEl=document.getElementById("hallDesc"),
+		prog=document.getElementById("hallProgress"),prevBtn=document.getElementById("hallPrev"),nextBtn=document.getElementById("hallNext"),playBtn=document.getElementById("hallPlay");
+	var imgs=[],btns=[],cur=0,timer=null,DUR=7000;
+	REELS.forEach(function(r,i){
+		var im=document.createElement("img");
+		im.className="hall-frame";im.src=r.img;im.alt=r.alt||r.t;im.decoding="async";
+		if(i===0){im.setAttribute("fetchpriority","high");}else{im.loading="lazy";}
+		if(r.pos){im.style.objectPosition=r.pos;}
+		frames.appendChild(im);imgs.push(im);
+		var b=document.createElement("button");
+		b.type="button";b.className="hall-node";b.textContent=r.n;b.setAttribute("aria-label",r.y+" "+r.t);
+		b.addEventListener("click",function(){stop();go(i);});
+		nodeBox.appendChild(b);btns.push(b);
+	});
+	function go(i){cur=(i+REELS.length)%REELS.length;render();}
+	function render(){
+		var r=REELS[cur];
+		imgs.forEach(function(el,k){el.classList.toggle("active",k===cur);});
+		btns.forEach(function(el,k){el.classList.toggle("active",k===cur);});
+		yearEl.textContent=r.y;titleEl.textContent=r.t;descEl.textContent=r.d;
+		prog.style.width=(cur/(REELS.length-1)*100)+"%";
+		var nx=imgs[(cur+1)%REELS.length];if(nx&&nx.loading==="lazy"){nx.loading="eager";}
+	}
+	function stop(){if(timer){clearInterval(timer);timer=null;}playBtn.textContent="▶ 自动放映";playBtn.classList.remove("primary");}
+	function start(){
+		if(timer)return;
+		timer=setInterval(function(){
+			var pg=document.getElementById("cinema");
+			if(!pg||!pg.classList.contains("active")){stop();return;}
+			go(cur+1);
+		},DUR);
+		playBtn.textContent="⏸ 暂停放映";playBtn.classList.add("primary");
+	}
+	prevBtn.addEventListener("click",function(){stop();go(cur-1);});
+	nextBtn.addEventListener("click",function(){stop();go(cur+1);});
+	playBtn.addEventListener("click",function(){if(timer){stop();}else{start();}});
+	document.addEventListener("keydown",function(e){
+		var pg=document.getElementById("cinema");
+		if(!pg||!pg.classList.contains("active"))return;
+		if(e.key==="ArrowLeft"){stop();go(cur-1);}
+		if(e.key==="ArrowRight"){stop();go(cur+1);}
+	});
+	render();
 })();
 </script>
 </body>
