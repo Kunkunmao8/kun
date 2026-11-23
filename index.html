@@ -1085,6 +1085,10 @@ th,td{font-size:12.5px;padding:10px 5px;}
 .album-grid.chrono .album-info{position:static;opacity:1;transform:none;background:#FFF;pointer-events:auto;}
 .album-grid.chrono .album-date,.album-grid.chrono .album-card h5,.album-grid.chrono .album-card p{color:inherit;}
 .album-grid.chrono .album-date{color:#24479F;}
+/* 舞台现场弹窗：图片竖版加高，露出更多画面 */
+#collabModal .album-grid.chrono .album-cover{height:auto;aspect-ratio:4 / 5;object-fit:cover;background:#FFF;}
+@media(max-width:900px){#collabModal .album-grid.chrono .album-cover{height:auto;aspect-ratio:4 / 5;}}
+@media(max-width:600px){#collabModal .album-grid.chrono .album-cover{height:auto;aspect-ratio:4 / 5;}}
 .album-main-player img{height:440px;}
 @media(max-width:600px){.album-main-player img{height:260px;}}
 /* ===== 音乐页 ===== */
