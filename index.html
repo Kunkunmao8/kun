@@ -5855,7 +5855,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 		pop=document.createElement('div');
 		pop.className='wtPop';
 		pop.innerHTML='<div class="wtPopCard">'+
-			'<span class="wtPopRose"><img src="images/rose.png" alt="蓝玫瑰" decoding="async"></span>'+
+			'<span class="wtPopRose"><img src="images/rose.png?v=3" alt="蓝玫瑰" decoding="async"></span>'+
 			'<p class="wtPopTxt"></p><p class="wtPopBy"></p>'+
 			'<span class="wtPopNo"></span>'+
 			'<button type="button" class="wtPopClose" aria-label="关闭">×</button></div>';
@@ -5881,7 +5881,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 		var el=document.createElement('div');
 		el.className='wtTag'+(isNew?' new':'');
 		el.innerHTML='<span class="wtStr"></span>'+
-			'<span class="wtRose"><img src="images/rose.png" alt="蓝玫瑰" decoding="async"></span>'+
+			'<span class="wtRose"><img src="images/rose.png?v=3" alt="蓝玫瑰" decoding="async"></span>'+
 			'<span class="wtPlaque"><b>愿</b></span>';
 		el.addEventListener('pointerdown',function(e){e.stopPropagation();});
 		el.addEventListener('click',function(e){e.stopPropagation();showPop(x,idx);});
