@@ -156,6 +156,8 @@
   transition:opacity .22s,transform .22s;text-align:center;
 }
 .gx-toast.show{opacity:1;transform:translate(-50%,0)}
+.gx-toast.at-hint{left:16px;right:16px;bottom:188px;max-width:none;transform:translateY(10px);text-align:left;line-height:1.7;border-radius:16px}
+.gx-toast.at-hint.show{transform:translateY(0)}
 
 /* 速度切换 */
 .gx-speed{
