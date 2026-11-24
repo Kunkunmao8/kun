@@ -1718,9 +1718,9 @@ body{background:#F3F7FF;color:#1B2A45;}
 #wish .wtTag.new{animation:wtPop3 .8s cubic-bezier(.2,1.5,.4,1) both}
 @keyframes wtPop3{0%{opacity:0;transform:translate(-50%,0) scale(.5)}62%{opacity:1}100%{opacity:1}}
 #wish .wtStr{width:2px;height:20px;border-radius:2px;background:linear-gradient(rgba(212,232,255,.96),rgba(150,185,250,.35))}
-#wish .wtRose{width:44px;height:44px;margin-top:-6px}
-#wish .wtRose svg{width:100%;height:100%;display:block}
-#wish .wtPlaque{width:32px;height:40px;margin-top:-7px;border-radius:8px;
+#wish .wtRose{width:64px;height:auto;margin-top:-8px;aspect-ratio:1.06;display:flex;align-items:center;justify-content:center}
+#wish .wtRose img{width:100%;height:auto;display:block;pointer-events:none;-webkit-touch-callout:none;-webkit-user-drag:none;filter:drop-shadow(0 6px 14px rgba(4,14,44,.55))}
+#wish .wtPlaque{width:31px;height:38px;margin-top:-8px;border-radius:8px;
 	display:flex;align-items:center;justify-content:center;
 	background:linear-gradient(160deg,#4C86F2 0%,#2450B8 55%,#152C72 100%);
 	border:1px solid rgba(186,214,255,.9);
@@ -1749,9 +1749,8 @@ body{background:#F3F7FF;color:#1B2A45;}
 	box-shadow:0 26px 60px rgba(2,8,26,.62),inset 0 1px 0 #fff;
 	animation:wtCardIn .32s cubic-bezier(.2,1.35,.4,1) both}
 @keyframes wtCardIn{from{opacity:0;transform:translateY(12px) scale(.94)}to{opacity:1;transform:none}}
-#wish .wtPopRose{display:block;width:56px;height:56px;margin:-46px auto 4px;
-	filter:drop-shadow(0 8px 16px rgba(18,44,116,.35))}
-#wish .wtPopRose svg{width:100%;height:100%}
+#wish .wtPopRose{display:block;width:86px;height:86px;margin:-58px auto 6px}
+#wish .wtPopRose img{width:100%;height:auto;display:block;pointer-events:none;-webkit-touch-callout:none;filter:drop-shadow(0 10px 20px rgba(18,44,116,.42))}
 #wish .wtPopTxt{margin:10px 0 0;font-size:15px;line-height:1.7;color:#10224A;font-weight:600;word-break:break-word}
 #wish .wtPopBy{margin:10px 0 0;font-size:12px;color:#6C86B4}
 #wish .wtPopNo{display:inline-block;margin-top:12px;padding:4px 12px;border-radius:999px;
@@ -1762,7 +1761,7 @@ body{background:#F3F7FF;color:#1B2A45;}
 
 @media (max-width:760px){
 	#wish .wish-tree{height:480px;border-radius:18px}
-	#wish .wtRose{width:36px;height:36px}
+	#wish .wtRose{width:44px}
 	#wish .wtPlaque{width:27px;height:34px}
 	#wish .wtPlaque b{font-size:11px}
 	#wish .wtHint{bottom:8px;font-size:10.5px}
@@ -5507,10 +5506,10 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 	function cap(){return W<=760?5:9;}
 
 	/* ---------------- 几何 helper ---------------- */
-	var TREE_BASE=0.95,TREE_TOP=4.35;
+	var TREE_BASE=0.94,TREE_TOP=4.42;
 	function radiusAt(y){
 		var t=(y-TREE_BASE)/(TREE_TOP-TREE_BASE);t=Math.max(0,Math.min(1,t));
-		return Math.max(0.075,1.60*Math.pow(1-t,1.06)+0.055);
+		return Math.max(0.07,1.68*Math.pow(1-t,1.04)+0.055);
 	}
 
 	function radialTex(stops,size){
@@ -5524,71 +5523,109 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 	}
 
 	/* ---------------- 场景 ---------------- */
+	var BOKEH=[],SNOW=null;
 	function buildView(){
 		renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
 		renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
 		renderer.toneMapping=THREE.ACESFilmicToneMapping;
-		renderer.toneMappingExposure=0.94;
+		renderer.toneMappingExposure=0.98;
+		if('outputColorSpace' in renderer) renderer.outputColorSpace=THREE.SRGBColorSpace;
 
 		scene=new THREE.Scene();
-		camera=new THREE.PerspectiveCamera(32,1,0.1,120);
-		camera.position.set(0,3.0,11.6);
+		camera=new THREE.PerspectiveCamera(30,1,0.1,140);
+		camera.position.set(0,2.55,12.4);
 		camera.lookAt(0,2.35,0);
 
-		scene.add(new THREE.AmbientLight(0x4A6BAE,0.34));
-		scene.add(new THREE.HemisphereLight(0xB6D4FF,0x060C18,0.46));
-		var key=new THREE.DirectionalLight(0xF2F8FF,1.28);key.position.set(5.0,8.6,5.2);scene.add(key);
-		var rim=new THREE.DirectionalLight(0x5A93FF,1.0);rim.position.set(-5.2,4.2,-4.6);scene.add(rim);
-		var warm=new THREE.PointLight(0xFFBE72,2.4,16);warm.position.set(0.5,3.8,2.1);scene.add(warm);
-		var cool=new THREE.PointLight(0x4F8DFF,2.8,24);cool.position.set(-3.4,1.8,4.4);scene.add(cool);
+		/* 环境贴图：让金属球/缎带/星有真实反光 */
+		var envTex=(function(){
+			var c=document.createElement('canvas');c.width=1024;c.height=512;
+			var ctx=c.getContext('2d');
+			var g=ctx.createLinearGradient(0,0,0,512);
+			g.addColorStop(0,'#2E63C8');g.addColorStop(.28,'#173C86');
+			g.addColorStop(.58,'#0A1730');g.addColorStop(1,'#05080F');
+			ctx.fillStyle=g;ctx.fillRect(0,0,1024,512);
+			var r1=ctx.createRadialGradient(700,120,10,700,120,300);
+			r1.addColorStop(0,'rgba(255,214,150,.85)');r1.addColorStop(.45,'rgba(255,170,80,.24)');r1.addColorStop(1,'rgba(255,150,60,0)');
+			ctx.fillStyle=r1;ctx.fillRect(0,0,1024,512);
+			var r2=ctx.createRadialGradient(260,380,10,260,380,260);
+			r2.addColorStop(0,'rgba(120,180,255,.55)');r2.addColorStop(1,'rgba(70,120,230,0)');
+			ctx.fillStyle=r2;ctx.fillRect(0,0,1024,512);
+			var t=new THREE.CanvasTexture(c);
+			t.mapping=THREE.EquirectangularReflectionMapping;
+			return t;
+		})();
+		var pmrem=new THREE.PMREMGenerator(renderer);
+		var env=pmrem.fromEquirectangular(envTex).texture;
+		scene.environment=env;
+		envTex.dispose();pmrem.dispose();
+
+		scene.add(new THREE.AmbientLight(0x5570A8,0.30));
+		scene.add(new THREE.HemisphereLight(0xAFCFFF,0x050A14,0.36));
+		var key=new THREE.DirectionalLight(0xF7FBFF,1.05);key.position.set(4.8,8.4,5.6);scene.add(key);
+		var rim=new THREE.DirectionalLight(0x74A8FF,0.85);rim.position.set(-5.0,4.4,-4.8);scene.add(rim);
+		var warm=new THREE.PointLight(0xFFC178,2.2,15);warm.position.set(0.6,3.5,2.2);scene.add(warm);
+		var cool=new THREE.PointLight(0x4E8CFF,2.4,22);cool.position.set(-3.6,1.8,4.2);scene.add(cool);
 
 		group=new THREE.Group();scene.add(group);
 
-		/* 树干 */
-		var trunkMat=new THREE.MeshStandardMaterial({color:0x172440,roughness:.95,metalness:.05});
-		var trunk=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.16,1.1,16),trunkMat);
-		trunk.position.y=0.36;group.add(trunk);
+		var TB=0.94,TT=4.42;
+		function radiusAt(y){
+			var t=(y-TB)/(TT-TB);t=Math.max(0,Math.min(1,t));
+			return Math.max(0.07,1.68*Math.pow(1-t,1.04)+0.055);
+		}
 
-		/* 树冠：14 层 */
-		var LAYERS=18;
-		function layer(y0,r,h,color){
-			var g=new THREE.ConeGeometry(r,h,36,2,true);
+		/* 树干 */
+		var trunk=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.17,1.2,18),
+			new THREE.MeshStandardMaterial({color:0x22304F,roughness:.92,metalness:.04,envMapIntensity:.4}));
+		trunk.position.y=0.40;group.add(trunk);
+
+		/* 内芯，防穿帮 */
+		var core=new THREE.Mesh(new THREE.ConeGeometry(0.95,3.2,24,1,true),
+			new THREE.MeshStandardMaterial({color:0x16355E,roughness:.9,metalness:.05,side:THREE.DoubleSide,envMapIntensity:.25}));
+		core.position.y=TB+1.62;group.add(core);
+
+		/* 枝层：24 层锥台 + 大量扁平枝尖 */
+		var TIERS=24;
+		function tier(y0,r,h,color){
+			var g=new THREE.ConeGeometry(r,h,32,3,true);
 			var pos=g.attributes.position;
 			for(var i=0;i<pos.count;i++){
 				var x=pos.getX(i),yy=pos.getY(i),z=pos.getZ(i);
 				var ang=Math.atan2(z,x);
-				var k=1+0.055*Math.sin(ang*9+yy*3);
+				var k=1+0.045*Math.sin(ang*11+yy*4);
 				pos.setX(i,x*k);pos.setZ(i,z*k);
-				if(yy<-h/2+0.05) pos.setY(i,yy-0.02*Math.abs(Math.sin(ang*11)));
+				if(yy<-h/2+0.06) pos.setY(i,yy-0.025*Math.abs(Math.sin(ang*13)));
 			}
 			g.computeVertexNormals();
-			var m=new THREE.MeshStandardMaterial({color:color,roughness:.78,metalness:.10,flatShading:true,side:THREE.DoubleSide});
+			var m=new THREE.MeshStandardMaterial({color:color,roughness:.72,metalness:.12,flatShading:true,side:THREE.DoubleSide,envMapIntensity:.5});
 			var mesh=new THREE.Mesh(g,m);mesh.position.y=y0+h/2;mesh.rotation.y=Math.random()*Math.PI*2;return mesh;
 		}
-		for(var i=0;i<LAYERS;i++){
-			var y0=TREE_BASE+i*0.188;
-			var baseL=0.105+0.185*(i/LAYERS);
-			var col=new THREE.Color().setHSL(0.604+0.008*(i/LAYERS),0.74,baseL);
-			var r=radiusAt(y0+0.18)*(0.97+0.03*Math.random());
-			group.add(layer(y0,r,0.52,col));
+		for(var i=0;i<TIERS;i++){
+			var y0=TB+i*((TT-TB-0.35)/TIERS);
+			if(i===0) continue;
+			var l=0.14+0.24*(i/TIERS);
+			var col=new THREE.Color().setHSL(0.600+0.012*(i/TIERS),0.70,l);
+			group.add(tier(y0,radiusAt(y0+0.16),0.44,col));
 		}
 
-		/* 枝尖（外圈 / 内圈） */
 		var dummy=new THREE.Object3D();
-		function tipsMesh(geo,count,ring,drop,lenScale,colorFn){
-			var mat=new THREE.MeshStandardMaterial({color:0xFFFFFF,roughness:.82,metalness:.08,flatShading:true});
-			var mesh=new THREE.InstancedMesh(geo,mat,count*LAYERS);
+		function branchMesh(count,ringY,drop,len,flat,scaleMax,colorFn){
+			var geo=new THREE.ConeGeometry(0.215,0.42,4);
+			var mat=new THREE.MeshStandardMaterial({color:0xFFFFFF,roughness:.62,metalness:.12,flatShading:true,envMapIntensity:.6,
+				emissive:0x2E5B9E,emissiveIntensity:.22});
+			var mesh=new THREE.InstancedMesh(geo,mat,count*TIERS);
 			var idx=0;
-			for(var i=0;i<LAYERS;i++){
-				var y0=TREE_BASE+i*0.188;
-				var r=radiusAt(y0+0.26);
+			for(var i=0;i<TIERS;i++){
+				var y0=TB+i*((TT-TB-0.35)/TIERS);
+				var r=radiusAt(y0+ringY);
 				for(var k=0;k<count;k++){
-					var ang=k*(Math.PI*2/count)+i*0.37+(Math.random()-0.5)*0.16;
-					var rr=r*ring+(Math.random()-0.5)*0.05;
+					var ang=k*(Math.PI*2/count)+i*0.41+(Math.random()-0.5)*0.20;
+					var rr=r*0.94+(Math.random()-0.5)*0.035;
 					var dir=new THREE.Vector3(Math.sin(ang),drop,Math.cos(ang)).normalize();
-					dummy.position.set(Math.sin(ang)*rr,y0+0.27,Math.cos(ang)*rr);
+					dummy.position.set(Math.sin(ang)*rr,y0+ringY+0.06,Math.cos(ang)*rr);
 					dummy.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir);
-					dummy.scale.setScalar(lenScale*(0.8+Math.random()*0.5));
+					var sc=(0.55+Math.random()*0.26)*(scaleMax||1);
+					dummy.scale.set(sc,sc*(0.95+Math.random()*0.3),sc*flat);
 					dummy.updateMatrix();mesh.setMatrixAt(idx,dummy.matrix);
 					mesh.setColorAt(idx,colorFn(i));
 					idx++;
@@ -5596,53 +5633,71 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 			}
 			group.add(mesh);return mesh;
 		}
-		var tipGeo=new THREE.ConeGeometry(0.135,0.50,6);
-		tipsMesh(tipGeo,26,0.86,-0.62,1.0,function(i){
-			return new THREE.Color().setHSL(0.605,0.68,0.16+0.17*(i/LAYERS)+(Math.random()-0.4)*0.07);
+		branchMesh(40,0.32,-0.62,1,0.5,1,function(i){
+			return new THREE.Color().setHSL(0.602,0.66,0.19+0.21*(i/TIERS)+(Math.random()-0.4)*0.07);
 		});
-		var tipGeo2=new THREE.ConeGeometry(0.105,0.40,5);
-		tipsMesh(tipGeo2,16,0.55,-0.95,0.85,function(i){
-			return new THREE.Color().setHSL(0.612,0.60,0.12+0.14*(i/LAYERS));
+		branchMesh(22,0.18,-0.95,1,0.45,0.78,function(i){
+			return new THREE.Color().setHSL(0.608,0.62,0.12+0.15*(i/TIERS));
 		});
 
-		/* 挂球 */
-		var palette=[0xCFE2FF,0x9FC2FF,0x6E9CF0,0xF7DFA6,0xEDF4FF,0xFFF2CC];
-		var ballGeo=new THREE.SphereGeometry(1,18,14);
-		var ballMat=new THREE.MeshStandardMaterial({metalness:.32,roughness:.22,color:0xFFFFFF,
-			emissive:0x3E62B4,emissiveIntensity:.26});
-		var N=78,balls=new THREE.InstancedMesh(ballGeo,ballMat,N);
-		for(var b=0;b<N;b++){
-			var band=Math.floor(b/11);
-			var by=TREE_BASE+0.30+band*0.255+Math.random()*0.12;
-			var ba=(b%11)*(Math.PI*2/11)+band*0.62+Math.random()*0.26;
-			var s=0.030+Math.random()*0.028;
-			var m=new THREE.Object3D();
-			m.position.set(Math.sin(ba)*(radiusAt(by)+0.015),by,Math.cos(ba)*(radiusAt(by)+0.015));
-			m.scale.setScalar(s*(1.05+0.4*(1-(by-TREE_BASE)/3.4)));
-			m.updateMatrix();balls.setMatrixAt(b,m.matrix);
-			balls.setColorAt(b,new THREE.Color(palette[b%palette.length]));
-		}
-		group.add(balls);
+		/* 雪压枝尖 */
+		(function snowDust(){
+			var geo=new THREE.ConeGeometry(0.10,0.26,5);
+			var mat=new THREE.MeshStandardMaterial({color:0xEFF6FF,roughness:.55,metalness:.10,emissive:0x9FC6FF,emissiveIntensity:.30,flatShading:true});
+			var cnt=16,m=new THREE.InstancedMesh(geo,mat,cnt*TIERS);
+			var idx=0;
+			for(var i=0;i<TIERS;i++){
+				var y0=TB+i*((TT-TB-0.35)/TIERS);
+				var r=radiusAt(y0+0.30);
+				for(var k=0;k<cnt;k++){
+					var ang=Math.random()*Math.PI*2,dir=new THREE.Vector3(Math.sin(ang),-0.7,Math.cos(ang)).normalize();
+					dummy.position.set(Math.sin(ang)*(r*0.9),y0+0.34,Math.cos(ang)*(r*0.9));
+					dummy.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir);
+					dummy.scale.setScalar(0.5+Math.random()*0.4);dummy.updateMatrix();
+					m.setMatrixAt(idx++,dummy.matrix);
+				}
+			}
+			group.add(m);
+		})();
 
-		/* 雪花挂饰 */
-		var flakeGeo=new THREE.IcosahedronGeometry(0.05,0);
-		var flakeMat=new THREE.MeshStandardMaterial({color:0xFFFFFF,roughness:.5,metalness:.15,
-			emissive:0xBFE0FF,emissiveIntensity:.55,flatShading:true});
-		var flakes=new THREE.InstancedMesh(flakeGeo,flakeMat,26);
-		for(var f=0;f<26;f++){
-			var fy=TREE_BASE+0.4+Math.random()*2.9,fa=Math.random()*Math.PI*2;
+		/* 大颗玻璃球（反射环境，更贵气） */
+		var bigPalette=[0x8FB6FF,0xC9DCFF,0x5E89F0,0xEFD9A8,0xF6F9FF];
+		var bigGeo=new THREE.SphereGeometry(1,24,18);
+		var bigMat=new THREE.MeshPhysicalMaterial({metalness:1,roughness:.03,color:0xFFFFFF,envMapIntensity:2.2
+			,clearcoat:1,clearcoatRoughness:.04,emissive:0x2E56B0,emissiveIntensity:.16});
+		var NB=34,bigs=new THREE.InstancedMesh(bigGeo,bigMat,NB);
+		for(var b2=0;b2<NB;b2++){
+			var band=Math.floor(b2/6),by=TB+0.42+band*0.55+Math.random()*0.16;
+			var ba=(b2%6)*(Math.PI*2/6)+band*0.9+Math.random()*0.3;
+			var r2=radiusAt(by)+0.06,sz=0.062+Math.random()*0.030;
 			var o=new THREE.Object3D();
-			o.position.set(Math.sin(fa)*(radiusAt(fy)+0.02),fy,Math.cos(fa)*(radiusAt(fy)+0.02));
-			o.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);
-			o.scale.set(1,.75,1);o.updateMatrix();flakes.setMatrixAt(f,o.matrix);
+			o.position.set(Math.sin(ba)*r2,by,Math.cos(ba)*r2);
+			o.scale.setScalar(sz*1.35);o.updateMatrix();bigs.setMatrixAt(b2,o.matrix);
+			bigs.setColorAt(b2,new THREE.Color(bigPalette[b2%bigPalette.length]));
 		}
-		group.add(flakes);
+		group.add(bigs);
 
-		/* 缎带（缎面螺旋带） */
-		function ribbon(yBeg,yEnd,turns,width,color,metal,emissive){
-			var N2=260,pos=[],idx=[];
+		/* 小珠串 */
+		var pearlPalette=[0xEAF3FF,0xBFD8FF,0xFFF0CC];
+		var pearlGeo=new THREE.SphereGeometry(1,12,10);
+		var pearlMat=new THREE.MeshStandardMaterial({metalness:.55,roughness:.25,color:0xFFFFFF,envMapIntensity:1.1,
+			emissive:0x7FA6F0,emissiveIntensity:.35});
+		var NP=92,pearls=new THREE.InstancedMesh(pearlGeo,pearlMat,NP);
+		for(var p=0;p<NP;p++){
+			var py=TB+0.24+Math.random()*3.2,pa=Math.random()*Math.PI*2;
+			var pr=radiusAt(py)+(Math.random()-0.3)*0.05,ps=0.020+Math.random()*0.022;
+			var o2=new THREE.Object3D();
+			o2.position.set(Math.sin(pa)*pr,py,Math.cos(pa)*pr);
+			o2.scale.setScalar(ps*1.5);o2.updateMatrix();pearls.setMatrixAt(p,o2.matrix);
+			pearls.setColorAt(p,new THREE.Color(pearlPalette[p%pearlPalette.length]));
+		}
+		group.add(pearls);
+
+		/* 缎带（缎面 + 金色细线） */
+		function ribbon(yBeg,yEnd,turns,width,color,metal,rough,emissive,ei){
+			var N2=280,pos=[],idx=[];
 			function cAt(t){
-				var ang=t*Math.PI*2*turns,y=yBeg+t*(yEnd-yBeg),r=radiusAt(y)+0.055;
+				var ang=t*Math.PI*2*turns,y=yBeg+t*(yEnd-yBeg),r=radiusAt(y)+0.05;
 				return new THREE.Vector3(Math.sin(ang)*r,y,Math.cos(ang)*r);
 			}
 			for(var i2=0;i2<=N2;i2++){
@@ -5658,32 +5713,32 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 			var bg=new THREE.BufferGeometry();
 			bg.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
 			bg.setIndex(idx);bg.computeVertexNormals();
-			var mat=new THREE.MeshStandardMaterial({color:color,metalness:metal,roughness:.32,
-				emissive:emissive,emissiveIntensity:.30,side:THREE.DoubleSide});
+			var mat=new THREE.MeshStandardMaterial({color:color,metalness:metal,roughness:rough,
+				emissive:emissive,emissiveIntensity:ei,side:THREE.DoubleSide,envMapIntensity:1.2});
 			group.add(new THREE.Mesh(bg,mat));
 		}
-		ribbon(1.06,4.04,3.5,0.044,0xF2F8FF,.40,0x86AEFF);
-		ribbon(1.14,3.90,4.7,0.011,0xFFD489,.88,0xFFAE45);
+		ribbon(1.06,4.06,2.6,0.028,0xFAFCFF,.62,.16,0x9CC0FF,.30);
+		ribbon(1.18,3.90,3.4,0.009,0xFFDE9C,.94,.14,0xFFB452,.6);
 
-		/* 灯串 */
-		var bulbGeo=new THREE.SphereGeometry(0.028,10,8);
-		var bulbMat=new THREE.MeshStandardMaterial({color:0xFFF2D2,emissive:0xFFB24E,emissiveIntensity:2.6,roughness:.35});
-		var BN=86,bulbs=new THREE.InstancedMesh(bulbGeo,bulbMat,BN);
+		/* 灯串 + 光晕 */
+		var bulbGeo=new THREE.SphereGeometry(0.026,10,8);
+		var bulbMat=new THREE.MeshStandardMaterial({color:0xFFF4DC,emissive:0xFFB457,emissiveIntensity:2.2,roughness:.3});
+		var BN=110,bulbs=new THREE.InstancedMesh(bulbGeo,bulbMat,BN);
 		var glowPos=new Float32Array(BN*3);
 		for(var l=0;l<BN;l++){
-			var lt=l/BN,la=lt*Math.PI*2*7.2,ly=1.02+lt*3.0,lr=radiusAt(ly)+0.085;
-			var o2=new THREE.Object3D();
-			o2.position.set(Math.sin(la)*lr,ly,Math.cos(la)*lr);o2.updateMatrix();
-			bulbs.setMatrixAt(l,o2.matrix);
-			glowPos[l*3]=o2.position.x;glowPos[l*3+1]=o2.position.y;glowPos[l*3+2]=o2.position.z;
+			var lt=l/BN,la=lt*Math.PI*2*8.4,ly=1.04+lt*3.2,lr=radiusAt(ly)+0.075;
+			var o3=new THREE.Object3D();
+			o3.position.set(Math.sin(la)*lr,ly,Math.cos(la)*lr);o3.updateMatrix();
+			bulbs.setMatrixAt(l,o3.matrix);
+			glowPos[l*3]=o3.position.x;glowPos[l*3+1]=o3.position.y;glowPos[l*3+2]=o3.position.z;
 		}
 		group.add(bulbs);
 
-		var glowTex=radialTex([[0,'rgba(255,240,205,.95)'],[.32,'rgba(255,200,120,.45)'],[1,'rgba(255,180,80,0)']],64);
+		var glowTex=radialTex([[0,'rgba(255,244,214,.95)'],[.3,'rgba(255,206,130,.42)'],[1,'rgba(255,180,80,0)']],64);
 		var glowGeo=new THREE.BufferGeometry();
 		glowGeo.setAttribute('position',new THREE.BufferAttribute(glowPos,3));
-		var glowMat=new THREE.PointsMaterial({map:glowTex,size:0.23,color:0xFFC77C,transparent:true,depthWrite:false,
-			blending:THREE.AdditiveBlending,opacity:.82,sizeAttenuation:true});
+		var glowMat=new THREE.PointsMaterial({map:glowTex,size:0.26,color:0xFFCB86,transparent:true,depthWrite:false,
+			blending:THREE.AdditiveBlending,opacity:.85,sizeAttenuation:true});
 		var glows=new THREE.Points(glowGeo,glowMat);group.add(glows);
 		glowMats.push(glowMat);
 
@@ -5691,57 +5746,88 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 		var starShape=(function(){
 			var sh=new THREE.Shape();
 			for(var i=0;i<10;i++){
-				var rr=i%2?0.345:1.0,a=-Math.PI/2+i*Math.PI/5;
+				var rr=i%2?0.33:1.0,a=-Math.PI/2+i*Math.PI/5;
 				var x=Math.cos(a)*rr,y=Math.sin(a)*rr;
 				if(i===0) sh.moveTo(x,y);else sh.lineTo(x,y);
 			}
 			sh.closePath();return sh;
 		})();
-		var starGeo=new THREE.ExtrudeGeometry(starShape,{depth:0.12,bevelEnabled:true,bevelSize:0.045,bevelThickness:0.045,bevelSegments:2});
+		var starGeo=new THREE.ExtrudeGeometry(starShape,{depth:0.14,bevelEnabled:true,bevelSize:0.05,bevelThickness:0.05,bevelSegments:3});
 		starGeo.center();
 		var star=new THREE.Mesh(starGeo,new THREE.MeshStandardMaterial({
-			color:0xFFE9B8,metalness:.92,roughness:.19,emissive:0xFFB551,emissiveIntensity:.55}));
-		star.position.set(0,TREE_TOP+0.44,0);star.scale.setScalar(0.405);star.rotation.y=0.15;
+			color:0xFFEDBE,metalness:.98,roughness:.12,emissive:0xFFC266,emissiveIntensity:1.05,envMapIntensity:1.6}));
+		star.position.set(0,TT+0.46,0);star.scale.setScalar(0.34);star.rotation.y=0.18;
 		group.add(star);
 
-		var starGlowTex=radialTex([[0,'rgba(255,246,214,.95)'],[.28,'rgba(255,206,120,.55)'],[.65,'rgba(255,180,70,.18)'],[1,'rgba(255,170,60,0)']],128);
+		var starGlowTex=radialTex([[0,'rgba(255,248,220,.95)'],[.26,'rgba(255,212,128,.5)'],[.62,'rgba(255,180,70,.14)'],[1,'rgba(255,170,60,0)']],128);
 		var starGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:starGlowTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
-		starGlow.position.copy(star.position);starGlow.scale.set(1.32,1.32,1);group.add(starGlow);
+		starGlow.position.copy(star.position);starGlow.scale.set(2.0,2.0,1);group.add(starGlow);
 
-		/* 地面：柔光雪地 + 投影 */
-		var snowTex=radialTex([[0,'rgba(236,244,255,.98)'],[.42,'rgba(206,224,255,.72)'],[.72,'rgba(168,196,242,.26)'],[1,'rgba(150,180,235,0)']],256);
-		var ground=new THREE.Mesh(new THREE.CircleGeometry(3.6,64),
+		/* 雪地 */
+		var snowTex=radialTex([[0,'rgba(238,246,255,.98)'],[.40,'rgba(208,226,255,.74)'],[.70,'rgba(170,198,244,.28)'],[1,'rgba(150,180,235,0)']],256);
+		var ground=new THREE.Mesh(new THREE.CircleGeometry(4.0,64),
 			new THREE.MeshBasicMaterial({map:snowTex,transparent:true,depthWrite:false}));
 		ground.rotation.x=-Math.PI/2;ground.position.y=0.002;group.add(ground);
 
-		var shadowTex=radialTex([[0,'rgba(2,7,20,.7)'],[.55,'rgba(2,7,20,.32)'],[1,'rgba(2,7,20,0)']],128);
-		var shadow=new THREE.Mesh(new THREE.CircleGeometry(2.0,48),
+		var shadowTex=radialTex([[0,'rgba(2,6,18,.42)'],[.45,'rgba(2,6,18,.18)'],[1,'rgba(2,6,18,0)']],128);
+		var shadow=new THREE.Mesh(new THREE.CircleGeometry(1.6,48),
 			new THREE.MeshBasicMaterial({map:shadowTex,transparent:true,depthWrite:false}));
 		shadow.rotation.x=-Math.PI/2;shadow.position.y=0.004;group.add(shadow);
 
 		/* 树后柔光 */
-		var auraTex=radialTex([[0,'rgba(115,170,255,.26)'],[.42,'rgba(58,112,224,.12)'],[1,'rgba(40,90,200,0)']],256);
+		var auraTex=radialTex([[0,'rgba(110,168,255,.30)'],[.42,'rgba(56,110,222,.13)'],[1,'rgba(40,90,200,0)']],256);
 		var aura=new THREE.Sprite(new THREE.SpriteMaterial({map:auraTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
-		aura.position.set(0,2.3,-2.4);aura.scale.set(6.2,6.2,1);group.add(aura);
+		aura.position.set(0,2.4,-2.4);aura.scale.set(6.4,6.4,1);group.add(aura);
 
 		/* 星空 */
 		(function stars(){
-			var n=280,p1=new Float32Array(n*3),p2=new Float32Array(n*3);
+			var n=300,p1=new Float32Array(n*3),p2=new Float32Array(n*3);
 			for(var i=0;i<n;i++){
-				var r=11+Math.random()*10,th=Math.random()*Math.PI*2,ph=Math.random()*Math.PI*0.55;
+				var r=12+Math.random()*10,th=Math.random()*Math.PI*2,ph=Math.random()*Math.PI*0.55;
 				var x=Math.sin(ph)*Math.cos(th)*r,y=Math.cos(ph)*r*0.85+2.2,z=Math.sin(ph)*Math.sin(th)*r;
 				if(i%2){p1[i*3]=x;p1[i*3+1]=y;p1[i*3+2]=z;}else{p2[i*3]=x;p2[i*3+1]=y;p2[i*3+2]=z;}
 			}
-			[[p1,0.055,.75],[p2,0.032,.5]].forEach(function(cfg){
+			[[p1,0.06,.78],[p2,0.032,.5]].forEach(function(cfg){
 				var g=new THREE.BufferGeometry();
 				g.setAttribute('position',new THREE.BufferAttribute(cfg[0],3));
-				var m=new THREE.PointsMaterial({color:0xD6E7FF,size:cfg[1],transparent:true,opacity:cfg[2],depthWrite:false});
+				var m=new THREE.PointsMaterial({color:0xD8E8FF,size:cfg[1],transparent:true,opacity:cfg[2],depthWrite:false});
 				scene.add(new THREE.Points(g,m));
 			});
 		})();
 
+		/* 前景散景光斑（虚化光点，增加景深） */
+		var bokehTex=radialTex([[0,'rgba(210,230,255,.55)'],[.35,'rgba(170,205,255,.28)'],[.72,'rgba(140,180,255,.07)'],[1,'rgba(120,160,240,0)']],128);
+		for(var i=0;i<9;i++){
+			var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:bokehTex,transparent:true,depthWrite:false,
+				blending:THREE.AdditiveBlending,opacity:.55}));
+			var ang=Math.random()*Math.PI*2,rad=3.2+Math.random()*3.6;
+			sp.position.set(Math.cos(ang)*rad,1.0+Math.random()*3.2,3.6+Math.random()*2.2);
+			var sc=0.55+Math.random()*1.1;sp.scale.set(sc,sc,1);
+			sp.userData={y0:sp.position.y,phase:Math.random()*6.28,amp:0.15+Math.random()*0.35};
+			scene.add(sp);BOKEH.push(sp);
+		}
+
+
+		/* 飘雪 */
+		(function snowfall(){
+			var n=240,pos=new Float32Array(n*3),vel=new Float32Array(n);
+			var snowTex2=radialTex([[0,'rgba(255,255,255,.95)'],[.35,'rgba(226,240,255,.55)'],[1,'rgba(200,225,255,0)']],32);
+			for(var i=0;i<n;i++){
+				pos[i*3]=(Math.random()-0.5)*6.4;
+				pos[i*3+1]=Math.random()*6.6;
+				pos[i*3+2]=(Math.random()-0.5)*5.6;
+				vel[i]=0.14+Math.random()*0.24;
+			}
+			var g=new THREE.BufferGeometry();
+			g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+			var m=new THREE.PointsMaterial({map:snowTex2,size:0.052,color:0xFFFFFF,transparent:true,opacity:.72,
+				depthWrite:false,sizeAttenuation:true,blending:THREE.AdditiveBlending});
+			var pts=new THREE.Points(g,m);pts.frustumCulled=false;scene.add(pts);
+			SNOW={pts:pts,pos:pos,vel:vel,n:n};
+		})();
+
 		group.updateMatrixWorld(true);
-		return {scene:scene,camera:camera,group:group};
+		return {scene:scene,camera:camera,group:group,radiusAt:radiusAt};
 	}
 
 	/* ---------------- 牌牌 ---------------- */
@@ -5760,7 +5846,7 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 		pop=document.createElement('div');
 		pop.className='wtPop';
 		pop.innerHTML='<div class="wtPopCard">'+
-			'<span class="wtPopRose"><svg viewBox="0 0 64 64"><use href="#roseSym" xlink:href="#roseSym"></use></svg></span>'+
+			'<span class="wtPopRose"><img src="images/rose.png" alt="蓝玫瑰" decoding="async"></span>'+
 			'<p class="wtPopTxt"></p><p class="wtPopBy"></p>'+
 			'<span class="wtPopNo"></span>'+
 			'<button type="button" class="wtPopClose" aria-label="关闭">×</button></div>';
@@ -5786,7 +5872,7 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 		var el=document.createElement('div');
 		el.className='wtTag'+(isNew?' new':'');
 		el.innerHTML='<span class="wtStr"></span>'+
-			'<span class="wtRose"><svg viewBox="0 0 64 64"><use href="#roseSym" xlink:href="#roseSym"></use></svg></span>'+
+			'<span class="wtRose"><img src="images/rose.png" alt="蓝玫瑰" decoding="async"></span>'+
 			'<span class="wtPlaque"><b>愿</b></span>';
 		el.addEventListener('pointerdown',function(e){e.stopPropagation();});
 		el.addEventListener('click',function(e){e.stopPropagation();showPop(x,idx);});
@@ -5801,9 +5887,9 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 		renderer.setSize(W,Hp,false);
 		camera.aspect=W/Hp;
 		var tanV=Math.tan(camera.fov*Math.PI/360);
-		var dist=Math.max(2.82/tanV,2.10/(tanV*(W/Hp)));
-		camera.position.set(0,3.06,dist);
-		camera.lookAt(0,2.36,0);
+		var dist=Math.max(3.06/tanV,2.16/(tanV*(W/Hp)));
+		camera.position.set(0,3.10,dist);
+		camera.lookAt(0,2.40,0);
 		camera.updateProjectionMatrix();
 		syncTags();
 	}
@@ -5854,7 +5940,20 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 		pivot.rotation.y=yaw;pivot.rotation.x=pitch;
 		pivot.updateMatrixWorld(true);
 		var tt=performance.now()/1000;
-		if(glowMats[0]) glowMats[0].opacity=0.78+0.22*Math.sin(tt*2.1);
+		if(glowMats[0]) glowMats[0].opacity=0.76+0.24*Math.sin(tt*2.1);
+		if(SNOW){
+			var sp2=SNOW.pos;
+			for(var si=0;si<SNOW.n;si++){
+				sp2[si*3+1]-=SNOW.vel[si]*0.016*3.2;
+				sp2[si*3]+=Math.sin(tt*0.7+si)*0.0016;
+				if(sp2[si*3+1]<0){sp2[si*3+1]=6.6;sp2[si*3]=((Math.random()-0.5)*6.4);}
+			}
+			SNOW.pts.geometry.attributes.position.needsUpdate=true;
+		}
+		for(var bi=0;bi<BOKEH.length;bi++){
+			var bo=BOKEH[bi];
+			bo.position.y=bo.userData.y0+Math.sin(tt*0.6+bo.userData.phase)*bo.userData.amp;
+		}
 		syncTags();
 		renderer.render(scene,camera);
 	}
