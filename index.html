@@ -5553,6 +5553,21 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
     tipMesh.setColorAt(idx,tipColors[idx]);
   });
   group.add(tipMesh);
+  var snowTipGeo=new THREE.ConeGeometry(0.10,0.30,5);
+  var snowTipMat=new THREE.MeshStandardMaterial({color:0xEAF3FF,roughness:.55,metalness:.12,
+    emissive:0xAACFFF,emissiveIntensity:.42,flatShading:true});
+  var snowTips=[];
+  tips.forEach(function(t,idx){
+    if(idx%3!==0) return;
+    snowTips.push(t);
+  });
+  var snowMesh=new THREE.InstancedMesh(snowTipGeo,snowTipMat,snowTips.length);
+  snowTips.forEach(function(t,idx){
+    dummy.position.copy(t.p).multiplyScalar(1.0);dummy.position.y+=0.03;
+    dummy.quaternion.copy(t.q);dummy.scale.setScalar(t.s*0.68);
+    dummy.updateMatrix();snowMesh.setMatrixAt(idx,dummy.matrix);
+  });
+  group.add(snowMesh);
 
   /* 挂球 */
   function surfacePoint(ang,y,out){
@@ -5648,6 +5663,16 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
     ctx.fillStyle=g;ctx.fillRect(0,0,128,128);
     return new THREE.CanvasTexture(c);
   })();
+  var auraTex=(function(){
+    var c=document.createElement('canvas');c.width=c.height=256;
+    var ctx=c.getContext('2d');
+    var rg=ctx.createRadialGradient(128,128,10,128,128,126);
+    rg.addColorStop(0,'rgba(110,165,255,.30)');rg.addColorStop(.42,'rgba(60,115,225,.13)');rg.addColorStop(1,'rgba(40,90,200,0)');
+    ctx.fillStyle=rg;ctx.fillRect(0,0,256,256);
+    return new THREE.CanvasTexture(c);
+  })();
+  var aura=new THREE.Sprite(new THREE.SpriteMaterial({map:auraTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
+  aura.position.set(0,2.3,-2.2);aura.scale.set(6.0,6.0,1);group.add(aura);
   var glow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
   glow.position.copy(star.position);glow.scale.set(1.55,1.55,1);
   group.add(glow);
