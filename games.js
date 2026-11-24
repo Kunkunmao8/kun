@@ -903,7 +903,7 @@
     var renderer = makeGL(canvas);
     var scene = new THREE.Scene(); scene.background = new THREE.Color(0x080F1B);
     var camera = new THREE.PerspectiveCamera(46, 1, .1, 60);
-    orbit(camera, canvas, new THREE.Vector3(0, .35, .5), { r: 13.5, yaw: .10, pitch: .90, minPitch: .7, maxPitch: 1.35 });
+    orbit(camera, canvas, new THREE.Vector3(0, .3, .72), { r: 12.6, yaw: .08, pitch: .97, minPitch: .7, maxPitch: 1.35 });
     scene.add(new THREE.AmbientLight(0x8FAEE0, 2.2));
     scene.add(new THREE.HemisphereLight(0xB8D4FF, 0x141F32, 1.1));
     var key = new THREE.PointLight(0xFFD9A0, 6, 20); key.position.set(2, 5.5, 4); scene.add(key);
@@ -939,7 +939,7 @@
     items.forEach(function (it, i) {
       var m = new THREE.Mesh(new THREE.BoxGeometry(it.w * CELL * .92, .16, it.h * CELL * .92), new THREE.MeshStandardMaterial({ color: it.color, metalness: .35, roughness: .45, emissive: it.color, emissiveIntensity: .12 }));
       m.userData.item = it; m.userData.i = i;
-      var tw = 4, tx = (i % tw - (tw - 1) / 2) * 1.25, ty = Math.floor(i / tw) * .55;
+      var tw = 4, tx = (i % tw - (tw - 1) / 2) * 1.02, ty = Math.floor(i / tw) * .52;
       m.position.set(tx, ty, 0);
       var lb = new THREE.Mesh(new THREE.PlaneGeometry(Math.min(it.w, 3) * CELL * .86, .26),
         new THREE.MeshBasicMaterial({ map: textTex(it.name, { bg: '#101B2C', fg: '#D8E6FF', size: 32, w: 256, h: 64 }) }));
