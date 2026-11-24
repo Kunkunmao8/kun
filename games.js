@@ -168,8 +168,8 @@
     scene.background = new THREE.Color(0x081020);
     scene.fog = new THREE.FogExp2(0x081020, 0.022);
     var camera = new THREE.PerspectiveCamera(70, 1, 0.1, 60);
-    var target = new THREE.Vector3(0, 1.5, -2.55);
-    orbit(camera, canvas, target, { r: 5.3, yaw: 0.06, pitch: 1.50, minPitch: 1.2, maxPitch: 1.55 });
+    var target = new THREE.Vector3(0, 1.62, -2.7);
+    orbit(camera, canvas, target, { r: 5.0, yaw: 0.05, pitch: 1.46, minPitch: 1.15, maxPitch: 1.52 });
 
     scene.add(new THREE.AmbientLight(0x8FAEE0, 2.5));
     var hemi = new THREE.HemisphereLight(0xA8C8FF, 0x1A2438, 1.2); scene.add(hemi);
@@ -345,7 +345,7 @@
     var scene = new THREE.Scene(); scene.background = new THREE.Color(0x070E1A);
     scene.fog = new THREE.FogExp2(0x070E1A, 0.025);
     var camera = new THREE.PerspectiveCamera(52, 1, 0.1, 60);
-    orbit(camera, canvas, new THREE.Vector3(0, 1.5, -2.3), { r: 6.6, yaw: 0.08, pitch: 1.42, minPitch: 1.2, maxPitch: 1.55 });
+    orbit(camera, canvas, new THREE.Vector3(0, 1.86, -2.5), { r: 5.5, yaw: 0.06, pitch: 1.38, minPitch: 1.15, maxPitch: 1.52 });
     scene.add(new THREE.AmbientLight(0x8FAEE0, 2.4));
     scene.add(new THREE.HemisphereLight(0xB8D4FF, 0x1A2438, 1.1));
     var key = new THREE.PointLight(0xFFD6A6, 4.5, 14); key.position.set(-1, 3.4, 2.6); scene.add(key);
