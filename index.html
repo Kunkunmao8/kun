@@ -1770,6 +1770,7 @@ body{background:#F3F7FF;color:#1B2A45;}
 	#wish .wtPopTxt{font-size:14px}
 }
 </style>
+<link rel="stylesheet" href="./games.css">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -2071,6 +2072,7 @@ body{background:#F3F7FF;color:#1B2A45;}
 				<li><a href="#pillow" class="nav-link" data-target="pillow">社区</a></li>
 					<li><a href="#wish" class="nav-link" data-target="wish">许愿树</a></li>
 				<li><a href="#cinema" class="nav-link" data-target="cinema">时光放映厅</a></li>
+				<li><a href="#games" class="nav-link" data-target="games">游戏厅</a></li>
 				<li><a href="#mine" class="nav-link" data-target="mine">我的</a></li>
 			</ul>
 		</nav>
@@ -3301,6 +3303,10 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		</g>
 	</symbol>
 </svg>
+
+<div class="page" id="games">
+  <div class="gx-hub" id="gamesApp"></div>
+ </div>
 
 <div class="page" id="cinema">
 	<section class="container">
@@ -6013,6 +6019,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 
 </script>
 
+<script src="./games.js"></script>
 </body>
 </html>
 
