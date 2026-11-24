@@ -357,14 +357,14 @@
     var canvas = el('canvas', 'gx-canvas'); host.appendChild(canvas);
     var renderer = makeGL(canvas);
     var scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x0E1626, 0.015);
-    bgGrad(scene, '#1A2C4C', '#060A12');
+    scene.fog = new THREE.FogExp2(0x0A1322, 0.008);
+    bgGrad(scene, '#182B4E', '#070C16');
     var camera = new THREE.PerspectiveCamera(50, 1, .1, 120);
 
-    scene.add(new THREE.AmbientLight(0xFFE8CF, .42));
-    scene.add(new THREE.HemisphereLight(0xFFF3E0, 0x1A2433, .34));
-    var key = new THREE.SpotLight(0xFFDFB8, 2.6, 40, .8, .7); key.position.set(3, 16, 8); scene.add(key);
-    var boardLit = new THREE.SpotLight(0xFFD9A8, 4.4, 34, 1.05, .85); boardLit.position.set(0, 13, 4); scene.add(boardLit); scene.add(boardLit.target);
+    scene.add(new THREE.AmbientLight(0xFFE8CF, .48));
+    scene.add(new THREE.HemisphereLight(0xFFF3E0, 0x1A2433, .5));
+    var key = new THREE.SpotLight(0xFFDFB8, 1.4, 40, .8, .7); key.position.set(3, 16, 8); scene.add(key);
+    var boardLit = new THREE.SpotLight(0xFFD9A8, 2.1, 34, 1.05, .85); boardLit.position.set(0, 13, 4); scene.add(boardLit); scene.add(boardLit.target);
     var cool = new THREE.PointLight(0x59C7C0, .85, 24); cool.position.set(-9, 6, -7); scene.add(cool);
     var warm2 = new THREE.PointLight(0xE8B44A, 1.1, 20); warm2.position.set(9, 5, 7); scene.add(warm2);
 
@@ -372,7 +372,7 @@
     var N = 9, TS = 1.04;
     function cellPos(cx, cz) { return new THREE.Vector3((cx - (N - 1) / 2) * TS, 0, (cz - (N - 1) / 2) * TS); }
 
-    var hall = new THREE.Mesh(new THREE.PlaneGeometry(110, 110), new THREE.MeshStandardMaterial({ color: 0x121A2A, roughness: .95 }));
+    var hall = new THREE.Mesh(new THREE.PlaneGeometry(110, 110), new THREE.MeshStandardMaterial({ color: 0x18243A, roughness: .95, emissive: 0x101B2E, emissiveIntensity: .35 }));
     hall.rotation.x = -Math.PI / 2; hall.position.y = -.03; scene.add(hall);
 
     var C1 = 0xF1E7D6, C2 = 0xDECFB6;
@@ -381,14 +381,14 @@
         new THREE.MeshStandardMaterial({ color: (ix + iz) % 2 ? C1 : C2, roughness: .52, metalness: .05 }));
       var p0 = cellPos(ix, iz); tile.rotation.x = -Math.PI / 2; tile.position.set(p0.x, .01, p0.z); scene.add(tile);
     }
-    var wall6 = new THREE.Mesh(new THREE.PlaneGeometry(36, 16), new THREE.MeshStandardMaterial({ color: 0x141F33, roughness: .95 }));
+    var wall6 = new THREE.Mesh(new THREE.PlaneGeometry(36, 16), new THREE.MeshStandardMaterial({ color: 0x1A2840, roughness: .95, emissive: 0x2A4066, emissiveIntensity: .5 }));
     wall6.position.set(0, 5.6, -10.5); scene.add(wall6);
     var arch6 = new THREE.Mesh(new THREE.TorusGeometry(5.6, .2, 8, 48, Math.PI), new THREE.MeshStandardMaterial({ color: 0xC79A4E, metalness: .85, roughness: .3, emissive: 0x3A2600, emissiveIntensity: .45 }));
     arch6.position.set(0, 2.4, -10); scene.add(arch6);
     var archGlow6 = new THREE.PointLight(0xE8B44A, 1.3, 18); archGlow6.position.set(0, 4.6, -8.4); scene.add(archGlow6);
     for (var pd6 = 0; pd6 < 3; pd6++) {
       var pz6 = -4.2, px6 = (pd6 - 1) * 4.2;
-      var shade6 = new THREE.Mesh(new THREE.ConeGeometry(.5, .58, 18, 1, true), new THREE.MeshStandardMaterial({ color: 0xD0A256, metalness: .8, roughness: .3, side: THREE.DoubleSide }));
+      var shade6 = new THREE.Mesh(new THREE.ConeGeometry(.5, .58, 18, 1, true), new THREE.MeshStandardMaterial({ color: 0xD0A256, metalness: .8, roughness: .3, side: THREE.DoubleSide, emissive: 0x6B4516, emissiveIntensity: .55 }));
       shade6.position.set(px6, 4.9, pz6); scene.add(shade6);
       var cord6 = new THREE.Mesh(new THREE.CylinderGeometry(.014, .014, 2.4, 6), new THREE.MeshStandardMaterial({ color: 0x2A2E38 }));
       cord6.position.set(px6, 5.9, pz6); scene.add(cord6);
@@ -432,7 +432,7 @@
       photo.position.set(0, 1.34, 0); photo.scale.set(1.5, 1.5, 1); photo.renderOrder = 2; g.add(photo);
       var halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false }));
       halo.position.set(0, 1.3, .05); halo.scale.set(2.2, 2.2, 1); halo.renderOrder = 3; g.add(halo);
-      var glow = new THREE.PointLight(0x8FB8FF, 0, 9); glow.position.set(0, 1.3, 0); g.add(glow);
+      var glow = new THREE.PointLight(0x8FB8FF, 0, 10); glow.position.set(0, 1.3, 0); g.add(glow);
       var ring = new THREE.Mesh(new THREE.RingGeometry(.5, .62, 40), new THREE.MeshBasicMaterial({ color: 0x7FB2FF, transparent: true, opacity: .4, side: THREE.DoubleSide }));
       ring.rotation.x = -Math.PI / 2; ring.position.y = .035; g.add(ring);
       g.userData.tag = null;
