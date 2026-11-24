@@ -2692,8 +2692,11 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 	}
 	function sbIns(rows){
 		if(!rows.length) return Promise.resolve();
-		return fetch(SB.url+'/rest/v1/photos',{method:'POST',headers:sbH({'Content-Type':'application/json','Prefer':'return=minimal'}),body:JSON.stringify(rows)})
-			.then(function(r){ if(!r.ok) return r.text().then(function(t){ throw new Error('没写进去 '+r.status); }); });
+		var ctl=(typeof AbortController!=='undefined')?new AbortController():null;
+		var timer=setTimeout(function(){ if(ctl) ctl.abort(); },15000);
+		return fetch(SB.url+'/rest/v1/photos',{method:'POST',headers:sbH({'Content-Type':'application/json','Prefer':'return=minimal'}),body:JSON.stringify(rows),signal:ctl?ctl.signal:undefined})
+			.then(function(r){ clearTimeout(timer); if(!r.ok) return r.text().then(function(t){ throw new Error('没写进去 '+r.status); }); })
+			.catch(function(e){ clearTimeout(timer); throw (e&&e.name==='AbortError')?new Error('网络慢，没发出去，再点一次'):e; });
 	}
 	function sbDelPath(path){
 		return fetch(SB.url+'/rest/v1/photos?storage_path=eq.'+encodeURIComponent(path),{method:'DELETE',headers:sbH(),cache:'no-store'})
@@ -2723,7 +2726,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 			cur.forEach(function(m){ if(!haveMsg[m.id]) del.push(LOG+'msg/'+m.id); });
 			return sbIns(ins).then(function(){
 				return del.reduce(function(ch,p){ return ch.then(function(){ return sbDelPath(p); }); },Promise.resolve());
-			}).then(function(){ roomCache=want; });
+			}).then(function(){ roomCache=want; allCache=null; allAt=0; });
 		});
 	}
 	function writeSocial(s){
@@ -2906,21 +2909,18 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		});
 	}
 	function post(msg){
+		if(SB){
+			var row={author:msg.who||'',caption:msg.text||'',url:msg.img||msg.video||'',storage_path:LOG+'msg/'+msg.id};
+			return sbIns([row]).then(function(){
+				roomCache=dedupe((roomCache||[]).concat([msg]));
+				allCache=null; allAt=0; lastSig='';
+				try{ renderAll(roomCache); updateOnline(roomCache); }catch(e){}
+			});
+		}
 		return readRoom().then(function(list){
 			list=dedupe(list||[]);
 			list.push(msg);
-			return writeRoom(list).then(function(){
-				/* 多人同时写会被覆盖，1 秒后自检一次，真丢了就再补一次 */
-				setTimeout(function(){
-					readRoom().then(function(now){
-						now=dedupe(now||[]);
-						if(!now.some(function(x){ return x.id===msg.id; })){
-							now.push(msg); writeRoom(dedupe(now));
-						}
-						refresh();
-					});
-				},1200);
-			});
+			return writeRoom(list);
 		});
 	}
 	function sendText(){
@@ -2932,6 +2932,8 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		btnSend.disabled=true;
 		post(msg).then(function(){
 			txtEl.value=''; btnSend.disabled=false;
+			upTip.textContent='发出去了';
+			setTimeout(function(){ if(upTip.textContent==='发出去了') upTip.textContent=''; },2000);
 			refresh();
 		}).catch(function(e){ btnSend.disabled=false; upTip.textContent=e.message||'发送失败'; });
 	}
@@ -3097,7 +3099,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 
 	showComposer();
 	refresh();
-	polling=setInterval(function(){ if(!document.hidden) refresh(); },2500);
+	polling=setInterval(function(){ if(!document.hidden) refresh(); },1500);
 	document.addEventListener('visibilitychange',function(){ if(!document.hidden) refresh(); });
 })();
 
