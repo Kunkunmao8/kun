@@ -2070,8 +2070,6 @@ body{background:#F3F7FF;color:#1B2A45;}
 				<li><a href="#music" class="nav-link" data-target="music">音乐</a></li>
 				<li><a href="#work" class="nav-link" data-target="work">作品与舞台</a></li>
 				<li><a href="#pillow" class="nav-link" data-target="pillow">社区</a></li>
-					<li><a href="#wish" class="nav-link" data-target="wish">许愿树</a></li>
-				<li><a href="#cinema" class="nav-link" data-target="cinema">时光放映厅</a></li>
 				<li><a href="#games" class="nav-link" data-target="games">游戏厅</a></li>
 				<li><a href="#mine" class="nav-link" data-target="mine">我的</a></li>
 			</ul>
@@ -3307,62 +3305,6 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 <div class="page" id="games">
   <div class="gx-hub" id="gamesApp"></div>
  </div>
-
-<div class="page" id="cinema">
-	<section class="container">
-		<div class="section-head">
-			<h3 class="section-title">时光放映厅</h3>
-			<span class="section-note">八幕，从出道夜放映到今天</span>
-		</div>
-		<div class="hall-wrap">
-			<div class="hall-perf l"></div>
-			<div class="hall-perf r"></div>
-			<div class="hall-screen" id="hallScreen">
-				<div id="hallFrames"></div>
-				<div class="hall-caption">
-					<div class="hall-year" id="hallYear"></div>
-					<h4 class="hall-title" id="hallTitle"></h4>
-					<p class="hall-desc" id="hallDesc"></p>
-				</div>
-			</div>
-			<div class="hall-tl">
-				<div class="hall-progress" id="hallProgress"></div>
-				<div class="hall-nodes" id="hallNodes"></div>
-			</div>
-			<div class="hall-controls">
-				<button class="hall-btn" type="button" id="hallPrev">‹ 上一幕</button>
-				<button class="hall-btn primary" type="button" id="hallPlay">▶ 自动放映</button>
-				<button class="hall-btn" type="button" id="hallNext">下一幕 ›</button>
-			</div>
-		</div>
-		<div class="section-head">
-			<h3 class="section-title">翻牌配对</h3>
-			<span class="section-note">翻开两张，找出成对的舞台瞬间</span>
-		</div>
-		<div class="flip-wrap">
-			<div class="flip-bar">
-				<span>步数 <b id="flipMoves">0</b></span>
-				<span>已配对 <b id="flipMatched">0</b> / <b id="flipTotal">9</b></span>
-				<button class="flip-restart" type="button" id="flipRestart">重新洗牌</button>
-			</div>
-			<p class="flip-tip" id="flipTip">先记住位置，<b id="flipCount">4</b> 秒后开始配对…</p>
-			<div class="flip-board" id="flipBoard"></div>
-			<p class="flip-win" id="flipWin">全部配对成功 · 这九帧都找齐了</p>
-		</div>
-		<div class="flip-cele" id="flipCele" aria-hidden="true">
-			<canvas class="flip-confetti" id="flipConfetti"></canvas>
-			<div class="flip-cele-card">
-				<div class="flip-cele-kicker">ALL MATCHED</div>
-				<h4 class="flip-cele-title">全部配对成功</h4>
-				<p class="flip-cele-sub">九帧都找齐了 · 一共走了 <b id="flipFinalMoves">0</b> 步</p>
-				<div class="flip-cele-btns">
-					<button class="flip-cele-btn" type="button" id="flipAgain">再玩一次</button>
-					<button class="flip-cele-btn ghost" type="button" id="flipClose">先看看照片</button>
-				</div>
-			</div>
-		</div>
-	</section>
-</div>
 
 <div class="page" id="mine">
 	<section class="container">
@@ -5305,65 +5247,6 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 	if(window.ResizeObserver){ try{ new ResizeObserver(fit).observe(hdr); }catch(e){} }
 	setTimeout(fit, 250);
 	setTimeout(fit, 1200);
-})();
-</script>
-<script>
-(function(){
-	var REELS=[
-		{y:"2018.04.06",n:"18",t:"出道夜",d:"《偶像练习生》总决赛第一，C 位出道的那一晚。",img:"images/debut-party.jpg",pos:"50% 16%",alt:"出道夜灰色制服与白色滚边，侧脸笑着"},
-		{y:"2019.02.18",n:"19",t:"《没有意外》",d:"第一支独立作词的中文单曲，上线 24 小时就冲到各大榜单首位。",img:"images/noaccident2.jpg",pos:"60% 14%",alt:"黑白拼接西装、波点领巾与白玫瑰"},
-		{y:"2020.05.24",n:"20",t:"《情人》",d:"单曲上线，刷新十几项榜单冠军，后来成了演唱会上必唱的一首。",img:"images/lover2.jpg",pos:"46% 12%",alt:"黑色缎面西装、蕾丝内搭与心形项链"},
-		{y:"2021",n:"21",t:"《迷》",d:"首张个人创作专辑，也是拿下 TMEA 年度最具影响力制作人的一年。",img:"images/cover-lost.jpg",pos:"50% 38%",alt:"《迷》专辑封面，红蓝光影里的侧脸"},
-		{y:"2025.05.28",n:"25",t:"Deadman · 洛杉矶",d:"单曲上线；生日当天在洛杉矶唱 One Night Only。",img:"images/deadman-lake.jpg",pos:"50% 46%",alt:"湖面上抱着吉他，远处是山影"},
-		{y:"2026.02.06",n:"26·2",t:"专辑《KUN》",d:"全英文专辑 11 首，随后开启欧美八城巡演。",img:"images/kun-bw.jpg",pos:"50% 28%",alt:"黑白近景，银色礼帽造型"},
-		{y:"2026.08.02",n:"26·8",t:"澳门 · THE DEADMAN",d:"威尼斯人综艺馆连开两晚，红金色灯光里满场。",img:"images/stage-macau3.jpg",pos:"50% 42%",alt:"澳门站舞台，红衣仰头举麦"},
-		{y:"2026.10.24",n:"26·10",t:"新加坡 · THE DEADMAN",d:"新加坡室内体育馆两晚，82 号篮球服跳 Old School Hiphop。",img:"images/singapore.jpg",pos:"50% 32%",alt:"新加坡站 82 号篮球服，坐在台边"}
-	];
-	var frames=document.getElementById("hallFrames"),nodeBox=document.getElementById("hallNodes");
-	if(!frames||!nodeBox) return;
-	var yearEl=document.getElementById("hallYear"),titleEl=document.getElementById("hallTitle"),descEl=document.getElementById("hallDesc"),
-		prog=document.getElementById("hallProgress"),prevBtn=document.getElementById("hallPrev"),nextBtn=document.getElementById("hallNext"),playBtn=document.getElementById("hallPlay");
-	var imgs=[],btns=[],cur=0,timer=null,DUR=3000;
-	REELS.forEach(function(r,i){
-		var im=document.createElement("img");
-		im.className="hall-frame";im.src=r.img;im.alt=r.alt||r.t;im.decoding="async";
-		if(i===0){im.setAttribute("fetchpriority","high");}else{im.loading="lazy";}
-		if(r.pos){im.style.objectPosition=r.pos;}
-		frames.appendChild(im);imgs.push(im);
-		var b=document.createElement("button");
-		b.type="button";b.className="hall-node";b.textContent=r.n;b.setAttribute("aria-label",r.y+" "+r.t);
-		b.addEventListener("click",function(){stop();go(i);});
-		nodeBox.appendChild(b);btns.push(b);
-	});
-	function go(i){cur=(i+REELS.length)%REELS.length;render();}
-	function render(){
-		var r=REELS[cur];
-		imgs.forEach(function(el,k){el.classList.toggle("active",k===cur);});
-		btns.forEach(function(el,k){el.classList.toggle("active",k===cur);});
-		yearEl.textContent=r.y;titleEl.textContent=r.t;descEl.textContent=r.d;
-		prog.style.width=(cur/(REELS.length-1)*100)+"%";
-		var nx=imgs[(cur+1)%REELS.length];if(nx&&nx.loading==="lazy"){nx.loading="eager";}
-	}
-	function stop(){if(timer){clearInterval(timer);timer=null;}playBtn.textContent="▶ 自动放映";playBtn.classList.remove("primary");}
-	function start(){
-		if(timer)return;
-		timer=setInterval(function(){
-			var pg=document.getElementById("cinema");
-			if(!pg||!pg.classList.contains("active")){stop();return;}
-			go(cur+1);
-		},DUR);
-		playBtn.textContent="⏸ 暂停放映";playBtn.classList.add("primary");
-	}
-	prevBtn.addEventListener("click",function(){stop();go(cur-1);});
-	nextBtn.addEventListener("click",function(){stop();go(cur+1);});
-	playBtn.addEventListener("click",function(){if(timer){stop();}else{start();}});
-	document.addEventListener("keydown",function(e){
-		var pg=document.getElementById("cinema");
-		if(!pg||!pg.classList.contains("active"))return;
-		if(e.key==="ArrowLeft"){stop();go(cur-1);}
-		if(e.key==="ArrowRight"){stop();go(cur+1);}
-	});
-	render();
 })();
 </script>
 <script>
