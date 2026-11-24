@@ -1,0 +1,61 @@
+/* 游戏厅 */
+#games{background:#050a14}
+#games .container{padding-top:26px;padding-bottom:40px}
+#gamesApp{max-width:1080px;margin:0 auto}
+.gx-head{padding:6px 4px 22px;color:#dcE8FF}
+.gx-kicker{font-size:11.5px;letter-spacing:4px;color:#6f8fbf;margin:0 0 10px}
+.gx-head h2{margin:0 0 10px;font-size:26px;color:#fff;letter-spacing:1px}
+.gx-head h3{margin:0 0 10px;font-size:26px;color:#fff}
+.gx-sub{margin:0;font-size:13.5px;line-height:1.8;color:#9db2d0;max-width:720px}
+.gx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.gx-card{background:linear-gradient(180deg,rgba(20,36,66,.9),rgba(10,20,38,.92));border:1px solid rgba(104,150,220,.22);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:.25s;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.gx-card:hover{transform:translateY(-4px);border-color:rgba(140,190,255,.55);box-shadow:0 24px 50px rgba(20,60,140,.35)}
+.gx-cover{height:118px;display:flex;align-items:center;justify-content:center;position:relative;background:radial-gradient(circle at 50% 120%,var(--c),transparent 70%),linear-gradient(160deg,#0d1a30,#081124)}
+.gx-cover:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 78% 18%,rgba(255,255,255,.22),transparent 45%)}
+.gx-ico{font-size:44px;filter:drop-shadow(0 6px 16px rgba(0,0,0,.5));position:relative;z-index:2}
+.gx-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.gx-body h3{margin:0;font-size:16.5px;color:#f2f7ff;letter-spacing:.5px}
+.gx-body p{margin:0;font-size:12.5px;line-height:1.7;color:#9db2d0;flex:1}
+.gx-meta{display:flex;gap:8px;flex-wrap:wrap}
+.gx-tag{font-size:11px;padding:3px 9px;border-radius:999px;background:rgba(76,134,242,.16);color:#a9c7ff;border:1px solid rgba(110,160,250,.3)}
+.gx-diff{font-size:11px;color:#f2c14e;letter-spacing:1px}
+.gx-play{align-self:flex-start;margin-top:4px;border:0;border-radius:999px;padding:9px 18px;font-size:12.5px;color:#fff;cursor:pointer;background:linear-gradient(120deg,#4c86f2,#2450b8);box-shadow:0 8px 18px rgba(30,70,180,.45);font-family:inherit}
+.gx-play:hover{filter:brightness(1.12)}
+
+/* 舞台 */
+.gx-lock{overflow:hidden}
+.gx-stage{position:fixed;left:0;right:0;top:0;bottom:0;z-index:3000;background:#050a14;display:flex;flex-direction:column}
+.gx-stage-top{display:flex;align-items:center;gap:14px;padding:10px 16px;background:linear-gradient(180deg,rgba(7,14,26,.98),rgba(7,14,26,.72));border-bottom:1px solid rgba(110,160,250,.18);z-index:5}
+.gx-back{border:1px solid rgba(140,190,255,.35);background:rgba(255,255,255,.06);color:#cfe2ff;border-radius:999px;padding:6px 13px;font-size:12px;cursor:pointer;font-family:inherit}
+.gx-back:hover{background:rgba(120,170,255,.2)}
+.gx-title{font-size:14.5px;color:#fff;letter-spacing:.5px}
+.gx-title em{font-style:normal;font-size:11px;color:#8fb6ff;margin-left:8px;letter-spacing:1px}
+.gx-view{position:relative;flex:1;min-height:0;overflow:hidden;background:radial-gradient(ellipse at 50% 20%,#0d1b33,#050a14 70%)}
+.gx-canvas{display:block;width:100%;height:100%;touch-action:none}
+.gx-hud{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:10px;padding:8px 14px;font-size:11.5px;color:#a9c0e4;background:linear-gradient(0deg,rgba(3,8,18,.85),rgba(3,8,18,0));pointer-events:none}
+.gx-badge{border:1px solid rgba(242,193,78,.35);color:#f2c14e;border-radius:999px;padding:2px 9px;font-size:10.5px}
+.gx-score{position:absolute;left:14px;top:12px;z-index:3;padding:8px 12px;border-radius:12px;background:rgba(8,18,36,.72);border:1px solid rgba(110,160,250,.22);color:#cfe2ff;font-size:12px;max-width:70%}
+.gx-score b{display:block;color:#fff;font-size:14px;margin-bottom:2px}
+.gx-score span{color:#93adcf}
+.gx-toast{position:absolute;left:50%;top:64px;transform:translate(-50%,-12px);background:rgba(8,20,42,.92);border:1px solid rgba(140,190,255,.4);color:#e8f2ff;font-size:12.5px;padding:8px 14px;border-radius:999px;opacity:0;transition:.25s;pointer-events:none;z-index:20;max-width:86%;text-align:center}
+.gx-toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* 面板 */
+.gx-panel-mask{position:absolute;inset:0;background:rgba(3,8,18,.7);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:15;padding:16px}
+.gx-panel{width:min(430px,92%);max-height:88%;overflow:auto;background:linear-gradient(180deg,#13233f,#0b1628);border:1px solid rgba(120,170,255,.35);border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.55);color:#cfe2ff}
+.gx-panel-h{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(120,170,255,.18);font-size:13.5px;color:#fff}
+.gx-x{border:0;background:transparent;color:#a9c0e4;font-size:20px;line-height:1;cursor:pointer}
+.gx-panel-b{padding:14px 16px 18px;font-size:12.5px}
+.gx-tune{display:flex;flex-direction:column;gap:12px}
+.gx-tip{margin:0;color:#9fb9dd;line-height:1.7}
+.gx-sl{display:flex;align-items:center;gap:10px;font-size:12px;color:#cfe2ff}
+.gx-sl span{width:14px;color:#8fb6ff}
+.gx-sl input[type=range]{flex:1;accent-color:#4c86f2;height:22px}
+.gx-sl b{min-width:52px;text-align:right;color:#f2c14e;font-weight:600}
+.gx-mini{border:1px solid rgba(140,190,255,.35);background:rgba(76,134,242,.16);color:#cfe2ff;border-radius:999px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:inherit}
+.gx-mini.on{background:rgba(80,200,140,.2);border-color:rgba(120,230,170,.55);color:#9ff0c2}
+.gx-code{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(120,170,255,.3);background:rgba(4,10,22,.85);color:#fff;font-size:18px;letter-spacing:8px;text-align:center;font-family:inherit;outline:none}
+.gx-row{display:flex;gap:10px}
+.gx-btn{flex:1;border:0;border-radius:12px;padding:11px 0;font-size:13px;color:#fff;background:linear-gradient(120deg,#4c86f2,#2450b8);cursor:pointer;font-family:inherit}
+.gx-btn.ghost{background:rgba(255,255,255,.07);border:1px solid rgba(140,190,255,.3);color:#cfe2ff}
+.gx-wave{width:100%;height:auto;border-radius:12px;background:rgba(4,10,22,.7);border:1px solid rgba(120,170,255,.2)}
