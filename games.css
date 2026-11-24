@@ -57,6 +57,7 @@
 .kw-sec p{margin:0;font-size:10.5px;letter-spacing:2px;color:var(--gx-dim)}
 .kw-sec::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#BFD2F2,rgba(191,210,242,0))}
 .gx-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (min-width:1080px){.gx-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}}
 
 /* 卡片 */
 .gx-card{
