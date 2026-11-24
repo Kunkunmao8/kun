@@ -1701,6 +1701,28 @@ body{background:#F3F7FF;color:#1B2A45;}
 	#wish .wish-tree-svg{left:-20%;right:auto;width:140%;height:100%}
 }
 
+#wish .wish-search{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 12px}
+#wish .ws-box{position:relative;flex:1;min-width:220px;display:flex;align-items:center;gap:6px;
+	background:#fff;border:1px solid #D9E5F8;border-radius:999px;padding:4px 6px 4px 14px;
+	box-shadow:0 10px 24px -20px rgba(31,58,120,.6);transition:.2s}
+#wish .ws-box:focus-within{border-color:#9DBAF1;box-shadow:0 0 0 3px rgba(47,92,212,.10)}
+#wish .ws-ico{font-size:15px;color:#7C91B8;line-height:1}
+#wish .ws-box input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:13px;color:#1B2A45;padding:6px 0}
+#wish .ws-box input::placeholder{color:#9AAAC6}
+#wish .ws-box button{border:0;cursor:pointer;font:inherit;font-size:12.5px;padding:7px 16px;border-radius:999px;flex:none;white-space:nowrap;
+	color:#fff;background:linear-gradient(180deg,#4B79E8,#2F5CD4);font-weight:600}
+#wish .ws-clear{border:1px solid #D9E5F8;background:#F4F8FF;color:#41609A;font:inherit;font-size:12px;
+	padding:8px 14px;border-radius:999px;cursor:pointer}
+#wish .ws-tip{margin:0;flex-basis:100%;font-size:11.5px;color:#7C8AA5}
+#wish .ws-tip b{color:#2F5CD4}
+#wish .ws-tip.on{color:#2F5CD4}
+#wish .wtTag.hit .wtRose img{filter:drop-shadow(0 0 12px rgba(140,185,255,.95)) drop-shadow(0 0 26px rgba(70,125,245,.55))}
+#wish .wtTag.hit .wtRose{animation:wtGlow 1.15s ease-in-out infinite alternate}
+@keyframes wtGlow{from{transform:scale(1)}to{transform:scale(1.14)}}
+#wish .wtTag.hit::after{content:"锁定";position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+	font-size:9px;letter-spacing:1px;color:#fff;background:#2F5CD4;padding:2px 8px;border-radius:999px;
+	box-shadow:0 6px 14px rgba(47,92,212,.4);white-space:nowrap}
+#wish .wtTag.dim{opacity:.28 !important}
 /* ===== 3D 许愿树（Three.js 冰蓝圣诞树） ===== */
 #wish .wish-tree{position:relative;height:660px;border-radius:22px;overflow:hidden;
 	border:1px solid rgba(120,160,255,.30);
@@ -1770,7 +1792,7 @@ body{background:#F3F7FF;color:#1B2A45;}
 	#wish .wtPopTxt{font-size:14px}
 }
 </style>
-<link rel="stylesheet" href="./games.css?v=3">
+<link rel="stylesheet" href="./games.css?v=5">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -3247,6 +3269,15 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 					<span>在下面写一句祝福，它会开成枝头的一朵蓝玫瑰</span>
 				</div>
 				<div class="wish-count"><b id="wishNum">0</b> 朵</div>
+			</div>
+			<div class="wish-search">
+				<div class="ws-box">
+					<span class="ws-ico">⌕</span>
+					<input id="wishSearch" maxlength="30" placeholder="搜你写过的祝福、作者名">
+					<button type="button" id="wishSearchBtn">搜索</button>
+				</div>
+				<button type="button" class="ws-clear" id="wishSearchClear">清除</button>
+				<p class="ws-tip" id="wishSearchTip">全站共 <b id="wishSearchTotal">0</b> 条祝福，搜到的那朵玫瑰会亮起来</p>
 			</div>
 			<div class="wish-tree" id="wishTree">
 				<canvas class="wtCanvas" id="wtCanvas"></canvas>
@@ -5389,6 +5420,8 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 	var box=document.getElementById('wishTree'),canvas=document.getElementById('wtCanvas'),tagLayer=document.getElementById('wtTags');
 	var numEl=document.getElementById('wishNum'),emptyEl=document.getElementById('wishEmpty'),input=document.getElementById('wishInput');
 	var btn=document.getElementById('wishSend'),tip=document.getElementById('wishTip'),wall=document.getElementById('wishWall');
+	var sInput=document.getElementById('wishSearch'),sBtn=document.getElementById('wishSearchBtn'),sClear=document.getElementById('wishSearchClear'),sTip=document.getElementById('wishSearchTip'),sTotal=document.getElementById('wishSearchTotal');
+	var query='',spinTo=null,searchTimer=null;
 	if(!SB||!page||!box||!canvas||!tagLayer||!window.THREE) return;
 
 	var W=1,Hp=1,view=null,scene=null,camera=null,group=null,pivot=null,renderer=null,rafId=0;
@@ -5757,9 +5790,13 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 		if(!lastT) lastT=t;
 		var dt=Math.min(0.05,(t-lastT)/1000);lastT=t;
 		if(!dragging){
-			if(Math.abs(vel)>0.0009){yaw+=vel;vel*=Math.pow(0.93,dt*60);}
+			if(spinTo!==null){
+				var dz=spinTo-yaw; dz=Math.atan2(Math.sin(dz),Math.cos(dz));
+				yaw+=dz*0.16;
+				if(Math.abs(dz)<0.012){yaw=spinTo;spinTo=null;}
+			}else if(Math.abs(vel)>0.0009){yaw+=vel;vel*=Math.pow(0.93,dt*60);}
 			else {vel=0;yaw+=0.00040*dt*60;}
-			if(performance.now()-idleAt>2800){pitch+=(0.09-pitch)*0.006;}
+			if(performance.now()-idleAt>2800&&spinTo===null){pitch+=(0.09-pitch)*0.006;}
 		}
 		pivot.rotation.y=yaw;pivot.rotation.x=pitch;
 		pivot.updateMatrixWorld(true);
@@ -5818,8 +5855,14 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 	}
 	function render(list,newId){
 		cache=(list||[]).slice();
-		var show=cache.filter(function(x){return x&&x.caption;}).slice(0,cap());
+		var allList=cache.filter(function(x){return x&&x.caption;});
+		var qlist=query?allList.filter(function(x){
+			var hay=((x.caption||'')+' '+(x.author||'')).toLowerCase();
+			return hay.indexOf(query.toLowerCase())>=0;
+		}):allList;
+		var show=qlist.slice(0,cap());
 		if(numEl)numEl.textContent=cache.length;
+		if(sTotal)sTotal.textContent=cache.length;
 		if(emptyEl)emptyEl.style.display=cache.length?'none':'block';
 		tags.forEach(function(t){if(t.el&&t.el.parentNode)t.el.parentNode.removeChild(t.el);});
 		tags=[];buildSpots();
@@ -5827,12 +5870,22 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 			var el=makeTag(x,i,newId&&String(x.id)===String(newId),i);
 			tags.push({el:el,sp:spots[i%spots.length]});
 		});
+		if(query&&show.length){
+			tags.forEach(function(t){ t.el.classList.add('hit'); });
+			spinTo=-tags[0].sp.a; pitch=.10; vel=0; idleAt=performance.now()+6000;
+			if(sTip){ sTip.classList.add('on'); sTip.innerHTML='找到 '+qlist.length+' 条 · 已点亮「'+String(show[0].caption||'').slice(0,16)+'」那朵玫瑰'; }
+		}else if(query){
+			spinTo=null;
+			if(sTip){ sTip.classList.add('on'); sTip.textContent='没搜到，换个词试试，比如“生日”或你的昵称'; }
+		}else if(sTip){
+			sTip.classList.remove('on'); sTip.innerHTML='全站共 <b id="wishSearchTotal">'+cache.length+'</b> 条祝福，搜到的那朵玫瑰会亮起来'; sTotal=document.getElementById('wishSearchTotal');
+		}
 		syncTags();
 		if(wall){
-			var all=cache.filter(function(x){return x&&x.caption;});
+			var all=qlist;
 			wall.innerHTML='';
 			if(all.length>show.length){
-				var hEl=document.createElement('div');hEl.className='ww-h';hEl.textContent='祝福墙 · 全部 '+cache.length+' 条';
+				var hEl=document.createElement('div');hEl.className='ww-h';hEl.textContent=(query?'祝福墙 · 找到 ':'祝福墙 · 全部 ')+all.length+' 条';
 				wall.appendChild(hEl);
 				all.slice(0,40).forEach(function(x){
 					var row=document.createElement('div');row.className='ww-row';
@@ -5875,6 +5928,23 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 	btn.addEventListener('click',send);
 	input.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();send();}});
 
+	function doSearch(){
+		var v=(sInput.value||'').trim();
+		if(v===query){ return; }
+		query=v; render(cache);
+	}
+	if(sInput){
+		sInput.addEventListener('input',function(){
+			if(searchTimer)clearTimeout(searchTimer);
+			searchTimer=setTimeout(function(){ if(!sInput.value.trim()&&query) doSearch(); },420);
+		});
+		sInput.addEventListener('keydown',function(e){
+			if(e.key==='Enter'){ e.preventDefault(); if(searchTimer)clearTimeout(searchTimer); doSearch(); }
+		});
+	}
+	if(sBtn)sBtn.addEventListener('click',function(){ if(searchTimer)clearTimeout(searchTimer); doSearch(); });
+	if(sClear)sClear.addEventListener('click',function(){ if(sInput)sInput.value=''; query=''; render(cache); });
+
 	(function snow(){
 		var box2=document.getElementById('wtSnow'); if(!box2) return;
 		var n=window.innerWidth<=760?16:26;
@@ -5902,7 +5972,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 
 </script>
 
-<script src="./games.js?v=3"></script>
+<script src="./games.js?v=5"></script>
 </body>
 </html>
 
