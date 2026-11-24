@@ -32,14 +32,16 @@
   }
 
   function toast(msg, ms) {
+    if (!stage) return;
     if (!toastEl) {
       toastEl = el('div', 'gx-toast');
       stage.appendChild(toastEl);
     }
-    toastEl.textContent = msg;
-    toastEl.classList.add('show');
-    clearTimeout(toastEl._t);
-    toastEl._t = setTimeout(function () { toastEl.classList.remove('show'); }, ms || 2200);
+    var node = toastEl;
+    node.textContent = msg;
+    node.classList.add('show');
+    clearTimeout(node._t);
+    node._t = setTimeout(function () { if (node && node.classList) node.classList.remove('show'); }, ms || 2200);
   }
 
   function panel(title, body, onClose) {
@@ -238,12 +240,6 @@
       var cloth = new THREE.Mesh(new THREE.BoxGeometry(.3, 1.0, .12), new THREE.MeshStandardMaterial({ color: cc, roughness: .85 }));
       cloth.position.set(-2.18 + gi * .3, 1.5, -1.5); scene.add(cloth);
     });
-
-    // 地毯
-    var rug = new THREE.Mesh(new THREE.CircleGeometry(.95, 40), new THREE.MeshStandardMaterial({ color: 0x1B2B45, roughness: 1 }));
-    rug.rotation.x = -Math.PI / 2; rug.position.set(0, .012, -1.55); scene.add(rug);
-    var rugRing = new THREE.Mesh(new THREE.RingGeometry(1.1, 1.2, 40), new THREE.MeshBasicMaterial({ color: 0x3E7BC8, transparent: true, opacity: .5 }));
-    rugRing.rotation.x = -Math.PI / 2; rugRing.position.set(0, .02, -1.55); scene.add(rugRing);
 
     // 蓝玫瑰（胜利后出现）
     var rose = new THREE.Mesh(new THREE.SphereGeometry(0.3, 20, 16), new THREE.MeshStandardMaterial({ color: 0x1E6BE0, metalness: .35, roughness: .35, emissive: 0x0B2A78, emissiveIntensity: .9 }));
@@ -608,7 +604,7 @@
     var scene = new THREE.Scene(); scene.background = new THREE.Color(0x061019);
     scene.fog = new THREE.FogExp2(0x061019, 0.022);
     var camera = new THREE.PerspectiveCamera(46, 1, .1, 60);
-    orbit(camera, canvas, new THREE.Vector3(0, 0.15, 0), { r: 19.5, yaw: 0.03, pitch: 1.12, minPitch: .8, maxPitch: 1.38 });
+    orbit(camera, canvas, new THREE.Vector3(0, 0.15, 0), { r: 19.5, yaw: 0.03, pitch: .90, minPitch: .7, maxPitch: 1.3 });
     scene.add(new THREE.AmbientLight(0x5A8CB8, 1.05));
     window.__g6cam = camera;
     scene.add(new THREE.HemisphereLight(0x8FD3FF, 0x06121C, .6));
@@ -784,7 +780,7 @@
     starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
     scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xCBD8F2, size: .22, transparent: true, opacity: .55, depthWrite: false })));
 
-    var floor = new THREE.Mesh(new THREE.BoxGeometry(12, .2, 12), new THREE.MeshStandardMaterial({ color: 0x3A475F, roughness: .85 }));
+    var floor = new THREE.Mesh(new THREE.BoxGeometry(34, .2, 34), new THREE.MeshStandardMaterial({ color: 0x39465E, roughness: .85 }));
     floor.position.y = -.1; scene.add(floor);
     // 城市楼群
     for (var i = 0; i < 40; i++) {
