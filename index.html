@@ -1391,6 +1391,8 @@ body{background:#F3F7FF;color:#1B2A45;}
 #pillow .fact{border:1px solid #D9E5F8;background:#F8FBFF;color:#24479F;border-radius:999px;padding:6px 15px;font-size:12.5px;cursor:pointer;font-family:inherit;letter-spacing:.5px;}
 #pillow .fact:hover{background:#E9F1FE;}
 #pillow .fact.liked{background:#2F5CD4;border-color:#2F5CD4;color:#fff;}
+#pillow .fact.del{border-color:#F0CDD3;background:#FFF8F9;color:#BE475C;}
+#pillow .fact.del:hover{background:#FDEDF0;border-color:#E7A9B5;}
 #pillow .freps{margin-top:12px;border-top:1px dashed #DCE8F9;padding-top:10px;display:flex;flex-direction:column;gap:10px;}
 #pillow .frep{background:#F8FBFF;border:1px solid #E4EEFB;border-radius:10px;padding:9px 12px;}
 #pillow .frep-h{font-size:12px;color:#24479F;margin-bottom:3px;letter-spacing:.4px;}
@@ -2635,6 +2637,9 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 	var rendered={}, lastSig="", polling=null;
 	var ME={mail:'',name:''};
 	var mineIds=[];
+	var mineStore=(function(){ try{ var a=JSON.parse(load('kun_my_posts')||'[]'); return Array.isArray(a)?a:[]; }catch(e){ return []; } })();
+	function isMyPost(m){ return mineIds.indexOf(m.id)>=0 || mineStore.indexOf(m.id)>=0 || (!!ME.mail && m.who===ME.name); }
+	function rememberMine(id){ if(mineIds.indexOf(id)<0) mineIds.push(id); if(mineStore.indexOf(id)<0){ mineStore.push(id); if(mineStore.length>300) mineStore=mineStore.slice(-300); save('kun_my_posts',JSON.stringify(mineStore)); } }
 	var SOCIAL=ROOM+'social.json';
 	var social={follows:{},dms:[]};
 	var usersData=[], avatarMap={}, usersAt=0;
@@ -2918,7 +2923,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		return f;
 	}
 	function floorCard(m, no){
-		var mine = mineIds.indexOf(m.id)>=0 || (!!ME.mail && m.who===ME.name);
+		var mine = isMyPost(m);
 		var box=el('div','fpost'+(mine?' mine':''));
 		var head=el('div','fhead');
 		var fno=el('span','fno'); fno.textContent='第 '+no+' 楼';
@@ -2960,6 +2965,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		rp.onclick=function(){ toggleReplyBox(box, m.id, m.who); };
 		bar.appendChild(rp);
 		if(m.who){ var dmb=el('button','fact'); dmb.type='button'; dmb.textContent='私信'; dmb.onclick=function(){ openDM(m.who); }; bar.appendChild(dmb); }
+		if(mine){ var dlb=el('button','fact del'); dlb.type='button'; dlb.textContent='删除'; dlb.onclick=function(e){ e.stopPropagation(); delPost(m.id); }; bar.appendChild(dlb); }
 		box.appendChild(bar);
 
 		if(reps.length){
@@ -3039,6 +3045,25 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 			return writeRoom(list).then(refresh);
 		});
 	}
+	function delPost(pid){
+		if(NEED_LOGIN && !ME.mail){ alert('先登录再删除'); return; }
+		if(!confirm('删除这条留言？删除后不能恢复。')) return;
+		readRoom().then(function(list){
+			list=dedupe(list||[]);
+			var m=list.filter(function(x){ return x.id===pid; })[0];
+			if(!m){ refresh(); return; }
+			var next=list.filter(function(x){ return x.id!==pid; });
+			/* 先从界面移除，避免服务端写入后短暂读到旧数据又冒出来 */
+			roomCache=next; allCache=null; allAt=0; lastSig='';
+			renderAll(next); updateOnline(next);
+			mineIds=mineIds.filter(function(x){ return x!==pid; });
+			mineStore=mineStore.filter(function(x){ return x!==pid; });
+			save('kun_my_posts',JSON.stringify(mineStore));
+			return writeRoom(next).then(function(){
+				setTimeout(refresh, 1200);
+			}).catch(function(e){ setTimeout(refresh, 1200); throw e; });
+		}).catch(function(e){ alert(e.message||'删除失败，再试一次'); });
+	}
 	function refresh(){
 		Promise.all([readRoom(), readSocial(), fetchUsersCached()]).then(function(res){
 			var list=dedupe(res[0]||[]);
@@ -3071,7 +3096,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		if(!t) return;
 		if(NEED_LOGIN && !ME.mail){ alert('先登录再留言'); return; }
 		var msg={id:Date.now()+'-'+rand(5),who:myName(),text:t,ts:Date.now()};
-		mineIds.push(msg.id);
+		rememberMine(msg.id);
 		btnSend.disabled=true;
 		post(msg).then(function(){
 			txtEl.value=''; btnSend.disabled=false;
@@ -3105,7 +3130,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 			var msg={id:Date.now()+'-'+rand(5),who:myName(),ts:Date.now()};
 			if(kind==='video') msg.video=url; else msg.img=url;
 			var t=txtEl.value.trim(); if(t) { msg.text=t; txtEl.value=''; }
-			mineIds.push(msg.id);
+			rememberMine(msg.id);
 			return post(msg).then(function(){
 				upTip.textContent='发出去了';
 				refresh();
