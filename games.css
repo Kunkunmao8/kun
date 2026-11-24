@@ -59,3 +59,11 @@
 .gx-btn{flex:1;border:0;border-radius:12px;padding:11px 0;font-size:13px;color:#fff;background:linear-gradient(120deg,#4c86f2,#2450b8);cursor:pointer;font-family:inherit}
 .gx-btn.ghost{background:rgba(255,255,255,.07);border:1px solid rgba(140,190,255,.3);color:#cfe2ff}
 .gx-wave{width:100%;height:auto;border-radius:12px;background:rgba(4,10,22,.7);border:1px solid rgba(120,170,255,.2)}
+
+/* 移动端导航更紧凑，避免新增“游戏厅”后换行 */
+@media (max-width: 620px) {
+  .nav { gap: 8px !important; }
+  .nav-link { font-size: 13px !important; padding: 6px 8px !important; }
+  .brand, .logo { flex: 0 0 auto; }
+  .nav-link { white-space: nowrap; }
+}
