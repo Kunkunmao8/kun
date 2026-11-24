@@ -5450,7 +5450,7 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 	if(!SB||!tagsEl) return;
 	var ME=(function(){try{return JSON.parse(localStorage.getItem('kun_site_user')||'{}')||{};}catch(e){return{};}})();
 		var HOOKS=[[91,88],[209,88],[140,60],[93,150],[207,150],[126,131],[174,131],[150,104],[150,166]];
-	var HOOKS_M=[[91,88],[209,88],[140,60]];
+	var HOOKS_M=[[140,60],[91,88],[209,88]];
 	function hooksFor(){ return (window.innerWidth<=760)?HOOKS_M:HOOKS; }
 	function capFor(){ return (window.innerWidth<=760)?3:9; }
 	var cache=[];
