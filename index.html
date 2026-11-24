@@ -1700,6 +1700,65 @@ body{background:#F3F7FF;color:#1B2A45;}
 	#wish .wish-tree{overflow:hidden}
 	#wish .wish-tree-svg{left:-20%;right:auto;width:140%;height:100%}
 }
+
+/* ===== 3D 许愿树 ===== */
+#wish .wish-tree{position:relative;height:560px;border-radius:20px;overflow:hidden;border:1px solid #E3ECFB;
+	background:radial-gradient(120% 85% at 50% 6%,#DCE9FF 0%,#EFF6FF 42%,#FBFDFF 72%,#FFFFFF 100%);
+	perspective:1500px;touch-action:none;user-select:none;cursor:grab}
+#wish .wish-tree.dragging{cursor:grabbing}
+#wish .wt3d{position:absolute;inset:0;transform-style:preserve-3d}
+#wish .wt3d-aura{position:absolute;left:50%;top:46%;width:86%;padding-bottom:86%;transform:translate(-50%,-50%);pointer-events:none;
+	background:radial-gradient(closest-side,rgba(126,170,255,.30),rgba(160,200,255,.10) 58%,transparent 74%)}
+#wish .wt3d-stage{position:absolute;left:50%;top:54%;width:0;height:0;transform-style:preserve-3d}
+#wish .wt3d-tree{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
+#wish .wt3d-trunk{position:absolute;left:0;top:0;border-radius:3px;background:linear-gradient(90deg,#1B3A8C,#0E2257 60%,#1B3A8C)}
+#wish .wt3d-star{position:absolute;left:0;top:0;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;
+	background:radial-gradient(circle,#FFFFFF 0%,#DCEBFF 38%,rgba(150,190,255,.45) 66%,transparent 74%);box-shadow:0 0 22px rgba(150,190,255,.75)}
+#wish .wt3d-ring{position:absolute;left:0;top:0;border-radius:50%;opacity:.9;pointer-events:none;
+	background:radial-gradient(closest-side,rgba(96,142,235,.34),rgba(70,110,210,.12) 62%,rgba(70,110,210,0) 78%)}
+#wish .wt3d-needle{position:absolute;left:0;top:0;border-radius:50%;
+	background:linear-gradient(120deg,#8FB4FF 0%,#3D6BE0 58%,#16327C 100%);opacity:.92}
+#wish .wt3d-needle.hi{background:linear-gradient(125deg,#BFD6FF,#6E96F0 62%,#2C55C4);opacity:.82}
+#wish .wt3d-light{position:absolute;left:0;top:0;border-radius:50%;animation:wtTw 3.6s ease-in-out infinite;
+	background:radial-gradient(circle,#FFFFFF 0%,#CFE1FF 38%,rgba(120,170,255,.35) 66%,transparent 72%);
+	box-shadow:0 0 10px rgba(120,170,255,.5)}
+@keyframes wtTw{0%,100%{opacity:.55}50%{opacity:1}}
+#wish .wt3d-tag{position:absolute;left:0;top:0;width:0;height:0;cursor:pointer;transition:opacity .18s linear}
+#wish .wt3d-inner{position:absolute;left:0;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;
+	transform-style:preserve-3d;animation:wtSway3 5.6s ease-in-out infinite alternate}
+@keyframes wtSway3{from{transform:translateX(-50%) rotate(-2deg)}to{transform:translateX(-50%) rotate(2deg)}}
+#wish .wt3d-inner.new{animation:wtPop3 .7s cubic-bezier(.2,1.5,.4,1) both,wtSway3 5.6s ease-in-out .8s infinite alternate}
+@keyframes wtPop3{0%{transform:translateX(-50%) scale(.4);opacity:0}60%{transform:translateX(-50%) scale(1.12)}100%{transform:translateX(-50%) scale(1);opacity:1}}
+#wish .wt3d-string{width:2px;height:20px;border-radius:2px;background:linear-gradient(#B9CDF3,#8FB0EA)}
+#wish .wt3d-rose{width:38px;height:38px;margin-top:-4px;filter:drop-shadow(0 6px 10px rgba(24,52,130,.3))}
+#wish .wt3d-rose svg{width:100%;height:100%}
+#wish .wt3d-card{width:92px;margin-top:-4px;padding:6px 7px 5px;border-radius:11px;border:1px solid #BFD5F6;
+	background:linear-gradient(#FFFFFF,#F6FAFF);box-shadow:0 10px 20px rgba(40,78,180,.18),inset 0 1px 0 #fff}
+#wish .wt3d-card b{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:10.5px;line-height:1.38;color:#16264A;font-weight:600;word-break:break-word}
+#wish .wt3d-card i{display:block;margin-top:3px;font-style:normal;font-size:9.5px;color:#7089B5;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#wish .wt3d-ground{position:absolute;left:50%;bottom:8%;width:56%;height:44px;transform:translateX(-50%);pointer-events:none;filter:blur(2px);
+	background:radial-gradient(closest-side,rgba(60,104,210,.24),rgba(90,135,230,.10) 55%,transparent 76%)}
+#wish .wt3d-hint{position:absolute;left:0;right:0;bottom:14px;text-align:center;font-size:11.5px;letter-spacing:.6px;color:#7E93B8;pointer-events:none}
+#wish .wish-empty{position:absolute;left:50%;top:14px;bottom:auto;transform:translateX(-50%);width:70%;text-align:center;font-size:12.5px;line-height:1.6;color:#7189AF;
+	background:rgba(255,255,255,.92);border:1px dashed #C9DCF7;border-radius:12px;padding:8px 12px}
+@media (max-width:760px){
+	#wish .wish-tree{height:430px}
+	#wish .wt3d-rose{width:31px;height:31px}
+	#wish .wt3d-card{width:76px;padding:5px 6px 4px}
+	#wish .wt3d-card b{font-size:9.6px;-webkit-line-clamp:2}
+	#wish .wt3d-card i{font-size:8.8px}
+	#wish .wt3d-hint{bottom:8px;font-size:10.5px}
+	#wish .wish-empty{font-size:11.5px;top:10px;width:82%}
+}
+
+#wish .wt3d-tags{position:absolute;inset:0;pointer-events:none}
+#wish .wt3d-tags .wt3d-tag{pointer-events:auto}
+#wish .wt3d-snow{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+#wish .wt3d-snow i{position:absolute;top:-12px;width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.9);
+	box-shadow:0 0 8px rgba(180,210,255,.9);animation:wtSnow linear infinite}
+@keyframes wtSnow{0%{transform:translateY(-10px);opacity:0}12%{opacity:.9}100%{transform:translateY(560px);opacity:0}}
+#wish .wt3d-vig{position:absolute;inset:0;pointer-events:none;
+	background:radial-gradient(120% 80% at 50% 42%,transparent 55%,rgba(28,58,140,.10) 100%)}
 </style>
 </head>
 <body>
@@ -3180,41 +3239,17 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 				<div class="wish-count"><b id="wishNum">0</b> 朵</div>
 			</div>
 			<div class="wish-tree" id="wishTree">
-				<svg class="wish-tree-svg" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-					<defs>
-						<linearGradient id="wtTrunk" x1="0" y1="0" x2="1" y2="1">
-							<stop offset="0" stop-color="#4B6FD0"/><stop offset="1" stop-color="#16306E"/>
-						</linearGradient>
-						<radialGradient id="wtGlow">
-							<stop offset="0" stop-color="#D3E2FF" stop-opacity=".9"/><stop offset="1" stop-color="#D3E2FF" stop-opacity="0"/>
-						</radialGradient>
-					</defs>
-					<g>
-						<circle cx="112" cy="96" r="48" fill="url(#wtGlow)"/>
-						<circle cx="188" cy="96" r="48" fill="url(#wtGlow)"/>
-						<circle cx="150" cy="64" r="38" fill="url(#wtGlow)"/>
-					</g>
-					<g stroke="url(#wtTrunk)" fill="none" stroke-linecap="round">
-						<path d="M150 199 C148 174 149 152 150 128" stroke-width="9"/>
-						<path d="M150 152 C136 142 122 130 108 112 C100 102 95 96 91 88" stroke-width="5.4"/>
-						<path d="M150 152 C164 142 178 130 192 112 C200 102 205 96 209 88" stroke-width="5.4"/>
-						<path d="M150 138 C150 120 151 102 150 86 C149 75 146 67 140 60" stroke-width="5.4"/>
-						<path d="M120 122 C112 134 104 142 93 150" stroke-width="4"/>
-						<path d="M180 122 C188 134 196 142 207 150" stroke-width="4"/>
-						<path d="M134 104 C128 92 122 86 114 82" stroke-width="3.2"/>
-						<path d="M166 104 C172 92 178 86 186 82" stroke-width="3.2"/>
-						<path d="M150 170 C142 164 133 161 124 160" stroke-width="3"/>
-						<path d="M150 170 C158 164 167 161 176 160" stroke-width="3"/>
-					</g>
-					<ellipse cx="150" cy="196" rx="58" ry="7" fill="#DCE8FF" opacity=".85"/>
-					<g fill="#9FC0FF" opacity=".55">
-						<circle cx="91" cy="88" r="2.2"/><circle cx="209" cy="88" r="2.2"/>
-						<circle cx="140" cy="60" r="1.8"/><circle cx="114" cy="82" r="1.6"/>
-						<circle cx="186" cy="82" r="1.6"/><circle cx="93" cy="150" r="1.8"/>
-						<circle cx="207" cy="150" r="1.8"/><circle cx="124" cy="160" r="1.5"/><circle cx="176" cy="160" r="1.5"/>
-					</g>
-				</svg>
-				<div class="wish-tags" id="wishTags"></div>
+				<div class="wt3d" id="wt3d">
+					<div class="wt3d-aura"></div>
+					<div class="wt3d-stage" id="wtStage">
+						<div class="wt3d-tree" id="wtTree"></div>
+					</div>
+					<div class="wt3d-ground"></div>
+					<div class="wt3d-snow" id="wtSnow"></div>
+					<div class="wt3d-vig"></div>
+					<div class="wt3d-hint">按住拖动可以转着看，松手会自己慢慢转</div>
+				</div>
+				<div class="wt3d-tags" id="wtTags"></div>
 				<div class="wish-empty" id="wishEmpty">还没有人许愿，写下第一句祝福，它会开成树上的第一朵蓝玫瑰。</div>
 			</div>
 			<div class="wish-form">
@@ -5442,114 +5477,237 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 <script>
 (function(){
 	var CFG=window.AYLIO_CLOUD||{provider:'supabase',url:'https://yzzktnkfprpystxbhnln.supabase.co',key:'sb_publishable_TwGiULzD9sdEX9p_laO9ow_rVQw8O3w',photoBucket:'photos'};
-	var SB=(CFG.provider==='supabase'&&CFG.url&&CFG.key)?{url:String(CFG.url).replace(/\/$/,''),key:CFG.key,bucket:(CFG.photoBucket||'photos')}:null;
+	var SB=(CFG.provider==='supabase'&&CFG.url&&CFG.key)?{url:String(CFG.url).replace(/\/$/,''),key:CFG.key}:null;
 	var PRE='kun-wish/';
-	var tagsEl=document.getElementById('wishTags'),numEl=document.getElementById('wishNum'),emptyEl=document.getElementById('wishEmpty');
-	var treeEl=document.getElementById('wishTree'),treeSvg=document.querySelector('#wish .wish-tree-svg');
-	var input=document.getElementById('wishInput'),btn=document.getElementById('wishSend'),tip=document.getElementById('wishTip'),wall=document.getElementById('wishWall');
-	if(!SB||!tagsEl) return;
+	var box=document.getElementById('wishTree'),stage=document.getElementById('wtStage'),treeEl=document.getElementById('wtTree'),tagLayer=document.getElementById('wtTags');
+	var numEl=document.getElementById('wishNum'),emptyEl=document.getElementById('wishEmpty'),input=document.getElementById('wishInput');
+	var btn=document.getElementById('wishSend'),tip=document.getElementById('wishTip'),wall=document.getElementById('wishWall');
+	if(!SB||!box||!stage) return;
+
+	var H=400,R=150,cache=[],spots=[],sc=1;
 	var ME=(function(){try{return JSON.parse(localStorage.getItem('kun_site_user')||'{}')||{};}catch(e){return{};}})();
-		var HOOKS=[[91,88],[209,88],[140,60],[93,150],[207,150],[126,131],[174,131],[150,104],[150,166]];
-	var HOOKS_M=[[140,60],[91,88],[209,88]];
-	function hooksFor(){ return (window.innerWidth<=760)?HOOKS_M:HOOKS; }
-	function capFor(){ return (window.innerWidth<=760)?3:9; }
-	var cache=[];
-	function nick(){
-		try{ var n=localStorage.getItem('aylio_pillow_nick'); if(n&&n.trim()) return n.trim(); }catch(e){}
-		return (ME&&ME.name)||'IKUN';
+	function nick(){try{var n=localStorage.getItem('aylio_pillow_nick');if(n&&n.trim())return n.trim();}catch(e){}return (ME&&ME.name)||'IKUN';}
+	function cap(){return window.innerWidth<=760?5:9;}
+
+	function buildTree(){
+		treeEl.innerHTML='';
+		[0,90].forEach(function(rot){
+			var trunk=document.createElement('div');
+			trunk.className='wt3d-trunk';
+			trunk.style.width='15px';trunk.style.height='64px';
+			trunk.style.marginLeft='-7.5px';trunk.style.marginTop='-32px';
+			trunk.style.transform='translate3d(0,'+(H/2-32).toFixed(1)+'px,0) rotateY('+rot+'deg)';
+			treeEl.appendChild(trunk);
+		});
+		var tiers=16;
+		for(var t=0;t<tiers;t++){
+			var y=44+t*((H-64)/(tiers-1));
+			var rMax=R*(1-y/H)+8;
+			var n=20+Math.round(t*1.45);
+			for(var k=0;k<n;k++){
+				var a=(k*360/n+t*13+Math.random()*8);
+				var ring=Math.random();
+				var rr = ring<0.6 ? rMax*(0.96+Math.random()*0.08) : rMax*(0.6+Math.random()*0.3);
+				var w=(19+17*(1-y/H))*(0.92+Math.random()*0.3), h=w*0.4;
+				var leaf=document.createElement('div');
+				leaf.className='wt3d-needle'+(t>11?' hi':'');
+				leaf.style.width=w.toFixed(1)+'px';leaf.style.height=h.toFixed(1)+'px';
+				leaf.style.marginLeft=(-w/2).toFixed(1)+'px';leaf.style.marginTop=(-h/2).toFixed(1)+'px';
+				leaf.style.opacity=(0.8+Math.random()*0.2).toFixed(2);
+				leaf.style.transform='rotateY('+a.toFixed(1)+'deg) translate3d(0,'+(H/2-y+(Math.random()*8-4)).toFixed(1)+'px,'+rr.toFixed(1)+'px) rotateZ('+(Math.random()*64-32).toFixed(1)+'deg)';
+				treeEl.appendChild(leaf);
+			}
+			for(var c=0;c<6;c++){
+				var ca=Math.random()*360, cw=16+Math.random()*10, ch=cw*0.4;
+				var cl=document.createElement('div'); cl.className='wt3d-needle';
+				cl.style.width=cw.toFixed(1)+'px';cl.style.height=ch.toFixed(1)+'px';
+				cl.style.marginLeft=(-cw/2).toFixed(1)+'px';cl.style.marginTop=(-ch/2).toFixed(1)+'px';
+				cl.style.opacity='.85';
+				cl.style.transform='rotateY('+ca.toFixed(0)+'deg) translate3d(0,'+(H/2-y+6).toFixed(1)+'px,'+(rMax*0.3).toFixed(1)+'px) rotateZ('+(Math.random()*80-40).toFixed(1)+'deg)';
+				treeEl.appendChild(cl);
+			}
+		}
+		var steps=window.innerWidth<=760?20:32;
+		for(var i=0;i<steps;i++){
+			var ly=66+i*((H-116)/steps), la=i*52, lr=R*(1-ly/H)+10;
+			var s2=(3.4+Math.random()*3.4)*(1-0.3*ly/H);
+			var dot=document.createElement('div');
+			dot.className='wt3d-light';
+			dot.style.width=s2.toFixed(1)+'px';dot.style.height=s2.toFixed(1)+'px';
+			dot.style.marginLeft=(-s2/2).toFixed(1)+'px';dot.style.marginTop=(-s2/2).toFixed(1)+'px';
+			dot.style.animationDelay=(i*0.15).toFixed(2)+'s';
+			dot.style.transform='rotateY('+la.toFixed(0)+'deg) translate3d(0,'+(H/2-ly).toFixed(1)+'px,'+lr.toFixed(1)+'px)';
+			treeEl.appendChild(dot);
+		}
+		var star=document.createElement('div');
+		star.className='wt3d-star';
+		star.style.transform='translate3d(0,'+(-H/2-6).toFixed(1)+'px,0)';
+		treeEl.appendChild(star);
 	}
-	function fetchAll(){
-		return fetch(SB.url+'/rest/v1/photos?select=id,created_at,author,caption,storage_path&storage_path=like.kun-wish*&order=created_at.desc&limit=120',{headers:{apikey:SB.key,Authorization:'Bearer '+SB.key},cache:'no-store'})
-			.then(function(r){ return r.ok?r.json():[]; }).catch(function(){ return []; });
+	function buildSpots(){
+		spots=[];
+		var ang=[38,158,278,98,218,338,68,188,308];
+		for(var i=0;i<9;i++){
+			var y=(window.innerWidth<=760?190:150)+(i%2)*84;
+			spots.push({a:ang[i],y:y,r:Math.min(R+46,R*(1-(y-102)/H)+42)*(window.innerWidth<=760?0.78:1)});
+		}
 	}
 	function render(list,newId){
 		cache=(list||[]).slice();
-		var show=cache.filter(function(x){ return x&&x.caption; }).slice(0,capFor());
+		var show=cache.filter(function(x){return x&&x.caption;}).slice(0,cap());
 		numEl.textContent=cache.length;
 		emptyEl.style.display=cache.length?'none':'block';
-		tagsEl.innerHTML='';
+		Array.prototype.slice.call(tagLayer.querySelectorAll('.wt3d-tag')).forEach(function(n){n.parentNode.removeChild(n);});
+		show.forEach(function(x,i){
+			var sp=spots[i%spots.length];
+			var tag=document.createElement('div');
+			tag.className='wt3d-tag';
+			tag.dataset.a=sp.a;tag.dataset.y=(H/2-sp.y);tag.dataset.r=sp.r;
+			tag.dataset.a=sp.a;tag.dataset.dy=(H/2-sp.y);tag.dataset.r=sp.r;
+			var inner=document.createElement('div');
+			inner.className='wt3d-inner'+(newId&&String(x.id)===String(newId)?' new':'');
+			inner.style.animationDelay=(i*0.5)+'s';
+			var str=document.createElement('span');str.className='wt3d-string';
+			var rose=document.createElement('span');rose.className='wt3d-rose';
+			rose.innerHTML='<svg viewBox="0 0 64 64"><use href="#roseSym" xlink:href="#roseSym"></use></svg>';
+			var card=document.createElement('div');card.className='wt3d-card';
+			var bEl=document.createElement('b');bEl.textContent=x.caption;
+			var iEl=document.createElement('i');iEl.textContent=x.author||'匿名';
+			card.appendChild(bEl);card.appendChild(iEl);
+			inner.appendChild(str);inner.appendChild(rose);inner.appendChild(card);
+			tag.appendChild(inner);
+			tag.addEventListener('click',function(e){e.stopPropagation();showNote(x);});
+			tagLayer.appendChild(tag);
+		});
 		if(wall){
-			var extra=cache.filter(function(x){return x&&x.caption;});
-			extra=extra.slice(0,40);
+			var all=cache.filter(function(x){return x&&x.caption;});
 			wall.innerHTML='';
-			if(extra.length>show.length){
-				var h=document.createElement('div'); h.className='ww-h'; h.textContent='祝福墙 · 全部 '+cache.length+' 条';
-				wall.appendChild(h);
-				extra.forEach(function(x){
-					var row=document.createElement('div'); row.className='ww-row';
-					var t2=document.createElement('span'); t2.textContent=x.caption;
-					var n2=document.createElement('em'); n2.textContent=x.author||'匿名';
-					row.appendChild(t2); row.appendChild(n2);
-					wall.appendChild(row);
+			if(all.length>show.length){
+				var hEl=document.createElement('div');hEl.className='ww-h';hEl.textContent='祝福墙 · 全部 '+cache.length+' 条';
+				wall.appendChild(hEl);
+				all.slice(0,40).forEach(function(x){
+					var row=document.createElement('div');row.className='ww-row';
+					var tEl=document.createElement('span');tEl.textContent=x.caption;
+					var nEl=document.createElement('em');nEl.textContent=x.author||'匿名';
+					row.appendChild(tEl);row.appendChild(nEl);wall.appendChild(row);
 				});
 			}
 		}
-		show.forEach(function(x,i){
-			var hk=hooksFor(), hook=hk[i%hk.length];
-			var t=document.createElement('div');
-			t.className='wish-tag'+(newId&&String(x.id)===String(newId)?' new':'');
-			var box=treeSvg.getBoundingClientRect(), treeBox=treeEl.getBoundingClientRect();
-			var sc=Math.min(box.width/300,box.height/200);
-			var ox=box.left-treeBox.left+(box.width-300*sc)/2;
-			var oy=box.top-treeBox.top+(box.height-200*sc);
-			var lx=ox+hook[0]*sc, m=(window.innerWidth<=760)?40:52;
-			t.style.left=Math.max(m,Math.min(treeBox.width-m,lx))+'px';
-			t.style.top=(oy+hook[1]*sc)+'px';
-			var swing=document.createElement('div'); swing.className='wt-swing'; swing.style.animationDelay=(i*0.45)+'s';
-			var str=document.createElement('span'); str.className='wt-string'; str.style.height=(10+(i%4)*6)+'px';
-			var rose=document.createElementNS('http://www.w3.org/2000/svg','svg');
-			rose.setAttribute('class','wt-rose'); rose.setAttribute('viewBox','0 0 64 64');
-			var use=document.createElementNS('http://www.w3.org/2000/svg','use');
-			use.setAttribute('href','#roseSym'); use.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href','#roseSym');
-			rose.appendChild(use);
-			var card=document.createElement('div'); card.className='wt-card';
-			var b=document.createElement('b'); b.textContent=x.caption;
-			var nm=document.createElement('i'); nm.textContent=x.author||'匿名';
-			card.appendChild(b); card.appendChild(nm);
-			swing.appendChild(str); swing.appendChild(rose); swing.appendChild(card);
-			t.appendChild(swing);
-			t.addEventListener('click',function(){ showNote(x); });
-			tagsEl.appendChild(t);
-		});
 	}
 	var noteTimer=null;
 	function showNote(x){
 		tip.textContent=(x.author||'匿名')+'：'+x.caption;
-		if(noteTimer) clearTimeout(noteTimer);
-		noteTimer=setTimeout(function(){ tip.textContent=''; },3500);
+		if(noteTimer)clearTimeout(noteTimer);
+		noteTimer=setTimeout(function(){tip.textContent='';},3800);
 	}
-	function load(newId){ fetchAll().then(function(rows){ render(rows,newId); }); }
+	function fetchAll(){
+		return fetch(SB.url+'/rest/v1/photos?select=id,created_at,author,caption,storage_path&storage_path=like.kun-wish*&order=created_at.desc&limit=120',{headers:{apikey:SB.key,Authorization:'Bearer '+SB.key},cache:'no-store'})
+			.then(function(r){return r.ok?r.json():[];}).catch(function(){return [];});
+	}
+	function load(newId){fetchAll().then(function(rows){render(rows,newId);});}
 	function send(){
 		var text=input.value.trim();
-		if(!text){ tip.textContent='先写一句祝福再挂上去吧'; return; }
+		if(!text){tip.textContent='先写一句祝福再挂上去吧';return;}
 		btn.disabled=true;
 		var id=String(Date.now())+'-'+Math.random().toString(36).slice(2,6);
 		var row={author:nick(),caption:text,url:'',storage_path:PRE+id};
 		var ctl=(typeof AbortController!=='undefined')?new AbortController():null;
-		var timer=setTimeout(function(){ if(ctl) ctl.abort(); },15000);
+		var timer=setTimeout(function(){if(ctl)ctl.abort();},15000);
 		fetch(SB.url+'/rest/v1/photos',{method:'POST',headers:{apikey:SB.key,Authorization:'Bearer '+SB.key,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify([row]),signal:ctl?ctl.signal:undefined})
 			.then(function(r){
 				clearTimeout(timer);
 				if(!r.ok) throw new Error('没挂上去 '+r.status);
-				input.value=''; btn.disabled=false;
+				input.value='';btn.disabled=false;
 				tip.textContent='挂上去了，这朵蓝玫瑰是你的';
 				cache.unshift({id:id,caption:text,author:row.author});
 				render(cache,id);
-				setTimeout(function(){ if(tip.textContent.indexOf('挂上了')===0) tip.textContent=''; },3000);
+				setTimeout(function(){if(tip.textContent.indexOf('挂上了')===0)tip.textContent='';},3000);
 				load(id);
 			})
 			.catch(function(e){
-				clearTimeout(timer); btn.disabled=false;
+				clearTimeout(timer);btn.disabled=false;
 				tip.textContent=(e&&e.name==='AbortError')?'网络慢，没挂上去，再点一次':(e.message||'没挂上去，再试一次');
 			});
 	}
 	btn.addEventListener('click',send);
-	input.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); send(); } });
-	load();
-	setInterval(function(){ if(!document.hidden) load(); },5000);
+	input.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();send();}});
+
+	var spin=0,tilt=10,vel=0,dragging=false,lastX=0,lastY=0;
+	function apply(){
+		stage.style.transform='rotateX('+tilt.toFixed(2)+'deg) rotateY('+spin.toFixed(2)+'deg) scale('+sc.toFixed(3)+')';
+		var tags=tagLayer.querySelectorAll('.wt3d-tag');
+		var w=box.clientWidth, h=box.clientHeight;
+		var sp=Math.sin(spin*Math.PI/180), cp=Math.cos(spin*Math.PI/180);
+		var st=Math.sin(tilt*Math.PI/180), ct=Math.cos(tilt*Math.PI/180);
+		var D=1500;
+		for(var i=0;i<tags.length;i++){
+			var el=tags[i],a=+el.dataset.a,dy=+el.dataset.dy,r=+el.dataset.r;
+			var ar=a*Math.PI/180;
+			var wx=r*Math.sin(ar), wz=r*Math.cos(ar);
+			var x1=wx*cp+wz*sp, z1=-wx*sp+wz*cp;
+			var y1=(H/2-0)+0; /* 视觉Y由 dy 决定 */
+			var py=dy;
+			var y2=py*ct - z1*st, z2=py*st + z1*ct;
+			var k=D/Math.max(899,D - z2*sc);
+			var sx=(x1*sc)*k, sy=(y2*sc)*k;
+			el.style.left=(w/2+sx)+'px';
+			el.style.top=(h*0.54+sy)+'px';
+			var face=Math.cos((a+spin)*Math.PI/180);
+			el.style.transform='translate(-50%,0) scale('+(sc*k*(0.96+0.04*Math.max(0,face))).toFixed(3)+')';
+			el.style.opacity=face>0.12?1:0;
+		}
+	}
+	function resize(){
+		var w=box.clientWidth,h=box.clientHeight;
+		sc=Math.max(0.55,Math.min(1.2,Math.min((w-44)/330,(h-80)/420)));
+		buildTree();apply();render(cache);
+	}
+	box.addEventListener('pointerdown',function(e){
+		dragging=true;box.classList.add('dragging');lastX=e.clientX;lastY=e.clientY;vel=0;
+		try{box.setPointerCapture(e.pointerId);}catch(err){}
+	});
+	box.addEventListener('pointermove',function(e){
+		if(!dragging)return;
+		var dx=e.clientX-lastX,dy=e.clientY-lastY;
+		lastX=e.clientX;lastY=e.clientY;
+		spin+=dx*0.42;
+		tilt=Math.max(-8,Math.min(44,tilt-dy*0.18));
+		vel=dx*0.42*0.6;
+		apply();
+	});
+	function endDrag(){
+		if(!dragging)return;
+		dragging=false;box.classList.remove('dragging');
+		if(Math.abs(vel)>18) vel=18*(vel>0?1:-1);
+	}
+	box.addEventListener('pointerup',endDrag);
+	box.addEventListener('pointercancel',endDrag);
+	box.addEventListener('pointerleave',function(e){if(e.buttons===0)endDrag();});
+	function tick(){
+		if(!dragging){
+			if(Math.abs(vel)>0.6){spin+=vel;vel*=0.935;}
+			else{vel+=(0.16-vel)*0.08;spin+=vel;}
+		}
+		apply();requestAnimationFrame(tick);
+	}
+
+	(function snow(){
+		var box2=document.getElementById('wtSnow'); if(!box2) return;
+		var n=window.innerWidth<=760?14:22;
+		for(var i=0;i<n;i++){
+			var d=document.createElement('i');
+			d.style.left=(Math.random()*100)+'%';
+			d.style.animationDuration=(9+Math.random()*9).toFixed(1)+'s';
+			d.style.animationDelay=(-Math.random()*14).toFixed(1)+'s';
+			var sz=(1.6+Math.random()*2.6).toFixed(1);
+			d.style.width=sz+'px';d.style.height=sz+'px';d.style.opacity='0';
+			box2.appendChild(d);
+		}
+	})();
+	buildSpots();buildTree();resize();load();tick();
+	setInterval(function(){if(!document.hidden)load();},6000);
 	var rz=null;
-	window.addEventListener('resize',function(){ if(rz) clearTimeout(rz); rz=setTimeout(function(){ render(cache); },220); });
-	window.addEventListener('load',function(){ render(cache); });
+	window.addEventListener('resize',function(){if(rz)clearTimeout(rz);rz=setTimeout(resize,220);});
 })();
 </script>
 
