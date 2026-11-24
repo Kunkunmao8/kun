@@ -4,18 +4,18 @@
   if (!app || !window.THREE) return;
 
   var GAMES = [
-    { id: 'wish', name: '祝福树', en: 'WISH TREE', cat: 'heal', hot: true, c1: '#2b5f8f',
+    { id: 'wish', name: '祝福树', en: 'WISH TREE', cat: 'heal', hot: true, cover: 'images/cov_wish.jpg', c1: '#2b5f8f',
       chip: '治愈 · 互动', icon: '愿', tag: '3D 许愿', diff: '★',
       desc: '一棵可以转着看的蓝玫瑰树，写一句祝福就多开一朵花。',
       tags: ['3D 可旋转', '蓝玫瑰挂牌', '随手可玩'], go: '去许愿', link: '#wish' },
     { id: 'g5', name: '金海记忆剧场', en: 'GOLD SEA', cat: 'memory', c1: '#8a4a2f',
-      chip: '记忆 · 剧场', icon: '灯', tag: '3D 记忆', diff: '★★★',
+      chip: '记忆 · 剧场', cover: 'images/cov_theater.jpg', tag: '3D 记忆', diff: '★★★',
       desc: '金色灯海一盏盏亮起，按顺序点回去。播放速度可调，关卡往上无限叠。',
       tags: ['3D 剧场', '速度可调', '无限关卡'], go: '进入剧场',
       hint: '灯亮时别急，先记住第一个。' },
     { id: 'g6', name: '蓝玫瑰镜面迷宫', en: 'MIRROR MAZE', cat: 'puzzle', c1: '#2f6f74',
-      chip: '解谜 · 无限关', icon: '镜', tag: '3D 光路', diff: '★★★★',
-      desc: '转动镜面，把光送进立体蓝玫瑰。关卡现场生成，每关解法都不一样。',
+      chip: '解谜 · 无限关', cover: 'images/cov_mirror.jpg', tag: '3D 光路', diff: '★★★★',
+      desc: '9×9 大棋盘，光要一次穿过 2–3 朵立体蓝玫瑰。关卡现场生成，越往后镜子越多。',
       tags: ['3D 光路', '无限关卡', '现场生成'], go: '进入镜厅',
       hint: '点镜子转 90°，跟着右下小地图走。' },
   ];
@@ -347,150 +347,144 @@
     return { dispose: function () { stop(); renderer.dispose(); window.removeEventListener('resize', resize); } };
   }
 
-  /* ---------- 6 蓝玫瑰镜面迷宫（无限关卡） ---------- */
+  /* ---------- 6 蓝玫瑰镜面迷宫（无限关卡 · 多朵玫瑰） ---------- */
   function game6(host) {
     var canvas = el('canvas', 'gx-canvas'); host.appendChild(canvas);
     var renderer = makeGL(canvas);
     var scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x0B1220, 0.022);
-    bgGrad(scene, '#122036', '#05070D');
+    scene.fog = new THREE.FogExp2(0x0E1626, 0.015);
+    bgGrad(scene, '#1A2C4C', '#060A12');
     var camera = new THREE.PerspectiveCamera(50, 1, .1, 120);
 
-    scene.add(new THREE.AmbientLight(0xFFE6C8, 2.0));
-    scene.add(new THREE.HemisphereLight(0xFFF1DA, 0x1A2234, 1.2));
-    var key = new THREE.SpotLight(0xFFE2BC, 10, 40, .7, .55); key.position.set(4, 15, 8); scene.add(key);
-    var cool = new THREE.PointLight(0x59C7C0, 3, 22); cool.position.set(-8, 6, -6); scene.add(cool);
-    var warm2 = new THREE.PointLight(0xE8B44A, 3, 18); warm2.position.set(8, 4, 6); scene.add(warm2);
+    scene.add(new THREE.AmbientLight(0xFFF3E2, 2.7));
+    scene.add(new THREE.HemisphereLight(0xFFF8EC, 0x22303F, 1.55));
+    var key = new THREE.SpotLight(0xFFE8C8, 13, 45, .72, .55); key.position.set(5, 17, 9); scene.add(key);
+    var cool = new THREE.PointLight(0x59C7C0, 3.2, 24); cool.position.set(-9, 6, -7); scene.add(cool);
+    var warm2 = new THREE.PointLight(0xE8B44A, 3.4, 20); warm2.position.set(9, 5, 7); scene.add(warm2);
 
-    var N = 7, TS = 1.2;
+    /* 9×9 大棋盘 */
+    var N = 9, TS = 1.04;
     function cellPos(cx, cz) { return new THREE.Vector3((cx - (N - 1) / 2) * TS, 0, (cz - (N - 1) / 2) * TS); }
 
-    var hall = new THREE.Mesh(new THREE.PlaneGeometry(90, 90), new THREE.MeshStandardMaterial({ color: 0x0C1220, roughness: .95 }));
+    var hall = new THREE.Mesh(new THREE.PlaneGeometry(110, 110), new THREE.MeshStandardMaterial({ color: 0x121A2A, roughness: .95 }));
     hall.rotation.x = -Math.PI / 2; hall.position.y = -.03; scene.add(hall);
 
-    var C1 = 0xF3E8D3, C2 = 0xE1CFAE;
+    var C1 = 0xFBE4B4, C2 = 0xE3C082;
     for (var ix = 0; ix < N; ix++) for (var iz = 0; iz < N; iz++) {
       var tile = new THREE.Mesh(new THREE.PlaneGeometry(TS * .985, TS * .985),
-        new THREE.MeshStandardMaterial({ color: (ix + iz) % 2 ? C1 : C2, roughness: .45, metalness: .06 }));
+        new THREE.MeshStandardMaterial({ color: (ix + iz) % 2 ? C1 : C2, roughness: .42, metalness: .07, emissive: 0x1A0F04, emissiveIntensity: .18 }));
       var p0 = cellPos(ix, iz); tile.rotation.x = -Math.PI / 2; tile.position.set(p0.x, .01, p0.z); scene.add(tile);
     }
-    var wall6 = new THREE.Mesh(new THREE.PlaneGeometry(30, 14), new THREE.MeshStandardMaterial({ color: 0x121B2C, roughness: .95 }));
-    wall6.position.set(0, 5, -9); scene.add(wall6);
-    var arch6 = new THREE.Mesh(new THREE.TorusGeometry(4.6, .17, 8, 44, Math.PI), new THREE.MeshStandardMaterial({ color: 0xB78B3E, metalness: .85, roughness: .32, emissive: 0x3A2600, emissiveIntensity: .4 }));
-    arch6.position.set(0, 2.2, -8.6); scene.add(arch6);
-    var archGlow6 = new THREE.PointLight(0xE8B44A, 3.6, 16); archGlow6.position.set(0, 4.2, -7); scene.add(archGlow6);
+    var wall6 = new THREE.Mesh(new THREE.PlaneGeometry(36, 16), new THREE.MeshStandardMaterial({ color: 0x141F33, roughness: .95 }));
+    wall6.position.set(0, 5.6, -10.5); scene.add(wall6);
+    var arch6 = new THREE.Mesh(new THREE.TorusGeometry(5.6, .2, 8, 48, Math.PI), new THREE.MeshStandardMaterial({ color: 0xC79A4E, metalness: .85, roughness: .3, emissive: 0x3A2600, emissiveIntensity: .45 }));
+    arch6.position.set(0, 2.4, -10); scene.add(arch6);
+    var archGlow6 = new THREE.PointLight(0xE8B44A, 4, 18); archGlow6.position.set(0, 4.6, -8.4); scene.add(archGlow6);
     for (var pd6 = 0; pd6 < 3; pd6++) {
-      var pz6 = -3.4, px6 = (pd6 - 1) * 3.6;
-      var shade6 = new THREE.Mesh(new THREE.ConeGeometry(.42, .5, 18, 1, true), new THREE.MeshStandardMaterial({ color: 0xC79A4E, metalness: .8, roughness: .3, side: THREE.DoubleSide }));
-      shade6.position.set(px6, 4.3, pz6); scene.add(shade6);
-      var cord6 = new THREE.Mesh(new THREE.CylinderGeometry(.012, .012, 2, 6), new THREE.MeshStandardMaterial({ color: 0x2A2E38 }));
-      cord6.position.set(px6, 5.2, pz6); scene.add(cord6);
-      var bulb6 = new THREE.Mesh(new THREE.SphereGeometry(.085, 12, 10), new THREE.MeshBasicMaterial({ color: 0xFFE0AE }));
-      bulb6.position.set(px6, 4.1, pz6); scene.add(bulb6);
-      var pl6 = new THREE.PointLight(0xFFD3A0, 3.4, 15); pl6.position.set(px6, 3.9, pz6); scene.add(pl6);
+      var pz6 = -4.2, px6 = (pd6 - 1) * 4.2;
+      var shade6 = new THREE.Mesh(new THREE.ConeGeometry(.5, .58, 18, 1, true), new THREE.MeshStandardMaterial({ color: 0xD0A256, metalness: .8, roughness: .3, side: THREE.DoubleSide }));
+      shade6.position.set(px6, 4.9, pz6); scene.add(shade6);
+      var cord6 = new THREE.Mesh(new THREE.CylinderGeometry(.014, .014, 2.4, 6), new THREE.MeshStandardMaterial({ color: 0x2A2E38 }));
+      cord6.position.set(px6, 5.9, pz6); scene.add(cord6);
+      var bulb6 = new THREE.Mesh(new THREE.SphereGeometry(.09, 12, 10), new THREE.MeshBasicMaterial({ color: 0xFFE6BC }));
+      bulb6.position.set(px6, 4.7, pz6); scene.add(bulb6);
+      var pl6 = new THREE.PointLight(0xFFD3A0, 3.6, 16); pl6.position.set(px6, 4.5, pz6); scene.add(pl6);
     }
-    var boardW = N * TS + .3;
+    var boardW = N * TS + .26;
     [[0, -boardW / 2, 0], [0, boardW / 2, 0], [-boardW / 2, 0, 1], [boardW / 2, 0, 1]].forEach(function (p) {
-      var fr = new THREE.Mesh(new THREE.BoxGeometry(boardW + .22, .18, .18), new THREE.MeshStandardMaterial({ color: 0xB78B3E, metalness: .8, roughness: .3 }));
-      fr.position.set(p[0], .09, p[1]); if (p[2]) fr.rotation.y = Math.PI / 2; scene.add(fr);
+      var fr = new THREE.Mesh(new THREE.BoxGeometry(boardW + .2, .2, .2), new THREE.MeshStandardMaterial({ color: 0xC79A4E, metalness: .8, roughness: .3 }));
+      fr.position.set(p[0], .1, p[1]); if (p[2]) fr.rotation.y = Math.PI / 2; scene.add(fr);
     });
 
-    /* 立体蓝玫瑰 */
-    var roseGrp = new THREE.Group();
-    var marble = new THREE.MeshStandardMaterial({ color: 0xEFE4CE, roughness: .45, metalness: .08 });
-    var ped = new THREE.Mesh(new THREE.CylinderGeometry(.32, .4, .62, 24), marble);
-    ped.position.y = .31; roseGrp.add(ped);
-    var pedRing = new THREE.Mesh(new THREE.TorusGeometry(.34, .03, 8, 32), new THREE.MeshStandardMaterial({ color: 0xE8B44A, metalness: .9, roughness: .25 }));
-    pedRing.rotation.x = Math.PI / 2; pedRing.position.y = .62; roseGrp.add(pedRing);
+    /* ---------- 立体蓝玫瑰（多朵可复用） ---------- */
     var stemMat = new THREE.MeshStandardMaterial({ color: 0x2E6B4A, roughness: .78 });
-    var stem = new THREE.Mesh(new THREE.CylinderGeometry(.038, .05, .95, 10), stemMat);
-    stem.position.y = 1.1; roseGrp.add(stem);
-    [[.55, .5], [-.62, -.4], [.72, -.2]].forEach(function (lf, li) {
-      var leaf = new THREE.Mesh(new THREE.SphereGeometry(.19, 12, 8), new THREE.MeshStandardMaterial({ color: 0x357B55, roughness: .72 }));
-      leaf.scale.set(1.5, .18, .7);
-      leaf.position.set(lf[0] * .28, 1.12 + li * .16, lf[1] * .2);
-      leaf.rotation.y = lf[0] * .8; leaf.rotation.z = -.4 * lf[0];
-      roseGrp.add(leaf);
-    });
-    var blossom = new THREE.Group(); blossom.position.y = 1.86; blossom.scale.setScalar(1.45); roseGrp.add(blossom);
-    var pMatA = new THREE.MeshStandardMaterial({ color: 0x2F63D8, emissive: 0x102E86, emissiveIntensity: .95, metalness: .35, roughness: .32 });
-    var pMatB = new THREE.MeshStandardMaterial({ color: 0x4C86F0, emissive: 0x1B4CB0, emissiveIntensity: 1.1, metalness: .32, roughness: .3 });
+    var leafMat = new THREE.MeshStandardMaterial({ color: 0x357B55, roughness: .72 });
+    var marble = new THREE.MeshStandardMaterial({ color: 0xEFE4CE, roughness: .45, metalness: .08 });
+    var pedRingMat = new THREE.MeshStandardMaterial({ color: 0xE8B44A, metalness: .9, roughness: .25 });
+    var pMatA = new THREE.MeshStandardMaterial({ color: 0x2F63D8, emissive: 0x1A3FA0, emissiveIntensity: .8, metalness: .4, roughness: .3 });
+    var pMatB = new THREE.MeshStandardMaterial({ color: 0x5B93F2, emissive: 0x2A5EC8, emissiveIntensity: .95, metalness: .35, roughness: .28 });
     var petalGeo = new THREE.SphereGeometry(.18, 14, 10);
-    var rings = [
-      { n: 7, r: .30, tilt: -.95, s: 1.0, mat: pMatA, y: .06 },
-      { n: 6, r: .235, tilt: -.7, s: .92, mat: pMatB, y: .15 },
-      { n: 5, r: .16, tilt: -.42, s: .8, mat: pMatA, y: .26 },
-      { n: 4, r: .095, tilt: -.16, s: .66, mat: pMatB, y: .35 }
-    ];
-    rings.forEach(function (ring, ri) {
-      for (var k = 0; k < ring.n; k++) {
-        var aa = (k / ring.n) * Math.PI * 2 + ri * .5;
-        var p = new THREE.Mesh(petalGeo, ring.mat);
-        p.position.set(Math.cos(aa) * ring.r, ring.y, Math.sin(aa) * ring.r);
-        p.rotation.y = -aa;
-        p.rotation.x = ring.tilt;
-        p.rotation.z = Math.sin(aa) * .12;
-        p.scale.set(1.35 * ring.s, 1.05 * ring.s, .45 * ring.s);
-        blossom.add(p);
-      }
-    });
-    var bud = new THREE.Mesh(new THREE.SphereGeometry(.16, 16, 12), pMatB);
-    bud.scale.set(1, 1.15, 1); bud.position.y = .42; blossom.add(bud);
-    var core = new THREE.Mesh(new THREE.SphereGeometry(.09, 14, 12), new THREE.MeshStandardMaterial({ color: 0x9CC4FF, emissive: 0x2A5FD0, emissiveIntensity: 1.9, roughness: .25 }));
-    core.position.y = .5; blossom.add(core);
-    var coreSwirl = new THREE.Mesh(new THREE.TorusGeometry(.07, .02, 8, 20), pMatB);
-    coreSwirl.rotation.x = Math.PI / 2.2; coreSwirl.position.y = .5; blossom.add(coreSwirl);
-    for (var sp = 0; sp < 5; sp++) {
-      var aa2 = sp / 5 * Math.PI * 2;
-      var sepal = new THREE.Mesh(new THREE.ConeGeometry(.055, .24, 8), stemMat);
-      sepal.position.set(Math.cos(aa2) * .2, -.02, Math.sin(aa2) * .2);
-      sepal.rotation.z = Math.cos(aa2) * .95; sepal.rotation.x = -Math.sin(aa2) * .95;
-      blossom.add(sepal);
+    var coreMat = new THREE.MeshStandardMaterial({ color: 0xB7D4FF, emissive: 0x3F74E0, emissiveIntensity: 1.6, roughness: .25 });
+
+    function makeRose(idx) {
+      var g = new THREE.Group();
+      var ped = new THREE.Mesh(new THREE.CylinderGeometry(.34, .42, .5, 24), marble); ped.position.y = .25; g.add(ped);
+      var pri = new THREE.Mesh(new THREE.TorusGeometry(.36, .03, 8, 32), pedRingMat); pri.rotation.x = Math.PI / 2; pri.position.y = .5; g.add(pri);
+      var stem = new THREE.Mesh(new THREE.CylinderGeometry(.038, .05, .78, 10), stemMat); stem.position.y = .92; g.add(stem);
+      [[.55, .5], [-.62, -.4], [.72, -.2]].forEach(function (lf, li) {
+        var leaf = new THREE.Mesh(new THREE.SphereGeometry(.17, 12, 8), leafMat);
+        leaf.scale.set(1.5, .18, .7);
+        leaf.position.set(lf[0] * .26, .95 + li * .14, lf[1] * .18);
+        leaf.rotation.y = lf[0] * .8; leaf.rotation.z = -.4 * lf[0];
+        g.add(leaf);
+      });
+      var blossom = new THREE.Group(); blossom.position.y = 1.42; blossom.scale.setScalar(1.22); g.add(blossom);
+      [
+        { n: 7, r: .30, tilt: -.95, s: 1.0, mat: pMatA, y: .06 },
+        { n: 6, r: .235, tilt: -.7, s: .92, mat: pMatB, y: .15 },
+        { n: 5, r: .16, tilt: -.42, s: .8, mat: pMatA, y: .26 },
+        { n: 4, r: .095, tilt: -.16, s: .66, mat: pMatB, y: .35 }
+      ].forEach(function (ring, ri) {
+        for (var k = 0; k < ring.n; k++) {
+          var aa = (k / ring.n) * Math.PI * 2 + ri * .5;
+          var p = new THREE.Mesh(petalGeo, ring.mat);
+          p.position.set(Math.cos(aa) * ring.r, ring.y, Math.sin(aa) * ring.r);
+          p.rotation.y = -aa; p.rotation.x = ring.tilt; p.rotation.z = Math.sin(aa) * .12;
+          p.scale.set(1.4 * ring.s, 1.08 * ring.s, .48 * ring.s);
+          blossom.add(p);
+        }
+      });
+      var bud = new THREE.Mesh(new THREE.SphereGeometry(.16, 16, 12), pMatB);
+      bud.scale.set(1, 1.15, 1); bud.position.y = .42; blossom.add(bud);
+      var core = new THREE.Mesh(new THREE.SphereGeometry(.09, 14, 12), coreMat); core.position.y = .5; blossom.add(core);
+      var glow = new THREE.PointLight(0x5A93FF, 2.6, 8); glow.position.set(0, 1.4, 0); g.add(glow);
+      var ring = new THREE.Mesh(new THREE.RingGeometry(.5, .6, 40), new THREE.MeshBasicMaterial({ color: 0x7FB2FF, transparent: true, opacity: .45, side: THREE.DoubleSide }));
+      ring.rotation.x = -Math.PI / 2; ring.position.y = .035; g.add(ring);
+      var tag = new THREE.Sprite(new THREE.SpriteMaterial({ map: textTex((idx + 1) + ' 号玫瑰', { bg: 'rgba(7,11,20,.82)', fg: '#F2CD82', size: 44, w: 300, h: 84 }), transparent: true, depthTest: false }));
+      tag.position.set(0, 1.86, 0); tag.scale.set(.78, .22, 1); g.add(tag);
+      g.userData.tag = tag;
+      scene.add(g);
+      return { grp: g, bloom: blossom, core: core, glow: glow, ring: ring, tag: tag, lit: false };
     }
-    var roseGlow = new THREE.PointLight(0x5A93FF, 3.2, 10); roseGlow.position.set(0, 1.8, 0); roseGrp.add(roseGlow);
-    var roseRing = new THREE.Mesh(new THREE.RingGeometry(.62, .74, 44), new THREE.MeshBasicMaterial({ color: 0x7FB2FF, transparent: true, opacity: .55, side: THREE.DoubleSide }));
-    roseRing.rotation.x = -Math.PI / 2; roseRing.position.y = .035; roseGrp.add(roseRing);
-    var roseTag = new THREE.Sprite(new THREE.SpriteMaterial({ map: textTex('蓝玫瑰 · 目标', { bg: 'rgba(7,11,20,.9)', fg: '#F2CD82', size: 40, w: 320, h: 84 }), transparent: true, depthTest: false }));
-    roseTag.position.set(0, 2.95, 0); roseTag.scale.set(1.75, .43, 1); roseGrp.add(roseTag);
-    scene.add(roseGrp);
 
-    /* 发射器 */
+    /* ---------- 发射器 ---------- */
     var emitGrp = new THREE.Group();
-    var eBody = new THREE.Mesh(new THREE.BoxGeometry(.6, .4, .84), new THREE.MeshStandardMaterial({ color: 0xB78B3E, metalness: .85, roughness: .3 }));
+    var eBody = new THREE.Mesh(new THREE.BoxGeometry(.64, .44, .9), new THREE.MeshStandardMaterial({ color: 0xC79A4E, metalness: .85, roughness: .3 }));
     emitGrp.add(eBody);
-    var eLens = new THREE.Mesh(new THREE.CylinderGeometry(.14, .14, .2, 20), new THREE.MeshStandardMaterial({ color: 0x9FF3EA, emissive: 0x35D8C8, emissiveIntensity: 1.7, metalness: .3, roughness: .2 }));
-    eLens.rotation.x = Math.PI / 2; eLens.position.z = .46; emitGrp.add(eLens);
+    var eLens = new THREE.Mesh(new THREE.CylinderGeometry(.15, .15, .22, 20), new THREE.MeshStandardMaterial({ color: 0x9FF3EA, emissive: 0x35D8C8, emissiveIntensity: 1.8, metalness: .3, roughness: .2 }));
+    eLens.rotation.x = Math.PI / 2; eLens.position.z = .5; emitGrp.add(eLens);
     var eGlow = new THREE.PointLight(0x59E6D8, 2.6, 8); eGlow.position.set(0, 0, .6); emitGrp.add(eGlow);
-    emitGrp.rotation.y = Math.PI / 2;
-    scene.add(emitGrp);
+    emitGrp.rotation.y = Math.PI / 2; scene.add(emitGrp);
 
-    /* 镜面：加大画框 + 地面提示牌 */
-    var mirrorMat = new THREE.MeshStandardMaterial({ color: 0xD8ECF6, metalness: .86, roughness: .06, emissive: 0x2A5C74, emissiveIntensity: .35 });
-    var frameMat = new THREE.MeshStandardMaterial({ color: 0xE8B44A, metalness: .85, roughness: .28 });
+    /* ---------- 镜子（含隐形点击区，修复点不到） ---------- */
+    var mirrorMat = new THREE.MeshStandardMaterial({ color: 0xEDF7FF, metalness: .55, roughness: .12, emissive: 0x7FB6D8, emissiveIntensity: .55 });
+    var frameMat = new THREE.MeshStandardMaterial({ color: 0xF0C066, metalness: .8, roughness: .3, emissive: 0x3A2408, emissiveIntensity: .25 });
     var baseMat = new THREE.MeshStandardMaterial({ color: 0x6A4B28, metalness: .55, roughness: .45 });
+    var hitMat6 = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false, colorWrite: false });
     function makeMirror(m) {
       var g = new THREE.Group();
-      var base = new THREE.Mesh(new THREE.CylinderGeometry(.36, .44, .12, 26), baseMat); base.position.y = .06; g.add(base);
-      var frame = new THREE.Mesh(new THREE.BoxGeometry(1.16, 1.4, .1), frameMat); frame.position.y = .9; g.add(frame);
-      var glass = new THREE.Mesh(new THREE.PlaneGeometry(.98, 1.2), mirrorMat); glass.position.set(0, .9, .062); g.add(glass);
-      var backPlate = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.34, .04), new THREE.MeshStandardMaterial({ color: 0x3A2E22, roughness: .8 }));
-      backPlate.position.set(0, .9, -.05); g.add(backPlate);
+      var base = new THREE.Mesh(new THREE.CylinderGeometry(.34, .42, .14, 26), baseMat); base.position.y = .07; g.add(base);
+      var frame = new THREE.Mesh(new THREE.BoxGeometry(.9, 1.34, .08), frameMat); frame.position.y = .86; g.add(frame);
+      var glass = new THREE.Mesh(new THREE.PlaneGeometry(.76, 1.14), mirrorMat); glass.position.set(0, .86, .05); g.add(glass);
+      var backPlate = new THREE.Mesh(new THREE.BoxGeometry(.86, 1.28, .04), new THREE.MeshStandardMaterial({ color: 0x3A2E22, roughness: .8 }));
+      backPlate.position.set(0, .86, -.04); g.add(backPlate);
       var knob = new THREE.Mesh(new THREE.SphereGeometry(.055, 12, 10), new THREE.MeshStandardMaterial({ color: 0xF2CD82, metalness: .9, roughness: .25 }));
-      knob.position.set(.54, .21, 0); g.add(knob);
-      var tag = new THREE.Sprite(new THREE.SpriteMaterial({ map: textTex('点我转 90° ↻', { bg: 'rgba(7,11,20,.92)', fg: '#F2CD82', size: 48, w: 460, h: 118 }), transparent: true, depthTest: false }));
-      tag.position.set(0, 1.92, 0); tag.scale.set(1.7, .42, 1); g.add(tag);
+      knob.position.set(.44, .2, 0); g.add(knob);
+      var hit = new THREE.Mesh(new THREE.PlaneGeometry(1.3, 1.9), hitMat6); hit.position.set(0, .95, .02); g.add(hit);
+      var tag = new THREE.Sprite(new THREE.SpriteMaterial({ map: textTex('↻', { bg: 'rgba(7,11,20,.0)', fg: '#F2CD82', size: 74, w: 150, h: 150 }), transparent: true, depthTest: false }));
+      tag.position.set(0, 1.66, 0); tag.scale.set(.42, .42, 1); g.add(tag);
       g.userData.pick = m;
-      m.grp = g; m.glass = glass;
+      m.grp = g; m.hit = hit;
       g.position.copy(cellPos(m.x, m.z));
       g.rotation.y = m.type === '/' ? -Math.PI / 4 : Math.PI / 4;
       scene.add(g);
       return g;
     }
 
-    /* 机位：按屏幕比例自动拉远，保证棋盘不出画 */
-    var yaw = .02, pitch = .62, camR = 20;
+    /* ---------- 机位 ---------- */
+    var yaw = .02, pitch = .86, camR = 22;
     function applyCam() {
-      var target = new THREE.Vector3(0, .1, 0);
+      var target = new THREE.Vector3(0, .2, 0);
       camera.position.set(target.x + camR * Math.sin(pitch) * Math.sin(yaw), target.y + camR * Math.cos(pitch), target.z + camR * Math.sin(pitch) * Math.cos(yaw));
       camera.lookAt(target);
     }
@@ -499,7 +493,7 @@
     canvas.addEventListener('pointermove', function (e) {
       if (!dragging) return;
       yaw -= (e.clientX - lx) * .006;
-      pitch = Math.max(.55, Math.min(1.3, pitch - (e.clientY - ly) * .004));
+      pitch = Math.max(.55, Math.min(1.28, pitch - (e.clientY - ly) * .004));
       lx = e.clientX; ly = e.clientY; applyCam();
     });
     ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (ev) { canvas.addEventListener(ev, function () { dragging = false; }); });
@@ -515,67 +509,101 @@
       var tab = t === '/' ? { E: 'N', N: 'E', W: 'S', S: 'W' } : { E: 'S', S: 'E', W: 'N', N: 'W' };
       return tab[dir];
     }
+    function mirrorTypeFor(inDir, outDir) {
+      return reflect(inDir, '/') === outDir ? '/' : '\\';
+    }
 
-    var lv = 0, start = { x: 0, z: 3, dir: 'E' }, rose = { x: 6, z: 1 }, mirrors = [], won = false, path = [], solution = [];
+    /* ---------- 状态 ---------- */
+    var lv = 0, start = { x: 0, z: 4 }, mirrors = [], roses = [], solution = [], won = false, path = [], litNow = 0;
     var beamGrp = new THREE.Group(); scene.add(beamGrp);
-    var beamMat = new THREE.MeshStandardMaterial({ color: 0x6FF0E2, emissive: 0x38D8C8, emissiveIntensity: 1.9, roughness: .4, metalness: .2 });
+    var roseGrpAll = new THREE.Group(); scene.add(roseGrpAll);
+    var beamMat = new THREE.MeshStandardMaterial({ color: 0x6FF0E2, emissive: 0x38D8C8, emissiveIntensity: 2.0, roughness: .4, metalness: .2 });
     var glowMat = new THREE.MeshBasicMaterial({ color: 0x59E6D8, transparent: true, opacity: .22, blending: THREE.AdditiveBlending, depthWrite: false });
     var hitMat = new THREE.MeshBasicMaterial({ color: 0xD8FFF8 });
 
     function idxAt(x, z) { for (var i = 0; i < mirrors.length; i++) if (mirrors[i].x === x && mirrors[i].z === z) return i; return -1; }
+    function roseAt(x, z) { for (var i = 0; i < roses.length; i++) if (roses[i].x === x && roses[i].z === z) return i; return -1; }
+
     function runTrace(orient) {
-      var x = start.x, z = start.z, dir = start.dir, pts = [], steps = 0;
-      var sp = cellPos(x, z); sp.x -= TS * .68; pts.push(sp.clone());
-      while (steps++ < 64) {
-        if (x === rose.x && z === rose.z) return { win: true, path: pts };
+      var x = start.x, z = start.z, dir = 'E', pts = [], steps = 0, lit = [];
+      var sp = cellPos(x, z); sp.x -= TS * .7; pts.push(sp.clone());
+      while (steps++ < 90) {
         var mi = idxAt(x, z);
-        if (mi >= 0) dir = reflect(dir, orient[mi]);
+        if (mi >= 0 && orient[mi]) dir = reflect(dir, orient[mi]);
         var d = DIRS[dir]; x += d[0]; z += d[1];
         if (x < 0 || x >= N || z < 0 || z >= N) {
-          var ep = cellPos(Math.max(-.75, Math.min(N - .25, x)), Math.max(-.75, Math.min(N - .25, z))); pts.push(ep); break;
+          var ep = cellPos(Math.max(-.7, Math.min(N - .3, x)), Math.max(-.7, Math.min(N - .3, z))); pts.push(ep); break;
         }
         pts.push(cellPos(x, z));
+        var ri = roseAt(x, z); if (ri >= 0 && lit.indexOf(ri) < 0) lit.push(ri);
       }
-      return { win: false, path: pts };
+      return { win: lit.length === roses.length, path: pts, lit: lit };
     }
 
-    /* 关卡生成：随机布镜 + 校验可解 + 限制最少步数 + 不重复 */
+    /* ---------- 关卡生成：先造一条必定穿过所有玫瑰的光路 ---------- */
     var usedSig = {};
     function genLevel(i) {
-      var m = Math.min(2 + Math.floor(i / 2), 6);
-      var minFlips = Math.min(2 + Math.floor(i / 3), 4);
-      for (var attempt = 0; attempt < 300; attempt++) {
-        var s0 = { x: 0, z: 1 + Math.floor(Math.random() * (N - 2)), dir: 'E' };
-        var r0 = { x: N - 1 - Math.floor(Math.random() * 2), z: 1 + Math.floor(Math.random() * (N - 2)) };
-        if (r0.z === s0.z) r0.z = (r0.z + 2) % N;
-        var ms = [], guard = 0;
-        while (ms.length < m && guard++ < 400) {
-          var mx = 1 + Math.floor(Math.random() * (N - 2)), mz = 1 + Math.floor(Math.random() * (N - 2));
-          if ((mx === s0.x && mz === s0.z) || (mx === r0.x && mz === r0.z)) continue;
-          if (ms.some(function (q) { return Math.abs(q.x - mx) <= 1 && Math.abs(q.z - mz) <= 1; })) continue;
-          if (Math.abs(mx - s0.x) <= 1 && Math.abs(mz - s0.z) <= 1) continue;
-          if (Math.abs(mx - r0.x) <= 1 && Math.abs(mz - r0.z) <= 1) continue;
-          ms.push({ x: mx, z: mz });
+      var m = Math.min(3 + Math.floor(i / 2), 7);
+      var k = Math.min(2 + Math.floor(i / 4), 3);
+      var minFlips = Math.min(2 + Math.floor(i / 3), 4, m);
+      for (var attempt = 0; attempt < 90; attempt++) {
+        var z0 = 1 + Math.floor(Math.random() * (N - 2));
+        var x = 0, z = z0, dir = 'E', cells = [{ x: x, z: z }], plan = [];
+        var pre = 2 + Math.floor(Math.random() * 2);
+        for (var q = 0; q < pre; q++) { x++; cells.push({ x: x, z: z }); }
+        var guard = 0;
+        while (plan.length < m && guard++ < 14) {
+          var outs = (dir === 'E' || dir === 'W') ? ['N', 'S'] : ['E', 'W'];
+          outs.sort(function () { return Math.random() - .5; });
+          var pick = null;
+          for (var oi = 0; oi < outs.length; oi++) {
+            var dd = DIRS[outs[oi]], nx = x + dd[0], nz = z + dd[1];
+            if (nx > 0 && nx < N - 1 && nz > 0 && nz < N - 1) { pick = outs[oi]; break; }
+          }
+          if (!pick) break;
+          plan.push({ x: x, z: z, type: mirrorTypeFor(dir, pick) });
+          dir = pick;
+          var run = 2 + Math.floor(Math.random() * 3);
+          if (plan.length === m) run = 3 + Math.floor(Math.random() * 3);
+          for (var q2 = 0; q2 < run; q2++) {
+            var d2 = DIRS[dir]; x += d2[0]; z += d2[1];
+            if (x < 0 || x >= N || z < 0 || z >= N) { x -= d2[0]; z -= d2[1]; break; }
+            cells.push({ x: x, z: z });
+          }
         }
-        if (ms.length < m) continue;
-        var init = ms.map(function () { return Math.random() < .5 ? '/' : '\\'; });
-        var sig = s0.x + ',' + s0.z + '|' + r0.x + ',' + r0.z + '|' + ms.map(function (q, k) { return q.x + q.z + init[k]; }).join(';');
+        if (plan.length < m) continue;
+
+        var cand = cells.filter(function (c, ci) { return ci > 0 && !plan.some(function (p) { return p.x === c.x && p.z === c.z; }); });
+        if (cand.length < k) continue;
+        var roseCells = [], pickGuard = 0;
+        while (roseCells.length < k && pickGuard++ < 60) {
+          var rc = cand[Math.floor(Math.random() * cand.length)];
+          if (roseCells.some(function (r) { return r.x === rc.x && r.z === rc.z; })) continue;
+          if (Math.abs(rc.x - start.x) <= 1 && rc.z === z0) continue;
+          if (roseCells.some(function (r) { return Math.max(Math.abs(r.x - rc.x), Math.abs(r.z - rc.z)) < 2; })) continue;
+          roseCells.push({ x: rc.x, z: rc.z });
+        }
+        if (roseCells.length < k) continue;
+
+        var sig = z0 + '|' + plan.map(function (p) { return p.x + ',' + p.z + p.type; }).join(';') + '|' + roseCells.map(function (r) { return r.x + ',' + r.z; }).join(';');
         if (usedSig[sig]) continue;
 
-        mirrors = ms.map(function (q, k) { return { x: q.x, z: q.z, type: init[k] }; });
-        start = s0; rose = r0;
-        var best = null, bestD = 99, sols = 0;
+        start = { x: 0, z: z0 };
+        mirrors = plan.map(function (p) { return { x: p.x, z: p.z, type: (Math.random() < .5 ? '/' : '\\') }; });
+        roses = roseCells;
+        var init = mirrors.map(function (mm) { return mm.type; });
+        var best = null, bestD = 99;
         for (var mask = 0; mask < (1 << m); mask++) {
           var o = [];
           for (var b = 0; b < m; b++) o.push((mask >> b) & 1 ? '\\' : '/');
           var r = runTrace(o);
           if (r.win) {
             var dist = 0; for (var b2 = 0; b2 < m; b2++) if (o[b2] !== init[b2]) dist++;
-            sols++;
             if (dist < bestD) { bestD = dist; best = o; }
           }
         }
-        if (!best || bestD < minFlips || bestD > m) continue;
+        if (!best) continue;
+        if (bestD < Math.min(minFlips, m) && attempt < 60) continue;
         usedSig[sig] = 1;
         solution = best;
         return true;
@@ -583,23 +611,47 @@
       return false;
     }
 
-    function loadLevel(i) {
-      lv = i;
+    function clearBoard() {
       mirrors.forEach(function (m) { if (m.grp) scene.remove(m.grp); });
-      mirrors = [];
+      roses.forEach(function (r) { if (r.grp) roseGrpAll.remove(r.grp); });
+      mirrors = []; roses = [];
+    }
+
+    function loadLevel(i) {
+      lv = i; won = false;
+      clearBoard();
       var ok = false;
-      for (var tries = 0; tries < 4 && !ok; tries++) ok = genLevel(i);
-      if (!ok) { mirrors = [{ x: 3, z: 3, type: '/' }]; start = { x: 0, z: 3, dir: 'E' }; rose = { x: 6, z: 1 }; solution = ['\\']; }
+      for (var tries = 0; tries < 5 && !ok; tries++) ok = genLevel(i);
+      if (!ok) {
+        start = { x: 0, z: 4 };
+        mirrors = [{ x: 4, z: 4, type: '/' }];
+        roses = [{ x: 2, z: 4 }, { x: 6, z: 6 }];
+        solution = ['/'];
+      }
       mirrors.forEach(function (m) { makeMirror(m); });
-      roseGrp.position.copy(cellPos(rose.x, rose.z));
+      roses.forEach(function (r, ri) {
+        var g = makeRose(ri);
+        g.grp.position.copy(cellPos(r.x, r.z));
+        g.grp.scale.setScalar(.92);
+        r.grp = g.grp; r.bloom = g.bloom; r.core = g.core; r.glow = g.glow; r.ring = g.ring; r.tag = g.tag; r.lit = false;
+        roseGrpAll.add(g.grp);
+      });
       var sp2 = cellPos(start.x, start.z);
-      emitGrp.position.set(sp2.x - TS * .68, .48, sp2.z);
+      emitGrp.position.set(sp2.x - TS * .72, .5, sp2.z);
       trace();
     }
 
     function trace() {
       var r = runTrace(mirrors.map(function (m) { return m.type; }));
-      path = r.path; won = r.win;
+      path = r.path; litNow = r.lit.length;
+      roses.forEach(function (ro, ri) {
+        ro.lit = r.lit.indexOf(ri) >= 0;
+        if (ro.glow) ro.glow.intensity = ro.lit ? 5.2 : 2.2;
+        if (ro.ring) { ro.ring.material.opacity = ro.lit ? .95 : .35; ro.ring.material.color.set(ro.lit ? 0xFFD79A : 0x7FB2FF); }
+        if (ro.core) ro.core.material.emissiveIntensity = ro.lit ? 2.4 : 1.2;
+        if (ro.tag) ro.tag.material.opacity = ro.lit ? .45 : 1;
+      });
+      won = r.win;
       drawBeam(); drawMini(); updateHud();
       if (won) win();
     }
@@ -607,14 +659,14 @@
     function drawBeam() {
       while (beamGrp.children.length) { var o = beamGrp.children.pop(); if (o.geometry) o.geometry.dispose(); }
       for (var i = 1; i < path.length; i++) {
-        var a = path[i - 1].clone(); a.y = .62;
-        var b = path[i].clone(); b.y = .62;
+        var a = path[i - 1].clone(); a.y = .64;
+        var b = path[i].clone(); b.y = .64;
         beamGrp.add(bar(a, b, .05, beamMat));
         beamGrp.add(bar(a, b, .13, glowMat));
       }
       for (var j = 0; j < path.length - 1; j++) {
         var s2 = new THREE.Mesh(new THREE.SphereGeometry(.095, 10, 8), hitMat);
-        s2.position.copy(path[j]); s2.position.y = .62; beamGrp.add(s2);
+        s2.position.copy(path[j]); s2.position.y = .64; beamGrp.add(s2);
       }
       var endGlow = new THREE.PointLight(0x6FE8DC, 2.0, 7);
       endGlow.position.copy(path[path.length - 1]); endGlow.position.y = .8; beamGrp.add(endGlow);
@@ -638,28 +690,33 @@
       miniCtx.stroke();
       mirrors.forEach(function (m) {
         var mx = pad + (m.x + .5) * cell, mz = pad + (m.z + .5) * cell;
-        miniCtx.strokeStyle = '#E8B44A'; miniCtx.lineWidth = 2.6;
+        miniCtx.strokeStyle = '#E8B44A'; miniCtx.lineWidth = 2.4;
         miniCtx.beginPath();
         var sgn = m.type === '/' ? 1 : -1;
-        miniCtx.moveTo(mx - cell * .32, mz + sgn * cell * .32);
-        miniCtx.lineTo(mx + cell * .32, mz - sgn * cell * .32);
+        miniCtx.moveTo(mx - cell * .3, mz + sgn * cell * .3);
+        miniCtx.lineTo(mx + cell * .3, mz - sgn * cell * .3);
         miniCtx.stroke();
       });
-      miniCtx.fillStyle = '#6FA8FF';
-      miniCtx.beginPath(); miniCtx.arc(pad + (rose.x + .5) * cell, pad + (rose.z + .5) * cell, 5, 0, Math.PI * 2); miniCtx.fill();
-      miniCtx.strokeStyle = 'rgba(111,168,255,.8)'; miniCtx.beginPath(); miniCtx.arc(pad + (rose.x + .5) * cell, pad + (rose.z + .5) * cell, 9, 0, Math.PI * 2); miniCtx.stroke();
+      roses.forEach(function (r) {
+        miniCtx.fillStyle = r.lit ? '#FFD79A' : '#6FA8FF';
+        miniCtx.beginPath(); miniCtx.arc(pad + (r.x + .5) * cell, pad + (r.z + .5) * cell, 5, 0, Math.PI * 2); miniCtx.fill();
+        miniCtx.strokeStyle = r.lit ? 'rgba(255,215,154,.9)' : 'rgba(111,168,255,.8)';
+        miniCtx.beginPath(); miniCtx.arc(pad + (r.x + .5) * cell, pad + (r.z + .5) * cell, 9, 0, Math.PI * 2); miniCtx.stroke();
+      });
       miniCtx.fillStyle = '#59E6D8';
       miniCtx.fillRect(pad + (start.x) * cell - 4, pad + (start.z + .25) * cell, cell * .42, cell * .5);
     }
 
     function updateHud() {
-      hud.innerHTML = '<b>第 ' + (lv + 1) + ' 关 · 无限</b><span>' + (won ? '光束照到蓝玫瑰了' : '点镜面旋转 90°，把光送到蓝玫瑰') + '</span>';
+      var left = roses.length - litNow;
+      hud.innerHTML = '<b>第 ' + (lv + 1) + ' 关 · 无限</b><span>' + (won ? '蓝玫瑰全亮了' : '已点亮 ' + litNow + ' / ' + roses.length + ' 朵，还差 ' + left + ' 朵') + '</span>';
     }
 
+    var winGuard = false;
     function win() {
-      toast('第 ' + (lv + 1) + ' 关通过 🌹');
-      roseGlow.intensity = 7; roseRing.material.opacity = 1;
-      setTimeout(function () { loadLevel(lv + 1); }, 1500);
+      if (winGuard) return; winGuard = true;
+      toast('第 ' + (lv + 1) + ' 关通过 · 玫瑰全亮');
+      setTimeout(function () { winGuard = false; loadLevel(lv + 1); }, 1600);
     }
 
     var raycaster = new THREE.Raycaster(), ndc = new THREE.Vector2();
@@ -667,7 +724,7 @@
       var r = canvas.getBoundingClientRect();
       ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
       raycaster.setFromCamera(ndc, camera);
-      var hit = raycaster.intersectObjects(mirrors.map(function (m) { return m.glass; }), false)[0];
+      var hit = raycaster.intersectObjects(mirrors.map(function (m) { return m.hit; }), false)[0];
       if (!hit) return;
       var mm = hit.object.parent.userData.pick;
       mm.type = mm.type === '/' ? '\\' : '/';
@@ -680,30 +737,31 @@
     hintBtn.onclick = function () {
       var need = [];
       mirrors.forEach(function (m, i) { if (solution[i] && solution[i] !== m.type) need.push('第' + (m.z + 1) + '排第' + (m.x + 1) + '列'); });
-      if (!need.length) toast('当前已经是对的，光只差一点点');
+      if (!need.length) toast('朝向已经对了，转动视角看看光路');
       else toast('要转的是 ' + need.join(' / ') + '，共 ' + need.length + ' 面', 4600, true);
     };
 
     function resize() {
       var w = host.clientWidth, h = host.clientHeight;
       renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
-      var half = (N * TS) / 2 + .95;
+      var half = (N * TS) / 2 + .9;
       var hf = Math.atan(Math.tan((camera.fov * Math.PI / 180) / 2) * camera.aspect);
-      var need = half / Math.tan(hf) * 1.08;
-      camR = Math.max(need, 13);
+      var need = half / Math.tan(hf) * 1.06;
+      camR = Math.max(need, 15);
       applyCam();
     }
     resize(); window.addEventListener('resize', resize);
-    host.appendChild(el('div', 'gx-hud', '<span>点镜面旋转，光束到玫瑰即过关</span><span class="gx-badge">3D 光路 · 无限关</span>'));
+    host.appendChild(el('div', 'gx-hud', '<span>转镜面，让光穿过每一朵蓝玫瑰</span><span class="gx-badge">3D 光路 · 无限关</span>'));
 
     applyCam();
     loadLevel(0);
 
     var stop = loop({ renderer: renderer, scene: scene, camera: camera, update: function (dt, t) {
-      roseRing.scale.setScalar(1 + Math.sin(t * 2) * .06);
-      core.rotation.y += dt * .9;
-      coreSwirl.rotation.z += dt * 1.4;
-      roseGlow.intensity = won ? 6 + Math.sin(t * 4) * 1.2 : 3 + Math.sin(t * 1.4) * .6;
+      roses.forEach(function (ro, ri) {
+        if (ro.ring) ro.ring.scale.setScalar(1 + Math.sin(t * 2 + ri) * .06);
+        if (ro.core) ro.core.rotation.y += dt * .9;
+        if (ro.grp) ro.grp.rotation.y = Math.sin(t * .4 + ri) * .05;
+      });
       eGlow.intensity = 1.9 + Math.sin(t * 3) * .4;
     }});
     return { dispose: function () { stop(); renderer.dispose(); window.removeEventListener('resize', resize); } };
@@ -715,7 +773,6 @@
   function buildHub() {
     app.innerHTML =
       '<div class="kw-top">' +
-        '<div class="kw-brand"><div class="kw-mark">坤</div><div><b>KUN 星站</b><span>GAME LOBBY · IKUN</span></div></div>' +
         '<nav class="kw-nav" id="gxNav">' +
           '<button data-cat="all" aria-pressed="true">全部</button>' +
           '<button data-cat="heal" aria-pressed="false">治愈</button>' +
@@ -744,7 +801,9 @@
       card.style.setProperty('--c1', g.c1 || '#22407a');
       var tagHtml = (g.tags || []).map(function (t, i) { return '<span class="gx-tag' + (i === 0 ? ' gold' : '') + '">' + t + '</span>'; }).join('');
       card.innerHTML =
-        '<div class="gx-cover"><span class="gx-chip' + (g.hot ? ' hot' : '') + '">' + (g.chip || g.tag) + '</span>' +
+        '<div class="gx-cover">' +
+          (g.cover ? '<img class="gx-shot" src="' + g.cover + '" alt="' + g.name + ' 封面" decoding="async">' : '') +
+          '<span class="gx-chip' + (g.hot ? ' hot' : '') + '">' + (g.chip || g.tag) + '</span>' +
           '<span class="gx-ico">' + g.icon + '</span></div>' +
         '<div class="gx-body"><h3 class="gx-title">' + g.name + '<small>' + (g.en || '') + '</small></h3>' +
           '<p class="gx-desc">' + g.desc + '</p>' +
@@ -775,8 +834,8 @@
   }
 
   var STEPS = {
-    g5: ['座位会像灯海一样依次亮起，记住顺序。', '轮到你时，按同样顺序点座位；点错就重来这一关。', '每过一关序列更长，可以无限往上刷。'],
-    g6: ['左边金色的装置是发射器，会射出青色激光。', '点任意一面镜子，它就会旋转 90°，改变光束方向。', '把光束引到那朵蓝玫瑰上就过关；右下角小地图会实时画出光路。']
+    g5: ['座位会像灯海一样依次亮起，记住顺序；底部可切慢/常速/快。', '轮到你时，按同样顺序点座位；点错就重来这一关。', '每过一关序列更长，可以无限往上刷。'],
+    g6: ['左边金色的装置是发射器，会射出青色激光。', '点镜子旋转 90°；光要一次穿过棋盘上全部 2–3 朵蓝玫瑰。', '穿过一朵它就会发亮；卡住了点右上「提示」，右下小地图有光路。']
   };
 
   function openGame(info) {
