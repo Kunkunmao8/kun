@@ -37,13 +37,14 @@
     return d;
   }
 
-  function toast(msg, ms) {
+  function toast(msg, ms, anchor) {
     if (!stage) return;
     if (!toastEl) {
       toastEl = el('div', 'gx-toast');
       stage.appendChild(toastEl);
     }
     var node = toastEl;
+    node.className = 'gx-toast' + (anchor ? ' at-hint' : '');
     node.textContent = msg;
     node.classList.add('show');
     clearTimeout(node._t);
@@ -477,7 +478,7 @@
       var knob = new THREE.Mesh(new THREE.SphereGeometry(.055, 12, 10), new THREE.MeshStandardMaterial({ color: 0xF2CD82, metalness: .9, roughness: .25 }));
       knob.position.set(.54, .21, 0); g.add(knob);
       var tag = new THREE.Sprite(new THREE.SpriteMaterial({ map: textTex('点我转 90° ↻', { bg: 'rgba(7,11,20,.92)', fg: '#F2CD82', size: 48, w: 460, h: 118 }), transparent: true, depthTest: false }));
-      tag.position.set(0, 1.9, 0); tag.scale.set(1.35, .34, 1); g.add(tag);
+      tag.position.set(0, 1.92, 0); tag.scale.set(1.7, .42, 1); g.add(tag);
       g.userData.pick = m;
       m.grp = g; m.glass = glass;
       g.position.copy(cellPos(m.x, m.z));
@@ -678,9 +679,9 @@
     host.appendChild(hintBtn);
     hintBtn.onclick = function () {
       var need = [];
-      mirrors.forEach(function (m, i) { if (solution[i] && solution[i] !== m.type) need.push('第 ' + (m.z + 1) + ' 排第 ' + (m.x + 1) + ' 列'); });
+      mirrors.forEach(function (m, i) { if (solution[i] && solution[i] !== m.type) need.push('第' + (m.z + 1) + '排第' + (m.x + 1) + '列'); });
       if (!need.length) toast('当前已经是对的，光只差一点点');
-      else toast('要转的是：' + need.join('、') + '（共 ' + need.length + ' 面）', 4200);
+      else toast('要转的是 ' + need.join(' / ') + '，共 ' + need.length + ' 面', 4600, true);
     };
 
     function resize() {
