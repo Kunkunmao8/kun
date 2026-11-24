@@ -2457,6 +2457,28 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 	var USERS='data/users.json';
 	var MAXMSG=300;
 
+	/* ---------- 社区数据层：Supabase 免费存储 ---------- */
+	var CFG=window.AYLIO_CLOUD||{provider:'supabase',url:'https://yzzktnkfprpystxbhnln.supabase.co',key:'sb_publishable_TwGiULzD9sdEX9p_laO9ow_rVQw8O3w',photoBucket:'photos'};
+	var SB=(CFG.provider==='supabase'&&CFG.url&&CFG.key)?{url:String(CFG.url).replace(/\/$/,''),key:CFG.key,bucket:(CFG.photoBucket||'photos')}:null;
+	var DATA='kun-msgs/';
+	function sbH(extra){ var h={apikey:SB.key,Authorization:'Bearer '+SB.key}; if(extra){ for(var k in extra){ if(extra.hasOwnProperty(k)) h[k]=extra[k]; } } return h; }
+	function sbPath(p){ return String(p).split('/').map(encodeURIComponent).join('/'); }
+	function sbPub(p){ return SB.url+'/storage/v1/object/public/'+SB.bucket+'/'+sbPath(p); }
+	function sbGetJSON(p){
+		return fetch(sbPub(p)+'?t='+Date.now(),{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).catch(function(){ return null; });
+	}
+	function sbPutJSON(p,obj){
+		return fetch(SB.url+'/storage/v1/object/'+SB.bucket+'/'+sbPath(p),{
+			method:'POST',
+			headers:sbH({'Content-Type':'application/json','x-upsert':'true','cache-control':'max-age=5'}),
+			body:JSON.stringify(obj)
+		}).then(function(r){ if(!r.ok) return r.text().then(function(t){ throw new Error('没存上 '+r.status); }); });
+	}
+	function sbDel(p){
+		return fetch(SB.url+'/storage/v1/object/'+SB.bucket+'/'+sbPath(p),{method:'DELETE',headers:sbH()})
+			.then(function(r){ if(!r.ok && r.status!==404) throw new Error('清理失败 '+r.status); });
+	}
+	
 	var msgsEl=document.getElementById('msgs');
 	var txtEl=document.getElementById('txt');
 	var btnSend=document.getElementById('btnSend');
@@ -2617,11 +2639,113 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		location.reload();
 	}
 
-	/* ---------- 留言 ---------- */
-	function readRoom(){ return fetch(MAN,{cache:'no-store'}).then(function(r){ return r.ok?r.json():[]; }).catch(function(){ return []; }); }
+	/* ---------- 留言：Supabase 事件日志（复用 photos 表） ---------- */
+	var LOG='kun-';
+	var roomCache=[];
+	var socialCache={follows:{},dms:[]};
+	function sbRows(){
+		return fetch(SB.url+'/rest/v1/photos?select=id,created_at,author,caption,url,storage_path&storage_path=like.kun-*&limit=1000&order=created_at.asc',{headers:sbH(),cache:'no-store'})
+			.then(function(r){ return r.ok?r.json():[]; })
+			.catch(function(){ return []; });
+	}
+	function parseRows(rows){
+		var msgs={}, order=[], likes={}, reps={}, follows={}, dms=[];
+		(rows||[]).forEach(function(x){
+			var p=String(x.storage_path||''), seg=p.split('/'), ts=Date.parse(x.created_at)||0;
+			if(seg[0]==='kun-msg'&&seg[1]){
+				var m={id:seg[1],who:x.author||'',text:x.caption||'',ts:ts};
+				var u=String(x.url||'');
+				if(u){ if(/\.(mp4|mov|webm)(\?|$)/i.test(u)) m.video=u; else m.img=u; }
+				msgs[m.id]=m; order.push(m);
+			}else if(seg[0]==='kun-like'&&seg[1]&&seg[2]){
+				(likes[seg[1]]=likes[seg[1]]||[]).push(seg[2]);
+			}else if(seg[0]==='kun-rep'&&seg[1]&&seg[2]){
+				(reps[seg[1]]=reps[seg[1]]||[]).push({id:seg[2],who:x.author||'',text:x.caption||'',ts:ts});
+			}else if(seg[0]==='kun-fol'&&seg[1]&&seg[2]){
+				(follows[seg[1]]=follows[seg[1]]||[]).push(seg[2]);
+			}else if(seg[0]==='kun-dm'&&seg[1]&&seg[2]){
+				dms.push({id:seg[2],to:seg[1],from:x.author||'',text:x.caption||'',ts:ts});
+			}
+		});
+		order.forEach(function(m){ m.likes=likes[m.id]||[]; m.reps=(reps[m.id]||[]).sort(function(a,b){ return a.ts-b.ts; }); });
+		order.sort(function(a,b){ return (a.ts||0)-(b.ts||0); });
+		socialCache={follows:follows,dms:dms};
+		return order;
+	}
+	var allCache=null, allAt=0;
+	function readAll(){
+		if(!SB) return Promise.resolve({msgs:[],social:socialCache});
+		if(allCache && Date.now()-allAt<800) return Promise.resolve(allCache);
+		return sbRows().then(function(rows){
+			var list=parseRows(rows); if(list.length) roomCache=list;
+			allCache={msgs:roomCache,social:socialCache}; allAt=Date.now();
+			return allCache;
+		});
+	}
+	function readRoom(){
+		if(!SB) return fetch(MAN,{cache:'no-store'}).then(function(r){ return r.ok?r.json():[]; }).catch(function(){ return []; });
+		return readAll().then(function(d){ return d.msgs; });
+	}
+	function readSocial(){
+		if(!SB) return fetch(SOCIAL,{cache:'no-store'}).then(function(r){ return r.ok?r.json():{follows:{},dms:[]}; }).catch(function(){ return {follows:{},dms:[]}; });
+		return readAll().then(function(d){ return d.social; });
+	}
+	function sbIns(rows){
+		if(!rows.length) return Promise.resolve();
+		return fetch(SB.url+'/rest/v1/photos',{method:'POST',headers:sbH({'Content-Type':'application/json','Prefer':'return=minimal'}),body:JSON.stringify(rows)})
+			.then(function(r){ if(!r.ok) return r.text().then(function(t){ throw new Error('没写进去 '+r.status); }); });
+	}
+	function sbDelPath(path){
+		return fetch(SB.url+'/rest/v1/photos?storage_path=eq.'+encodeURIComponent(path),{method:'DELETE',headers:sbH(),cache:'no-store'})
+			.then(function(r){ if(!r.ok && r.status!==404) throw new Error('没清理 '+r.status); });
+	}
 	function writeRoom(list){
-		return fetch(MAN,{method:'PUT',headers:{'Content-Type':'application/json','Cache-Control':'no-cache'},body:JSON.stringify(list)})
+		if(!SB) return fetch(MAN,{method:'PUT',headers:{'Content-Type':'application/json','Cache-Control':'no-cache'},body:JSON.stringify(list)})
 			.then(function(r){ if(!r.ok) throw new Error('留言没写进去 '+r.status); });
+		var want=dedupe(list||[]);
+		return sbRows().then(function(rows){
+			var d={msgs:parseRows(rows),social:socialCache};
+			var cur=d.msgs, curMap={};
+			cur.forEach(function(m){ curMap[m.id]=m; });
+			var ins=[], del=[], haveMsg={};
+			want.forEach(function(m){
+				haveMsg[m.id]=1;
+				if(!curMap[m.id]) ins.push({author:m.who||'',caption:m.text||'',url:m.img||m.video||'',storage_path:LOG+'msg/'+m.id});
+			});
+			want.forEach(function(m){
+				var c=curMap[m.id]||{}, haveRep={}, haveLike={};
+				(c.reps||[]).forEach(function(r){ haveRep[r.id]=1; });
+				(c.likes||[]).forEach(function(u){ haveLike[u]=1; });
+				(m.reps||[]).forEach(function(r){ if(!haveRep[r.id]) ins.push({author:r.who||'',caption:r.text||'',url:'',storage_path:LOG+'rep/'+m.id+'/'+r.id}); });
+				(m.likes||[]).forEach(function(u){ if(!haveLike[u]) ins.push({author:'',caption:'',url:'',storage_path:LOG+'like/'+m.id+'/'+u}); });
+				(c.likes||[]).forEach(function(u){ if((m.likes||[]).indexOf(u)<0) del.push(LOG+'like/'+m.id+'/'+u); });
+			});
+			cur.forEach(function(m){ if(!haveMsg[m.id]) del.push(LOG+'msg/'+m.id); });
+			return sbIns(ins).then(function(){
+				return del.reduce(function(ch,p){ return ch.then(function(){ return sbDelPath(p); }); },Promise.resolve());
+			}).then(function(){ roomCache=want; });
+		});
+	}
+	function writeSocial(s){
+		if(!SB) return fetch(SOCIAL,{method:'PUT',headers:{'Content-Type':'application/json','Cache-Control':'no-cache'},body:JSON.stringify(s)})
+			.then(function(r){ if(!r.ok) throw new Error('关注没存上 '+r.status); });
+		var want=s||{follows:{},dms:[]};
+		return sbRows().then(function(rows){
+			var d={msgs:parseRows(rows),social:socialCache};
+			var cur=d.social||{follows:{},dms:[]}, ins=[], del=[];
+			var wf=want.follows||{}, cf=cur.follows||{};
+			Object.keys(wf).forEach(function(from){
+				(wf[from]||[]).forEach(function(to){ if((cf[from]||[]).indexOf(to)<0) ins.push({author:from,caption:'',url:to,storage_path:LOG+'fol/'+from+'/'+to}); });
+			});
+			Object.keys(cf).forEach(function(from){
+				(cf[from]||[]).forEach(function(to){ if((wf[from]||[]).indexOf(to)<0) del.push(LOG+'fol/'+from+'/'+to); });
+			});
+			var wd=want.dms||[], cd=cur.dms||[];
+			wd.forEach(function(x){ if(!cd.some(function(y){ return y.id===x.id; })) ins.push({author:x.from||'',caption:x.text||'',url:x.to||'',storage_path:LOG+'dm/'+x.to+'/'+x.id}); });
+			return sbIns(ins).then(function(){
+				return del.reduce(function(ch,p){ return ch.then(function(){ return sbDelPath(p); }); },Promise.resolve());
+			}).then(function(){ socialCache=want; });
+		});
 	}
 	function dedupe(list){
 		var seen={}, out=[];
@@ -2687,7 +2811,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		var rp=el('button','fact');
 		rp.type='button';
 		rp.textContent='回复 ' + reps.length;
-		rp.onclick=function(){ toggleReplyBox(box, m.id); };
+		rp.onclick=function(){ toggleReplyBox(box, m.id, m.who); };
 		bar.appendChild(rp);
 		if(m.who){ var dmb=el('button','fact'); dmb.type='button'; dmb.textContent='私信'; dmb.onclick=function(){ openDM(m.who); }; bar.appendChild(dmb); }
 		box.appendChild(bar);
@@ -2707,7 +2831,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		}
 		return box;
 	}
-	function toggleReplyBox(box, pid){
+	function toggleReplyBox(box, pid, who){
 		if(NEED_LOGIN && !ME.mail){ alert('先登录再回复'); return; }
 		var ex=box.querySelector('.frep-box');
 		if(ex){ ex.parentNode.removeChild(ex); return; }
@@ -2721,7 +2845,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		};
 		inp.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); btn.click(); } };
 		bar.appendChild(inp); bar.appendChild(btn);
-		if(m.who){ var dmb=el('button','fact'); dmb.type='button'; dmb.textContent='私信'; dmb.onclick=function(){ openDM(m.who); }; bar.appendChild(dmb); }
+		if(who){ var dmb=el('button','fact'); dmb.type='button'; dmb.textContent='私信'; dmb.onclick=function(){ openDM(who); }; bar.appendChild(dmb); }
 		box.appendChild(bar); inp.focus();
 	}
 	function renderAll(list){
@@ -2814,8 +2938,16 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 	function upload(file, kind){
 		var name=(file.name||'x'), ext=((name.match(/\.[a-zA-Z0-9]+$/)||[''])[0]).toLowerCase();
 		if(!ext) ext = kind==='video' ? '.mp4' : '.jpg';
-		var key='pillow/u/'+Date.now()+'-'+rand(6)+ext;
 		var type=file.type||(kind==='video'?'video/mp4':'image/jpeg');
+		if(SB){
+			var key=DATA+'u/'+Date.now()+'-'+rand(6)+ext;
+			return fetch(SB.url+'/storage/v1/object/'+SB.bucket+'/'+sbPath(key),{
+				method:'POST',
+				headers:sbH({'Content-Type':type,'x-upsert':'true','cache-control':'max-age=31536000'}),
+				body:file
+			}).then(function(r){ if(!r.ok) throw new Error('上传失败 '+r.status); return sbPub(key); });
+		}
+		var key='pillow/u/'+Date.now()+'-'+rand(6)+ext;
 		return fetch(HOST+key,{method:'PUT',headers:{'Content-Type':type,'Cache-Control':'public, max-age=31536000'},body:file})
 			.then(function(r){ if(!r.ok) throw new Error('上传失败 '+r.status); return HOST+key; });
 	}
@@ -2847,11 +2979,6 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 	nickIn.addEventListener('input',function(){ save('aylio_pillow_nick',nickIn.value.trim()); paintWho(); });
 
 	/* ---------- 关注 / 私信 ---------- */
-	function readSocial(){ return fetch(SOCIAL,{cache:'no-store'}).then(function(r){ return r.ok?r.json():{follows:{},dms:[]}; }).catch(function(){ return {follows:{},dms:[]}; }); }
-	function writeSocial(s){
-		return fetch(SOCIAL,{method:'PUT',headers:{'Content-Type':'application/json','Cache-Control':'no-cache'},body:JSON.stringify(s)})
-			.then(function(r){ if(!r.ok) throw new Error('关注没存上 '+r.status); });
-	}
 	function hydrateSocial(raw){
 		if(raw && typeof raw==='object'){ social={follows:raw.follows||{},dms:raw.dms||[]}; }
 		else { social={follows:{},dms:[]}; }
@@ -4092,7 +4219,7 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 		return SB.url+'/storage/v1/object/public/'+SB.bucket+'/'+path.split('/').map(encodeURIComponent).join('/');
 	}
 	function sbList(){
-		return fetch(SB.url+'/rest/v1/photos?select=id,created_at,author,caption,url,storage_path&order=created_at.desc&limit=300',{headers:sbHead(),cache:'no-store'})
+		return fetch(SB.url+'/rest/v1/photos?select=id,created_at,author,caption,url,storage_path&storage_path=not.like.kun-*&order=created_at.desc&limit=300',{headers:sbHead(),cache:'no-store'})
 			.then(function(r){ if(!r.ok) throw new Error('list '+r.status); return r.json(); })
 			.then(function(rows){
 				return (rows||[]).map(function(x){
