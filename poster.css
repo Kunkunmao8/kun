@@ -1960,3 +1960,169 @@ html,body{overflow-x:clip!important;}
   #home .card-links{margin-top:8px!important;gap:6px!important;}
   #home .card-links .card-link,#work .card-links .card-link{padding:5px 11px!important;line-height:1.4!important;}
 }
+
+/* ============================================================
+   V5.9 · 电脑端大图 / 标题收小 / 全站圆角 / 游戏文字封面
+   ============================================================ */
+
+/* 电脑端：首页大图放到接近整屏，KUN 缩小 */
+@media (min-width:901px){
+  .p-hero-home{height:780px!important;}
+  .ph-big{left:60px!important;top:138px!important;font-size:108px!important;line-height:1!important;letter-spacing:-3px!important;}
+  .ph-cn{display:none!important;}
+  .ph-photo{right:48px!important;top:50px!important;width:860px!important;height:680px!important;transform:none!important;box-shadow:20px 24px 0 rgba(11,12,14,.92)!important;}
+  .ph-photo::before{display:none!important;}
+  .ph-note{display:none!important;}
+  .ph-links{left:60px!important;right:auto!important;bottom:38px!important;width:430px!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;}
+  .ph-link{border-radius:999px!important;padding:9px 14px!important;}
+}
+@media (min-width:901px) and (max-width:1180px){
+  .ph-big{font-size:88px!important;}
+  .ph-photo{width:700px!important;height:620px!important;}
+}
+
+/* 电脑端：作品与舞台、留言墙、游戏厅都换成大图，标题收小 */
+@media (min-width:901px){
+  .pw-zh,.cw-zh,.pg-zh,#wish .pwh-zh{font-size:74px!important;letter-spacing:3px!important;line-height:1.08!important;}
+  .pw-zh{top:58px!important;max-width:560px!important;}
+  .pw-zh::after,.cw-zh::after,.pg-zh::after,#wish .pwh-zh::after{font-size:9px!important;margin-top:12px!important;letter-spacing:3px!important;}
+  .pw-photo{right:48px!important;top:58px!important;width:740px!important;height:690px!important;transform:none!important;box-shadow:-16px 20px 0 var(--pp-blue)!important;}
+  .pw-note{left:44px!important;bottom:132px!important;width:430px!important;transform:none!important;}
+  .cw-zh{top:58px!important;}
+  .cw-photo{right:48px!important;top:48px!important;width:760px!important;height:620px!important;transform:none!important;box-shadow:16px 20px 0 var(--pp-blue)!important;}
+  .cw-ticket{left:44px!important;bottom:54px!important;width:420px!important;transform:none!important;}
+  .pg-zh{top:58px!important;}
+  .pg-photo{right:48px!important;top:52px!important;width:730px!important;height:560px!important;transform:none!important;box-shadow:-16px 18px 0 var(--pp-blue)!important;}
+  .pg-chips{left:48px!important;bottom:40px!important;}
+}
+
+/* 许愿树小标签：不再做灰色小字，改成显眼的蓝色胶囊 */
+.pg-chips{gap:10px!important;}
+.pg-chip{
+  background:var(--pp-blue)!important;border:1px solid var(--pp-blue)!important;
+  color:var(--pp-bone)!important;font-size:10px!important;letter-spacing:1.2px!important;
+  padding:9px 16px!important;border-radius:999px!important;
+  box-shadow:0 6px 16px -10px rgba(20,35,90,.5)!important;
+}
+.pg-chip b{color:#DCE6FF!important;margin-right:7px!important;}
+
+/* 游戏封面改成纯文字，不再用看起来比实际游戏高级的渲染图 */
+#games .gx-cover{height:236px!important;}
+#games .gx-cover-type{
+  position:relative!important;display:flex!important;align-items:flex-end!important;
+  padding:0 24px 22px!important;overflow:hidden!important;
+  background:
+    linear-gradient(135deg, rgba(47,92,212,.20) 0%, rgba(47,92,212,0) 46%),
+    #10141D!important;
+  border-bottom:1px solid var(--pp-ink)!important;
+}
+#games .gx-cover-type::before{
+  content:"";position:absolute;left:24px;top:22px;width:32px;height:2px;background:var(--pp-bone);
+}
+#games .gx-cover-type::after{
+  content:"";position:absolute;right:-30px;bottom:-58px;width:180px;height:180px;
+  border:1px solid rgba(240,235,221,.18);border-radius:50%;
+}
+.gx-cover-word{position:relative;z-index:2;max-width:78%;}
+.gx-cover-word b{display:block;font-size:38px;line-height:1.05;letter-spacing:1px;color:var(--pp-bone);font-weight:800;}
+.gx-cover-word small{display:block;margin-top:9px;font-size:8px;line-height:1.4;letter-spacing:4px;color:#AFC0EA;font-weight:500;}
+.gx-no{position:absolute;right:22px;top:18px;z-index:2;font-size:9px;letter-spacing:3px;color:#AFC0EA;}
+#games .gx-chip{background:rgba(240,235,221,.94)!important;color:var(--pp-ink)!important;border-radius:999px!important;padding:5px 10px!important;font-size:8px!important;letter-spacing:1px!important;}
+#games .gx-tag{border-radius:999px!important;padding:4px 10px!important;}
+#games .gx-play{border-radius:999px!important;border:1px solid var(--pp-ink)!important;padding:9px 12px!important;margin-top:12px!important;}
+#games .gx-play i{border-radius:50%!important;}
+
+/* 全站方框统一圆角 */
+#work .clip-box,
+#work .clip-form,
+#work .clip-drop,
+#work .clip-card,
+#work .gallery-item,
+#work .album-card,
+#work .photo-add,
+#work .photo-note,
+#work .photo-wall,
+#pillow .room,
+#pillow .room-head,
+#pillow .msgs,
+#pillow .gate-card,
+#pillow .composer,
+#pillow .nickbar,
+#pillow .fpost,
+#pillow .fhead,
+#pillow .media,
+#wish .wish-card,
+#wish .ws-box,
+#wish .wtPopCard,
+#games .gx-card,
+#games .gx-cover,
+#music .pm-record,
+#music .pm-player{
+  border-radius:18px!important;
+}
+#work .gallery-grid{gap:10px!important;background:transparent!important;}
+
+/* 按钮、标签、输入框全部圆角 */
+button,.mini,.send,.submit-btn,.clip-tab,.gx-play,.pg-chip,.gx-tag,.gx-chip,.fl-tag,.fno,.me-ava-btn,.face{
+  border-radius:999px!important;
+}
+input,textarea,select,.clip-row input,.clip-url,.clip-drop,.photo-add,.ws-box input,#pillow .txt-in{
+  border-radius:16px!important;
+}
+#work .clip-tab,#work .submit-btn,#work .clip-drop{border-radius:999px!important;}
+.photo-add,.photo-note{border-radius:22px!important;}
+#pillow .face{background:var(--pp-blue)!important;color:var(--pp-bone)!important;border-color:var(--pp-blue)!important;}
+#pillow .face img{border-radius:50%!important;}
+
+/* 所有图片的框也统一圆角，图片本身不改颜色 */
+figure,figure img,.gallery-item img,.photo-item img,.photo-item video,.clip-card video{
+  border-radius:16px!important;
+}
+
+/* V5.9.1 · 大图保持原图横向比例 / 圆角补漏 */
+@media (min-width:901px){
+  .ph-photo{width:960px!important;height:600px!important;}
+  .pw-photo{width:820px!important;height:580px!important;}
+  .cw-photo{width:840px!important;height:555px!important;top:64px!important;}
+}
+#home .card,#work .card{border-radius:22px!important;overflow:hidden!important;}
+.ph-link span{border-radius:999px!important;padding:2px 6px!important;}
+#games .gx-diff{
+  border-radius:999px!important;background:var(--pp-blue)!important;color:var(--pp-bone)!important;
+  padding:5px 11px!important;border:1px solid var(--pp-blue)!important;font-size:9px!important;
+}
+#games .gx-tag{font-size:9px!important;padding:5px 11px!important;}
+#games .kw-nav button,.kw-stats div{border-radius:999px!important;}
+#work .clip-form,#work .clip-box{overflow:hidden!important;}
+
+/* 首页大图再收一点，避免左侧按钮压到图片 */
+@media (min-width:901px){
+  .ph-photo{width:900px!important;height:600px!important;}
+}
+@media (min-width:901px){.ph-links{width:380px!important;gap:8px!important;}}
+
+/* V5.9.2 · 把仍被旧样式压成直角的框统一改圆 */
+#authGate button,#pillow button,#work button,#games button,#music button,#mine button{
+  border-radius:999px!important;
+}
+#authGate input,#pillow input,#work input,#games input,#music input,#mine input,
+#work textarea,#pillow textarea{
+  border-radius:16px!important;
+}
+#authGate .ag-card,#authGate .ag-tabs,#authGate .ag-ava-item,
+#pillow .field,#pillow .nickbar input,
+#work .clip-form,#work .clip-row input,#work .clip-url,#work .clip-tab,#work .clip-drop,#work .clip-form .submit-btn,#work .clip-list .clip-card,#work .photo-item,#work .photo-status,#work .photo-add,
+#pillow .composer,#pillow .gate-card,#pillow .msgs,#pillow .room,
+#mine .me-cover-wrap,#mine .me-ava,#mine .me-ava-btn,
+#games .gx-diff,#games .gx-tag,#games .gx-chip{
+  border-radius:999px!important;
+}
+#work .clip-form,#work .clip-drop,#work .clip-card,#work .photo-add,#work .photo-item,#work .photo-status,
+#pillow .composer,#pillow .gate-card,#pillow .msgs,#pillow .room,
+#authGate .ag-card,#mine .me-cover-wrap{
+  border-radius:20px!important;
+}
+#games .gx-card{overflow:hidden!important;}
+#games .gx-title small{display:none!important;}
+#games .gx-cover-word b{font-size:36px!important;letter-spacing:.5px!important;}
+@media (min-width:901px){.ph-photo{width:900px!important;height:600px!important;}}
