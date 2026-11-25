@@ -940,16 +940,16 @@
       '<div class="gx-empty" id="gxEmpty">这个分类暂时没有内容。</div>';
 
     var grid = app.querySelector('#gxGrid');
-    GAMES.forEach(function (g) {
+    GAMES.forEach(function (g, gi) {
       var card = el('article', 'gx-card');
       card.dataset.cat = g.cat;
       card.style.setProperty('--c1', g.c1 || '#22407a');
       var tagHtml = (g.tags || []).map(function (t, i) { return '<span class="gx-tag' + (i === 0 ? ' gold' : '') + '">' + t + '</span>'; }).join('');
       card.innerHTML =
-        '<div class="gx-cover">' +
-          (g.cover ? '<img class="gx-shot" src="' + g.cover + '" alt="' + g.name + ' 封面" decoding="async">' : '') +
-          '<span class="gx-chip' + (g.hot ? ' hot' : '') + '">' + (g.chip || g.tag) + '</span>' +
-          '<span class="gx-ico">' + g.icon + '</span></div>' +
+        '<div class="gx-cover gx-cover-type">' +
+          '<span class="gx-no">0' + (gi + 1) + ' / 04</span>' +
+          '<div class="gx-cover-word"><b>' + (g.en || g.name) + '</b><small>' + g.name + '</small></div>' +
+          '<span class="gx-chip' + (g.hot ? ' hot' : '') + '">' + (g.chip || g.tag) + '</span></div>' +
         '<div class="gx-body"><h3 class="gx-title">' + g.name + '<small>' + (g.en || '') + '</small></h3>' +
           '<p class="gx-desc">' + g.desc + '</p>' +
           '<div class="gx-meta">' + tagHtml + '<span class="gx-diff">' + g.diff + '</span></div>' +
