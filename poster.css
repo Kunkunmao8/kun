@@ -2173,3 +2173,42 @@ figure,figure img,.gallery-item img,.photo-item img,.photo-item video,.clip-card
   .ph-links{top:auto!important;height:52px!important;align-items:stretch!important;}
   .ph-link{height:100%!important;min-height:0!important;padding:0 16px!important;}
 }
+
+/* V5.12 · 顶部图完整显示 / 标题蓝色 / 游戏封面 / 唱针落下 */
+@media (min-width:901px){
+  .pw-zh,.pg-zh{color:var(--pp-blue)!important;}
+  .p-hero-work{height:1000px!important;}
+  .pw-photo{height:756px!important;}
+  .p-hero-wall{height:1010px!important;}
+  .cw-photo{height:761px!important;}
+  .p-hero-games{height:1020px!important;}
+  .pg-photo{height:769px!important;}
+}
+#games .gx-cover{
+  height:auto!important;aspect-ratio:16/9!important;overflow:hidden!important;
+  background:#0B1222!important;
+}
+#games .gx-shot{width:100%!important;height:100%!important;object-fit:cover!important;filter:none!important;display:block!important;}
+#games .gx-title small{display:inline!important;}
+
+/* 播放时唱针落到黑胶上 */
+#music .tt-arm{transform-origin:87% 86%!important;transition:transform .5s cubic-bezier(.4,0,.2,1)!important;}
+#music .tt-platter-wrap:has(.tt-vinyl.playing) .tt-arm{transform:rotate(-9deg)!important;}
+@media(max-width:1100px){
+  #music .tt-platter-wrap:has(.tt-vinyl.playing) .tt-arm{transform:scale(.88) rotate(-9deg)!important;}
+}
+@media(max-width:700px){
+  #music .tt-platter-wrap:has(.tt-vinyl.playing) .tt-arm{transform:scale(.62) rotate(-9deg)!important;}
+}
+#music .tt-note::after{content:"播放速度已调到 1.15×";display:block;margin-top:5px;color:#2F5CD4;}
+
+/* V5.13 · 音乐页主标题收小、去掉右侧信息卡 */
+@media (min-width:1101px){
+  #music .pm-hero-title{font-size:72px!important;letter-spacing:4px!important;}
+}
+@media (min-width:701px) and (max-width:1100px){
+  #music .pm-hero-title{font-size:64px!important;letter-spacing:3px!important;}
+}
+@media (max-width:700px){
+  #music .pm-hero-title{font-size:46px!important;letter-spacing:2px!important;}
+}
