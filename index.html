@@ -1985,7 +1985,7 @@ html{scroll-padding-top:96px;}
 }
 </style>
 <link rel="stylesheet" href="./games.css?v=9">
-<link rel="stylesheet" href="./poster.css?v=18">
+<link rel="stylesheet" href="./poster.css?v=21">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -2351,7 +2351,6 @@ html{scroll-padding-top:96px;}
       <h1 class="pm-hero-title">他的音乐</h1>
       <p class="pm-note">五张唱片，十首能转起来的歌。放下唱针，从第一首开始。</p>
     </div>
-    <div class="pm-hero-badge"><span>正在播放</span><b>黑胶唱片机</b><em>33⅓ 转 · 长沙</em></div>
   </section>
 
   <section class="pm-deck">
@@ -2377,7 +2376,6 @@ html{scroll-padding-top:96px;}
           <span class="tt-speed">33</span>
         </div>
         <div class="tt-console">
-          <div class="tt-cap">正在播放</div>
           <div class="tt-album" id="ttAlbum">《KUN》</div>
           <div class="now-title" id="playerNow">点一首，放下唱针</div>
           <button type="button" class="tt-play" id="wmPlay" aria-label="播放或暂停">▶</button>
@@ -2402,7 +2400,7 @@ html{scroll-padding-top:96px;}
       </div>
         </div>
       </div>
-      <audio id="kunAudio" preload="none"></audio>
+      <audio id="kunAudio" preload="auto"></audio>
       <p class="player-tip" id="playerTip" style="display:none"></p>
     </div>
   </section>
@@ -3512,7 +3510,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 
 <section class="p-hero p-hero-games">
   <div class="pg-zh">游戏厅</div>
-  <figure class="pg-photo"><img decoding="async" src="images/stage-macau3.jpg" alt="澳门站，红衣仰头举麦"><div class="tint"></div></figure>
+  <figure class="pg-photo"><img decoding="async" src="images/stage-opening.jpg" alt="新加坡站开场，白蓝舞台服抱着电吉他"><div class="tint"></div></figure>
   <div class="pg-chips"><span class="pg-chip"><b>01</b>许愿树</span><span class="pg-chip"><b>02</b>金海记忆剧场</span><span class="pg-chip"><b>03</b>蓝玫瑰镜面迷宫</span><span class="pg-chip"><b>04</b>翻牌配对</span></div>
 </section>
 
@@ -5085,7 +5083,7 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 			var alb = btn.getAttribute('data-album') || '';
 			var img = btn.getAttribute('data-cover') || '';
 			var src = AUDIO_FILES[n] ? (AUDIO_BASE + AUDIO_FILES[n]) : ('music/' + n + '-' + t + '.m4a');
-			audio.src = encodeURI(src);
+			audio.src = encodeURI(src); audio.playbackRate = 1.15;
 			if (now) { now.textContent = title; }
 			if (albumNow && alb) { albumNow.textContent = alb; }
 			if (cover && img) { cover.src = img; }
@@ -6202,7 +6200,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 
 </script>
 
-<script src="./games.js?v=14"></script>
+<script src="./games.js?v=15"></script>
 <script>
 (function(){
   function init(){
@@ -6214,7 +6212,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
       if(a.paused){ a.play().catch(function(){}); } else { a.pause(); }
     };
     var vinyl=document.getElementById('ttVinyl');
-    a.addEventListener('play',function(){ btn.textContent='❚❚'; if(vinyl) vinyl.classList.add('playing'); });
+    a.addEventListener('play',function(){ a.playbackRate=1.15; btn.textContent='❚❚'; if(vinyl) vinyl.classList.add('playing'); });
     a.addEventListener('pause',function(){ btn.textContent='▶'; if(vinyl) vinyl.classList.remove('playing'); });
     a.addEventListener('ended',function(){ btn.textContent='▶'; if(vinyl) vinyl.classList.remove('playing'); if(prog) prog.style.width='0%'; });
     a.addEventListener('timeupdate',function(){ if(prog&&a.duration){ prog.style.width=(a.currentTime/a.duration*100)+'%'; } if(time) time.textContent=fmt(a.currentTime); });
