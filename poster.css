@@ -2213,3 +2213,36 @@ figure,figure img,.gallery-item img,.photo-item img,.photo-item video,.clip-card
   #music .pm-hero-title{font-size:46px!important;letter-spacing:2px!important;}
 }
 .pw-zh,.pg-zh{color:var(--pp-blue)!important;}
+
+/* V5.15 · 绿色许愿树 / 许愿框置顶 / 大图按原比例完整显示 */
+#wish .wish-tree{
+  background:
+    radial-gradient(50% 42% at 50% 10%,rgba(46,124,68,.26),transparent 72%),
+    radial-gradient(120% 92% at 50% 8%,#0B2A18 0%,#06140B 48%,#020604 100%)!important;
+}
+#wish .wish-write{
+  margin:12px 6px 10px!important;padding:14px 14px 12px!important;border-radius:18px!important;
+  background:linear-gradient(180deg,#FFFAEA 0%,#FFF2CF 100%)!important;
+  border:1px solid #E5CD87!important;box-shadow:0 10px 26px rgba(90,63,18,.10)!important;
+}
+#wish .ww-copy{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+#wish .ww-copy b{font-size:15px;color:#5A3F12;letter-spacing:.5px}
+#wish .ww-copy span{font-size:11px;color:#8A6C3E;line-height:1.6}
+#wish .wish-write .wish-form{margin-top:0!important}
+#wish .wish-write .wish-form input{border-color:#DCC47D!important;background:#fff!important}
+#wish .wish-write .wish-tip{margin:7px 2px 0!important;min-height:16px!important;color:#8A6C3E!important}
+
+@media (min-width:901px){
+  .p-hero-work{height:calc(280px + 52.52vw)!important;}
+  .pw-photo{height:auto!important;aspect-ratio:1179/774!important;}
+  .p-hero-wall{height:calc(280px + 52.86vw)!important;}
+  .cw-photo{height:auto!important;aspect-ratio:1179/779!important;}
+  .p-hero-games{height:calc(300px + 45vw)!important;}
+  .pg-photo{height:auto!important;aspect-ratio:1600/900!important;}
+}
+/* 手机上也不裁掉照片上的字，按原图比例完整显示 */
+@media (max-width:900px){
+  .pw-photo{height:auto!important;aspect-ratio:1179/774!important;}
+  .cw-photo{height:auto!important;aspect-ratio:1179/779!important;}
+  .pg-photo{height:auto!important;aspect-ratio:1600/900!important;}
+}

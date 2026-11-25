@@ -4,7 +4,7 @@
   if (!app || !window.THREE) return;
 
   var GAMES = [
-    { id: 'wish', name: '许愿树', en: 'WISH TREE', cat: 'heal', hot: true, cover: 'images/games/simple-wish.jpg', c1: '#2b5f8f',
+    { id: 'wish', name: '许愿树', en: 'WISH TREE', cat: 'heal', hot: true, cover: 'images/games/simple-wish-green.jpg', c1: '#2b5f8f',
       chip: '治愈 · 互动', icon: '愿', tag: '3D 许愿', diff: '★',
       desc: '一棵可以转着看的蓝玫瑰树，写一句祝福就多开一朵花。',
       tags: ['3D 可旋转', '蓝玫瑰挂牌', '随手可玩'], go: '去许愿', link: '#wish' },
