@@ -2212,3 +2212,4 @@ figure,figure img,.gallery-item img,.photo-item img,.photo-item video,.clip-card
 @media (max-width:700px){
   #music .pm-hero-title{font-size:46px!important;letter-spacing:2px!important;}
 }
+.pw-zh,.pg-zh{color:var(--pp-blue)!important;}
