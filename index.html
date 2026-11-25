@@ -1985,7 +1985,7 @@ html{scroll-padding-top:96px;}
 }
 </style>
 <link rel="stylesheet" href="./games.css?v=10">
-<link rel="stylesheet" href="./poster.css?v=29">
+<link rel="stylesheet" href="./poster.css?v=30">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -2355,7 +2355,6 @@ html{scroll-padding-top:96px;}
 
   <section class="pm-deck">
     <div class="pm-player">
-      <div class="pmp-top"><b>KUN</b><span>黑胶唱机 · 2026</span><span class="pmp-on">33⅓ 转</span></div>
       <div class="tt-stage">
         <div class="tt-platter-wrap">
           <div class="tt-platter">
@@ -2373,13 +2372,19 @@ html{scroll-padding-top:96px;}
             <circle cx="262" cy="344" r="18" fill="#2F3F8A"/>
             <circle cx="262" cy="344" r="5" fill="#0B0C0E"/>
           </svg>
-          <span class="tt-speed">33</span>
         </div>
         <div class="tt-console">
           <div class="tt-album" id="ttAlbum">《KUN》</div>
           <div class="now-title" id="playerNow">点一首，放下唱针</div>
           <button type="button" class="tt-play" id="wmPlay" aria-label="播放或暂停">▶</button>
           <div class="tt-prog-row"><div class="tt-prog"><span id="wmProg"></span></div><span class="tt-time" id="wmTime">00:00</span></div>
+          <div class="tt-rates" aria-label="播放速度">
+            <span>播放速度</span>
+            <button class="tt-rate" type="button" data-rate="0.75">0.75×</button>
+            <button class="tt-rate on" type="button" data-rate="1" aria-pressed="true">1.0× 原速</button>
+            <button class="tt-rate" type="button" data-rate="1.25">1.25×</button>
+            <button class="tt-rate" type="button" data-rate="1.5">1.5×</button>
+          </div>
           <label class="tt-file"><span>＋ 选本地音源</span><input type="file" id="kunAudioFile" accept="audio/*" hidden></label>
           <p class="tt-note">唱针落下，黑胶开始转。<br>下面十个小按钮，点一下就能放。</p>
           
@@ -2420,8 +2425,8 @@ html{scroll-padding-top:96px;}
         </div>
         <div class="pmr-bar"><span>曲目 / 03</span><span>1 首可播</span></div>
         <ol class="pmr-list">
-          <li><div class="pmr-track off"><span>01</span><b>Pull Up</b><small>R&amp;B</small></div></li>
-          <li><div class="pmr-track off"><span>02</span><b>You Can Be My GirlFriend</b><small>R&amp;B</small></div></li>
+          <li><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20Pull%20Up" target="_blank" rel="noopener"><span>01</span><b>Pull Up</b><small>R&amp;B</small><i>↗</i></a></li>
+          <li><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20You%20Can%20Be%20My%20GirlFriend" target="_blank" rel="noopener"><span>02</span><b>You Can Be My GirlFriend</b><small>R&amp;B</small><i>↗</i></a></li>
           <li><button class="pmr-track" type="button" data-n="08" data-track="It's You(Live)" data-title="It's You Live" data-album="《1》" data-cover="images/t/cover-1.jpg"><span>03</span><b>It's You</b><small>LIVE · 本地可播</small><i>▶</i></button></li>
         </ol>
         <div class="pmr-actions"><button class="pm-btn" type="button" data-play-album>播放本地曲目 ▶</button><a class="pm-btn pm-btn-ghost" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener">QQ 音乐 ↗</a></div>
@@ -2434,8 +2439,8 @@ html{scroll-padding-top:96px;}
         </div>
         <div class="pmr-bar"><span>曲目 / 02</span><span>QQ 音乐收听</span></div>
         <ol class="pmr-list">
-          <li><div class="pmr-track off"><span>01</span><b>YOUNG</b><small>HIP-HOP / RAP</small></div></li>
-          <li><div class="pmr-track off"><span>02</span><b>蒙着眼</b><small>BLINDFOLDED</small></div></li>
+          <li><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20YOUNG" target="_blank" rel="noopener"><span>01</span><b>YOUNG</b><small>HIP-HOP / RAP</small><i>↗</i></a></li>
+          <li><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20%E8%92%99%E7%9D%80%E7%9C%BC" target="_blank" rel="noopener"><span>02</span><b>蒙着眼</b><small>BLINDFOLDED</small><i>↗</i></a></li>
         </ol>
         <div class="pmr-actions"><a class="pm-btn" href="https://y.qq.com/n/ryqq/albumDetail/0019Oi682i0RfX" target="_blank" rel="noopener">去 QQ 音乐听全辑 ↗</a></div>
       </article>
@@ -2447,7 +2452,7 @@ html{scroll-padding-top:96px;}
         </div>
         <div class="pmr-bar"><span>曲目 / 04</span><span>3 首可播</span></div>
         <ol class="pmr-list">
-          <li><div class="pmr-track off"><span>01</span><b>前言</b><small>INTRO</small></div></li>
+          <li><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20%E5%89%8D%E8%A8%80" target="_blank" rel="noopener"><span>01</span><b>前言</b><small>INTRO</small><i>↗</i></a></li>
           <li><button class="pmr-track" type="button" data-n="01" data-track="现象(PHENOMENON)" data-title="现象 PHENOMENON" data-album="《现象》" data-cover="images/t/phen-red.jpg"><span>02</span><b>现象</b><small>PHENOMENON · 本地可播</small><i>▶</i></button></li>
           <li><button class="pmr-track" type="button" data-n="02" data-track="标签(TITLE)" data-title="标签 TITLE" data-album="《现象》" data-cover="images/t/phen-red.jpg"><span>03</span><b>标签</b><small>TITLE · 本地可播</small><i>▶</i></button></li>
           <li class="extra"><button class="pmr-track" type="button" data-n="03" data-track="修行(NARCISSISM)" data-title="修行 NARCISSISM" data-album="《现象》" data-cover="images/t/phen-red.jpg"><span>04</span><b>修行</b><small>NARCISSISM · 本地可播</small><i>▶</i></button></li>
@@ -2463,17 +2468,17 @@ html{scroll-padding-top:96px;}
         </div>
         <div class="pmr-bar"><span>曲目 / 11</span><span>5 首可播</span></div>
         <ol class="pmr-list">
-          <li><div class="pmr-track off"><span>01</span><b>#0000FF</b><small>INTRO</small></div></li>
+          <li><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20%230000FF" target="_blank" rel="noopener"><span>01</span><b>#0000FF</b><small>INTRO</small><i>↗</i></a></li>
           <li><button class="pmr-track" type="button" data-n="06" data-track="迷(Live)" data-title="迷 Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>02</span><b>迷</b><small>LOST · 本地可播</small><i>▶</i></button></li>
           <li><button class="pmr-track" type="button" data-n="09" data-track="默片(Live)" data-title="默片 Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>03</span><b>默片</b><small>SILENT FILM · 本地可播</small><i>▶</i></button></li>
           <li class="extra"><button class="pmr-track" type="button" data-n="04" data-track="感受她(Live)" data-title="感受她 Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>04</span><b>感受她</b><small>FEEL HER · 本地可播</small><i>▶</i></button></li>
-          <li class="extra"><div class="pmr-track off"><span>05</span><b>梦 (Band.ver)</b><small>DREAM</small></div></li>
-          <li class="extra"><div class="pmr-track off"><span>06</span><b>Interlude-</b><small>INTERLUDE</small></div></li>
-          <li class="extra"><div class="pmr-track off"><span>07</span><b>怪</b><small>PLAY-DOH</small></div></li>
-          <li class="extra"><div class="pmr-track off"><span>08</span><b>欲</b><small>DESIRE</small></div></li>
+          <li class="extra"><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20%E6%A2%A6%20%28Band.ver%29" target="_blank" rel="noopener"><span>05</span><b>梦 (Band.ver)</b><small>DREAM</small><i>↗</i></a></li>
+          <li class="extra"><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20Interlude-" target="_blank" rel="noopener"><span>06</span><b>Interlude-</b><small>INTERLUDE</small><i>↗</i></a></li>
+          <li class="extra"><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20%E6%80%AA" target="_blank" rel="noopener"><span>07</span><b>怪</b><small>PLAY-DOH</small><i>↗</i></a></li>
+          <li class="extra"><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20%E6%AC%B2" target="_blank" rel="noopener"><span>08</span><b>欲</b><small>DESIRE</small><i>↗</i></a></li>
           <li class="extra"><button class="pmr-track" type="button" data-n="07" data-track="HAHA(Live)" data-title="HAHA Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>09</span><b>HAHA</b><small>LIVE · 本地可播</small><i>▶</i></button></li>
           <li class="extra"><button class="pmr-track" type="button" data-n="10" data-track="nobody cares(Live)" data-title="nobody cares Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>10</span><b>nobody cares</b><small>LIVE · 本地可播</small><i>▶</i></button></li>
-          <li class="extra"><div class="pmr-track off"><span>11</span><b>爱与痛 (outro)</b><small>LOVE &amp; PAIN</small></div></li>
+          <li class="extra"><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20%E7%88%B1%E4%B8%8E%E7%97%9B%20%28outro%29" target="_blank" rel="noopener"><span>11</span><b>爱与痛 (outro)</b><small>LOVE &amp; PAIN</small><i>↗</i></a></li>
         </ol>
         <button class="pmr-expand" type="button" data-expand data-more="全部 11 首" aria-expanded="false">全部 11 首 <i>↓</i></button>
         <div class="pmr-actions"><button class="pm-btn" type="button" data-play-album>播放本地曲目 ▶</button><a class="pm-btn pm-btn-ghost" href="https://y.qq.com/n/ryqq/albumDetail/003jicxY0UK9ew" target="_blank" rel="noopener">QQ 音乐 ↗</a></div>
@@ -2486,17 +2491,17 @@ html{scroll-padding-top:96px;}
         </div>
         <div class="pmr-bar"><span>曲目 / 11</span><span>QQ 音乐收听</span></div>
         <ol class="pmr-list">
-          <li><div class="pmr-track off"><span>01</span><b>Honour</b><small>3:01</small></div></li>
-          <li><div class="pmr-track off"><span>02</span><b>Deadman</b><small>3:55</small></div></li>
-          <li><div class="pmr-track off"><span>03</span><b>Jasmine</b><small>3:57</small></div></li>
-          <li class="extra"><div class="pmr-track off"><span>04</span><b>Don't Call</b><small>FEAT. FREE NATIONALS</small></div></li>
-          <li class="extra"><div class="pmr-track off"><span>05</span><b>Back in Time</b><small>2:33</small></div></li>
-          <li class="extra"><div class="pmr-track off"><span>06</span><b>What a Day</b><small>3:20</small></div></li>
-          <li class="extra"><div class="pmr-track off"><span>07</span><b>Night Into Night</b><small>INTERLUDE</small></div></li>
-          <li class="extra"><div class="pmr-track off"><span>08</span><b>Paranoid</b><small>2:59</small></div></li>
-          <li class="extra"><div class="pmr-track off"><span>09</span><b>Washed Away</b><small>3:18</small></div></li>
-          <li class="extra"><div class="pmr-track off"><span>10</span><b>Colder</b><small>3:48</small></div></li>
-          <li class="extra"><div class="pmr-track off"><span>11</span><b>Fool</b><small>3:54</small></div></li>
+          <li><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20Honour" target="_blank" rel="noopener"><span>01</span><b>Honour</b><small>3:01</small><i>↗</i></a></li>
+          <li><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20Deadman" target="_blank" rel="noopener"><span>02</span><b>Deadman</b><small>3:55</small><i>↗</i></a></li>
+          <li><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20Jasmine" target="_blank" rel="noopener"><span>03</span><b>Jasmine</b><small>3:57</small><i>↗</i></a></li>
+          <li class="extra"><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20Don%27t%20Call" target="_blank" rel="noopener"><span>04</span><b>Don't Call</b><small>FEAT. FREE NATIONALS</small><i>↗</i></a></li>
+          <li class="extra"><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20Back%20in%20Time" target="_blank" rel="noopener"><span>05</span><b>Back in Time</b><small>2:33</small><i>↗</i></a></li>
+          <li class="extra"><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20What%20a%20Day" target="_blank" rel="noopener"><span>06</span><b>What a Day</b><small>3:20</small><i>↗</i></a></li>
+          <li class="extra"><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20Night%20Into%20Night" target="_blank" rel="noopener"><span>07</span><b>Night Into Night</b><small>INTERLUDE</small><i>↗</i></a></li>
+          <li class="extra"><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20Paranoid" target="_blank" rel="noopener"><span>08</span><b>Paranoid</b><small>2:59</small><i>↗</i></a></li>
+          <li class="extra"><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20Washed%20Away" target="_blank" rel="noopener"><span>09</span><b>Washed Away</b><small>3:18</small><i>↗</i></a></li>
+          <li class="extra"><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20Colder" target="_blank" rel="noopener"><span>10</span><b>Colder</b><small>3:48</small><i>↗</i></a></li>
+          <li class="extra"><a class="pmr-track" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A4%20Fool" target="_blank" rel="noopener"><span>11</span><b>Fool</b><small>3:54</small><i>↗</i></a></li>
         </ol>
         <button class="pmr-expand" type="button" data-expand data-more="全部 11 首" aria-expanded="false">全部 11 首 <i>↓</i></button>
         <div class="pmr-actions"><a class="pm-btn" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A6%20KUN" target="_blank" rel="noopener">去 QQ 音乐听全辑 ↗</a></div>
@@ -5087,7 +5092,7 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 			var alb = btn.getAttribute('data-album') || '';
 			var img = btn.getAttribute('data-cover') || '';
 			var src = AUDIO_FILES[n] ? (AUDIO_BASE + AUDIO_FILES[n]) : ('music/' + n + '-' + t + '.m4a');
-			audio.src = encodeURI(src); audio.playbackRate = 1.15;
+			audio.src = encodeURI(src);
 			if (now) { now.textContent = title; }
 			if (albumNow && alb) { albumNow.textContent = alb; }
 			if (cover && img) { cover.src = img; }
@@ -6198,12 +6203,24 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
     var a=document.getElementById('kunAudio'),btn=document.getElementById('wmPlay'),prog=document.getElementById('wmProg'),time=document.getElementById('wmTime');
     if(!a||!btn) return;
     function fmt(n){ n=Math.floor(n||0); return (n<10?'0':'')+n+':'+('0'+Math.floor((n%60))).slice(-2); }
+    var rateBtns=document.querySelectorAll('#music .tt-rate');
+    function setRate(v){
+      if(a) a.playbackRate=v;
+      rateBtns.forEach(function(b){
+        var on=(parseFloat(b.getAttribute('data-rate'))===v);
+        b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));
+      });
+    }
+    rateBtns.forEach(function(b){
+      b.addEventListener('click',function(){ setRate(parseFloat(b.getAttribute('data-rate'))||1); });
+    });
+    if(a) a.playbackRate=1;
     btn.onclick=function(){
       if(!a.src){ var f=document.querySelector('#playerList button[data-track]'); if(f){ f.click(); return; } }
       if(a.paused){ a.play().catch(function(){}); } else { a.pause(); }
     };
     var vinyl=document.getElementById('ttVinyl');
-    a.addEventListener('play',function(){ a.playbackRate=1.15; btn.textContent='❚❚'; if(vinyl) vinyl.classList.add('playing'); });
+    a.addEventListener('play',function(){ btn.textContent='❚❚'; if(vinyl) vinyl.classList.add('playing'); });
     a.addEventListener('pause',function(){ btn.textContent='▶'; if(vinyl) vinyl.classList.remove('playing'); });
     a.addEventListener('ended',function(){ btn.textContent='▶'; if(vinyl) vinyl.classList.remove('playing'); if(prog) prog.style.width='0%'; });
     a.addEventListener('timeupdate',function(){ if(prog&&a.duration){ prog.style.width=(a.currentTime/a.duration*100)+'%'; } if(time) time.textContent=fmt(a.currentTime); });
