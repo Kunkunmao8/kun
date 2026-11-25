@@ -1985,7 +1985,7 @@ html{scroll-padding-top:96px;}
 }
 </style>
 <link rel="stylesheet" href="./games.css?v=9">
-<link rel="stylesheet" href="./poster.css?v=4">
+<link rel="stylesheet" href="./poster.css?v=5">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -3477,17 +3477,20 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 </script>
 
 <div class="page" id="wish">
-	<section class="banner">
-		<img decoding="async" class="banner-img" src="images/hero-sg-live.jpg" alt="新加坡蓝色舞台" style="object-position:center 28%;">
-		<div class="banner-text">
-			<div class="container">
-				<p class="banner-kicker">WISH TREE</p>
-				<h1>许愿树</h1>
-				<p class="banner-sub">写一句祝福，树上就多一朵蓝玫瑰</p>
-			</div>
+	<section class="p-hero p-hero-wish">
+		<div class="pwh-big">WISH</div>
+		<div class="pwh-zh">许愿树<em>TREE OF BLUE ROSES / 2026</em></div>
+		<figure class="pwh-rose">
+			<img src="images/rose_real.webp?v=4" alt="蓝玫瑰">
+			<figcaption><span>NO.05 / ROSE</span><span>MADE IN CHANGSHA</span></figcaption>
+		</figure>
+		<div class="pwh-ticket">
+			<span>SIDE B / ONE WISH, ONE ROSE</span>
+			<b>写一句，<br>开一朵。</b>
+			<p>树在暗处。你写下的那句话，<br>会成为唯一亮着的那朵玫瑰。</p>
 		</div>
 	</section>
-	<section class="container">
+	<section class="container wish-wrap">
 		<div class="wish-card">
 			<div class="wish-head">
 				<div>
@@ -5674,7 +5677,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 	var TREE_BASE=0.5,TREE_TOP=9.6;
 	function radiusAt(y){
 		var t=(y-TREE_BASE)/(TREE_TOP-TREE_BASE);t=Math.max(0,Math.min(1,t));
-		return 3.55*Math.pow(1-t,0.88)+0.12;
+		return 4.35*Math.pow(1-t,0.74)+0.12;
 	}
 
 	function radialTex(stops,size){
@@ -5693,20 +5696,20 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 		renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
 		renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
 		renderer.toneMapping=THREE.ACESFilmicToneMapping;
-		renderer.toneMappingExposure=1.22;
+		renderer.toneMappingExposure=1.14;
 		if('outputColorSpace' in renderer) renderer.outputColorSpace=THREE.SRGBColorSpace;
 
 		scene=new THREE.Scene();
-		scene.fog=new THREE.FogExp2(0x0A1428,0.010);
+		scene.fog=new THREE.FogExp2(0x03060E,0.016);
 		camera=new THREE.PerspectiveCamera(34,1,0.1,220);
 		camera.position.set(0,5.4,20);
 
-		scene.add(new THREE.AmbientLight(0x35558A,0.92));
-		scene.add(new THREE.HemisphereLight(0x4A7CB8,0x0E1D30,1.0));
-		var key=new THREE.DirectionalLight(0xFFE7BA,2.45);key.position.set(-7,16,10);scene.add(key);
-		var rim=new THREE.DirectionalLight(0x8FB6FF,0.9);rim.position.set(6,9,-12);scene.add(rim);
-		var inner1=new THREE.PointLight(0xFF9C3C,14,26,2);inner1.position.set(0,3.2,2.2);scene.add(inner1);
-		var inner2=new THREE.PointLight(0xFFD08A,11,22,2);inner2.position.set(0,7.6,-1.6);scene.add(inner2);
+		scene.add(new THREE.AmbientLight(0x22376B,0.72));
+		scene.add(new THREE.HemisphereLight(0x24427E,0x04060C,0.72));
+		var key=new THREE.DirectionalLight(0xC7D8FF,2.15);key.position.set(-7,16,10);scene.add(key);
+		var rim=new THREE.DirectionalLight(0x3D6BFF,1.45);rim.position.set(6,9,-12);scene.add(rim);
+		var inner1=new THREE.PointLight(0x2F5CFF,18,28,2);inner1.position.set(0,3.2,2.2);scene.add(inner1);
+		var inner2=new THREE.PointLight(0x9FBCFF,12,24,2);inner2.position.set(0,7.6,-1.6);scene.add(inner2);
 
 		group=new THREE.Group();scene.add(group);
 
@@ -5719,16 +5722,16 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 		var coreTex=(function(){
 			var S=128,c=document.createElement('canvas');c.width=c.height=S;
 			var g=c.getContext('2d');
-			g.fillStyle='#0B2A19';g.fillRect(0,0,S,S);
+			g.fillStyle='#04070F';g.fillRect(0,0,S,S);
 			for(var i=0;i<1400;i++){
 				var r=Math.random()*S,t=Math.random()*S,rad=1+Math.random()*4;
-				g.fillStyle='hsla('+(100+Math.random()*26)+','+(38+Math.random()*20)+'%,'+(10+Math.random()*16)+'%,'+(0.35+Math.random()*0.5)+')';
+				g.fillStyle='hsla('+(218+Math.random()*22)+','+(62+Math.random()*22)+'%,'+(7+Math.random()*12)+'%,'+(0.35+Math.random()*0.5)+')';
 				g.beginPath();g.arc(r,t,rad,0,7);g.fill();
 			}
 			var tx=new THREE.CanvasTexture(c);tx.colorSpace=THREE.SRGBColorSpace;
 			tx.wrapS=tx.wrapT=THREE.RepeatWrapping;tx.repeat.set(3,3);return tx;
 		})();
-		var coreMat=new THREE.MeshStandardMaterial({map:coreTex,color:0x8FA898,roughness:1,metalness:0});
+		var coreMat=new THREE.MeshStandardMaterial({map:coreTex,color:0x2A4285,roughness:1,metalness:0,emissive:0x091633,emissiveIntensity:.8});
 		var CORE_N=12;
 		for(var ci=0;ci<CORE_N;ci++){
 			var cp=ci/(CORE_N-1);
@@ -5746,7 +5749,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 			var cx=S*0.5,baseY=S*0.985,topY=S*0.05;
 			g.lineCap='round';
 			for(var i=0;i<3;i++){
-				g.strokeStyle='hsl(104,30%,16%)';g.lineWidth=4.5-i;
+				g.strokeStyle='hsl(222,52%,10%)';g.lineWidth=4.5-i;
 				g.beginPath();
 				g.moveTo(cx+(Math.random()-0.5)*5,baseY);
 				g.quadraticCurveTo(cx+(Math.random()-0.5)*12,(baseY+topY)/2,cx+(Math.random()-0.5)*8,topY);
@@ -5764,7 +5767,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 						var sy=y0+(k-1)*8+jitter*0.4;
 						var x1=x0+sd*len*(0.72+Math.random()*0.4);
 						var y1=sy-len*(0.30+Math.random()*0.34);
-						g.strokeStyle='hsl('+(96+Math.random()*24)+','+(38+Math.random()*14)+'%,'+(14+Math.random()*18+t2*6)+'%)';
+						g.strokeStyle='hsl('+(218+Math.random()*18)+','+(48+Math.random()*20)+'%,'+(7+Math.random()*10+t2*3)+'%)';
 						g.lineWidth=1.5+Math.random()*1.3;
 						g.beginPath();g.moveTo(x0,sy);
 						g.quadraticCurveTo(x0+sd*len*0.35,sy-len*0.06,x1,y1);
@@ -5774,7 +5777,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 			}
 			for(var i3=0;i3<10;i3++){
 				var sd2=(i3%2)?1:-1;
-				g.strokeStyle='hsl('+(104+Math.random()*16)+','+(44+Math.random()*12)+'%,'+(30+Math.random()*12)+'%)';
+				g.strokeStyle='hsl('+(222+Math.random()*14)+','+(55+Math.random()*12)+'%,'+(16+Math.random()*10)+'%)';
 				g.lineWidth=1.3;g.beginPath();
 				g.moveTo(cx,topY+Math.random()*S*0.12);
 				g.lineTo(cx+sd2*(S*0.03+Math.random()*S*0.05),topY-Math.random()*S*0.04);
@@ -5785,7 +5788,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 
 		var needleMat=new THREE.MeshStandardMaterial({
 			map:needleTex,alphaTest:.44,side:THREE.DoubleSide,roughness:.78,metalness:.02,
-			emissive:0x0E2F1C,emissiveIntensity:.5});
+			color:0x829FFF,emissive:0x0B1C46,emissiveIntensity:1.35});
 
 		var isSmall=Math.min(window.innerWidth,window.innerHeight*1.1)<520;
 		var NEEDLE_N=isSmall?9500:13000;
@@ -5820,32 +5823,42 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 			m4.compose(pos1,q1,scl);
 			needleMesh.setMatrixAt(ni,m4);
 			var shade=0.42+Math.random()*0.72;
-			col1.setRGB(0.13*shade+0.05,0.53*shade+0.10,0.21*shade+0.06);
+			col1.setRGB(0.06*shade+0.03,0.12*shade+0.06,0.40*shade+0.16);
 			needleMesh.setColorAt(ni,col1);
 		}
 		needleMesh.instanceColor.needsUpdate=true;
 		needleMesh.instanceMatrix.needsUpdate=true;
 		group.add(needleMesh);
 
-		/* 金/银挂球 */
-		var goldMat=new THREE.MeshStandardMaterial({color:0xF2C14E,metalness:.82,roughness:.22,emissive:0x6A3D00,emissiveIntensity:.5});
-		var silverMat=new THREE.MeshStandardMaterial({color:0xE2E8F2,metalness:.8,roughness:.24,emissive:0x25344A,emissiveIntensity:.35});
-		var ballGeo=new THREE.SphereGeometry(1,18,14);
-		for(var bi2=0;bi2<86;bi2++){
-			var by=1.1+Math.random()*(TREE_TOP*0.94-1.1);
+		/* 暗色玻璃球 + 蓝玫瑰挂饰 */
+		var ballGeo=new THREE.SphereGeometry(1,16,12);
+		var darkBallMat=new THREE.MeshStandardMaterial({color:0x18306B,metalness:.62,roughness:.3,emissive:0x0A1740,emissiveIntensity:.55});
+		var roseTex=new THREE.TextureLoader().load('images/rose_real.webp?v=4');
+		var roseMat=new THREE.SpriteMaterial({map:roseTex,color:0xACC4FF,transparent:true,depthWrite:false,opacity:.92,fog:true});
+		for(var bi2=0;bi2<74;bi2++){
+			var by=1.2+Math.random()*(TREE_TOP*0.92-1.2);
 			var bang=Math.random()*Math.PI*2;
-			var brad=radiusAt(by)*(0.93+Math.random()*0.13);
-			var bsize=(0.17+Math.random()*0.15)*(1-by/TREE_TOP*0.3);
-			var ball=new THREE.Mesh(ballGeo,Math.random()<0.55?goldMat:silverMat);
-			ball.scale.setScalar(bsize);
-			ball.position.set(Math.cos(bang)*brad,by,Math.sin(bang)*brad);
-			group.add(ball);
+			var brad=radiusAt(by)*(0.90+Math.random()*0.16);
+			if(bi2<46){
+				var sp=new THREE.Sprite(roseMat.clone());
+				var rs=(0.78+Math.random()*0.62)*(1-by/TREE_TOP*0.26);
+				sp.scale.set(rs,rs,1);
+				sp.position.set(Math.cos(bang)*brad,by,Math.sin(bang)*brad);
+				sp.material.rotation=Math.random()*Math.PI*2;
+				group.add(sp);
+			}else{
+				var bsize=(0.12+Math.random()*0.13)*(1-by/TREE_TOP*0.3);
+				var ball=new THREE.Mesh(ballGeo,darkBallMat);
+				ball.scale.setScalar(bsize);
+				ball.position.set(Math.cos(bang)*brad,by,Math.sin(bang)*brad);
+				group.add(ball);
+			}
 		}
 
 		/* 灯串 */
 		var bulbGeo=new THREE.SphereGeometry(0.062,8,8);
-		var bulbBase=new THREE.MeshBasicMaterial({color:0xFFD98A});
-		var BULB_N=165,glowPos=new Float32Array(BULB_N*3);
+		var bulbBase=new THREE.MeshBasicMaterial({color:0xAEC8FF});
+		var BULB_N=120,glowPos=new Float32Array(BULB_N*3);
 		for(var li2=0;li2<BULB_N;li2++){
 			var lt=li2/BULB_N;
 			var ly=1.0+lt*(TREE_TOP*0.9);
@@ -5857,10 +5870,10 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 			group.add(bulb);
 			glowPos[li2*3]=bulb.position.x;glowPos[li2*3+1]=bulb.position.y;glowPos[li2*3+2]=bulb.position.z;
 		}
-		var lampGlowTex=radialTex([[0,'rgba(255,246,214,.95)'],[.28,'rgba(255,206,120,.46)'],[.68,'rgba(255,180,70,.12)'],[1,'rgba(255,170,60,0)']],64);
+		var lampGlowTex=radialTex([[0,'rgba(232,242,255,.92)'],[.30,'rgba(150,185,255,.42)'],[.68,'rgba(70,110,255,.10)'],[1,'rgba(40,80,255,0)']],64);
 		var lgGeo=new THREE.BufferGeometry();
 		lgGeo.setAttribute('position',new THREE.BufferAttribute(glowPos,3));
-		var lgMat=new THREE.PointsMaterial({map:lampGlowTex,size:0.42,color:0xFFCB86,transparent:true,depthWrite:false,
+		var lgMat=new THREE.PointsMaterial({map:lampGlowTex,size:0.34,color:0x8FB0FF,transparent:true,depthWrite:false,
 			blending:THREE.AdditiveBlending,opacity:.85,sizeAttenuation:true});
 		group.add(new THREE.Points(lgGeo,lgMat));
 		glowMats.push(lgMat);
@@ -5876,16 +5889,21 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 		starShape.closePath();
 		var starGeo=new THREE.ExtrudeGeometry(starShape,{depth:0.12,bevelEnabled:true,bevelThickness:0.04,bevelSize:0.04,bevelSegments:1});
 		starGeo.scale(0.62,0.62,0.9);
-		var star=new THREE.Mesh(starGeo,new THREE.MeshStandardMaterial({color:0xFFD98A,metalness:.62,roughness:.22,emissive:0xFF9E1E,emissiveIntensity:1.15}));
+		var star=new THREE.Mesh(starGeo,new THREE.MeshStandardMaterial({color:0xDCE7FF,metalness:.55,roughness:.25,emissive:0x2F5CFF,emissiveIntensity:1.05}));
 		star.position.set(0,TREE_TOP+0.62,0);group.add(star);
 
-		var starGlowTex=radialTex([[0,'rgba(255,235,170,.95)'],[.25,'rgba(255,200,100,.5)'],[1,'rgba(255,170,60,0)']],128);
+		var starGlowTex=radialTex([[0,'rgba(230,240,255,.92)'],[.25,'rgba(140,180,255,.42)'],[1,'rgba(40,80,255,0)']],128);
 		var starGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:starGlowTex,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false}));
-		starGlow.scale.set(3.2,3.2,1);starGlow.position.copy(star.position);group.add(starGlow);
+		starGlow.scale.set(3.6,3.6,1);starGlow.position.copy(star.position);group.add(starGlow);
+		star.visible=false;
+		var topRose=new THREE.Sprite(roseMat.clone());
+		topRose.material.color.set(0xE4EDFF);topRose.material.opacity=.98;
+		topRose.scale.set(1.38,1.38,1);topRose.position.set(0,TREE_TOP+0.58,0);
+		group.add(topRose);
 
 		/* 雪地 + 雪堆 */
 		var ground=new THREE.Mesh(new THREE.CircleGeometry(12,48),
-			new THREE.MeshStandardMaterial({color:0x33465F,roughness:1,metalness:0}));
+			new THREE.MeshStandardMaterial({color:0x070B14,roughness:1,metalness:0}));
 		ground.rotation.x=-Math.PI/2;ground.position.y=-0.02;scene.add(ground);
 
 
@@ -5938,7 +5956,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 		pop=document.createElement('div');
 		pop.className='wtPop';
 		pop.innerHTML='<div class="wtPopCard">'+
-			'<span class="wtPopRose"><img src="images/rose.png?v=3" alt="蓝玫瑰" decoding="async"></span>'+
+			'<span class="wtPopRose"><img src="images/rose_real.webp?v=4" alt="蓝玫瑰" decoding="async"></span>'+
 			'<p class="wtPopTxt"></p><p class="wtPopBy"></p>'+
 			'<span class="wtPopNo"></span>'+
 			'<button type="button" class="wtPopClose" aria-label="关闭">×</button></div>';
@@ -5964,7 +5982,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 		var el=document.createElement('div');
 		el.className='wtTag'+(isNew?' new':'');
 		el.innerHTML='<span class="wtStr"></span>'+
-			'<span class="wtRose"><img src="images/rose.png?v=3" alt="蓝玫瑰" decoding="async"></span>';
+			'<span class="wtRose"><img src="images/rose_real.webp?v=4" alt="蓝玫瑰" decoding="async"></span>';
 		el.addEventListener('pointerdown',function(e){e.stopPropagation();});
 		el.addEventListener('click',function(e){e.stopPropagation();showPop(x,idx);});
 		tagLayer.appendChild(el);
@@ -6164,7 +6182,8 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 
 	function doSearch(){
 		var v=(sInput.value||'').trim();
-		if(v===query){ return; }
+		hidePop();
+		if(v===query){ render(cache); return; }
 		query=v; render(cache);
 	}
 	if(sInput){
@@ -6177,7 +6196,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 		});
 	}
 	if(sBtn)sBtn.addEventListener('click',function(){ if(searchTimer)clearTimeout(searchTimer); doSearch(); });
-	if(sClear)sClear.addEventListener('click',function(){ if(sInput)sInput.value=''; query=''; render(cache); });
+	if(sClear)sClear.addEventListener('click',function(){ hidePop(); if(sInput)sInput.value=''; query=''; render(cache); });
 
 	(function snow(){
 		var box2=document.getElementById('wtSnow'); if(!box2) return;
