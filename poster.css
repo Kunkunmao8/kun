@@ -785,3 +785,189 @@ html,body{overflow-x:clip!important;}
 #games .gx-play i{border-radius:0!important;background:var(--pp-blue)!important;box-shadow:none!important;width:24px!important;height:24px!important;font-size:12px!important;}
 #games .gx-play:hover i{transform:translateX(4px);}
 #games .gx-diff{border-radius:0!important;background:var(--pp-bone)!important;border:1px solid var(--pp-ink)!important;color:var(--pp-ink)!important;}
+
+/* ============ V4 · WISH / 许愿树 ============ */
+#wish{background:var(--pp-bone)!important;}
+#wish .p-hero-wish{
+  position:relative;height:660px;overflow:hidden;background:var(--pp-bone);
+  border-bottom:1px solid var(--pp-ink);
+}
+#wish .pwh-big{
+  position:absolute;left:30px;top:24px;margin:0;z-index:2;
+  font-family:var(--pp-sans);font-size:238px;line-height:.82;letter-spacing:-12px;font-weight:900;
+  color:var(--pp-blue);
+}
+#wish .pwh-zh{
+  position:absolute;left:48px;top:322px;z-index:3;margin:0;
+  font-size:58px;line-height:1.06;letter-spacing:6px;font-weight:800;color:var(--pp-ink);
+}
+#wish .pwh-zh em{
+  display:block;margin-top:14px;font-style:normal;font-size:9px;letter-spacing:3.4px;
+  font-weight:400;color:var(--pp-muted);
+}
+#wish .pwh-rose{
+  position:absolute;right:48px;top:56px;width:492px;height:536px;margin:0;z-index:4;
+  background:var(--pp-ink);transform:rotate(-1.4deg);box-shadow:-14px 16px 0 var(--pp-blue);
+  display:flex;flex-direction:column;
+}
+#wish .pwh-rose img{
+  width:100%;flex:1;object-fit:contain;padding:26px 22px 4px;
+  filter:drop-shadow(0 20px 32px rgba(0,0,0,.8)) saturate(1.12);
+}
+#wish .pwh-rose figcaption{
+  display:flex;justify-content:space-between;gap:14px;padding:12px 14px 13px;
+  border-top:1px solid rgba(240,235,221,.24);
+  font-size:8px;letter-spacing:2.4px;color:var(--pp-bone);font-weight:600;
+}
+#wish .pwh-ticket{
+  position:absolute;left:44px;bottom:42px;width:430px;z-index:5;
+  background:var(--pp-blue);color:var(--pp-bone);padding:22px 26px 24px;
+  border:1px solid var(--pp-ink);transform:rotate(-2deg);box-shadow:10px 12px 0 var(--pp-ink);
+}
+#wish .pwh-ticket span{display:block;font-size:8px;letter-spacing:3px;color:#BCC6FF;}
+#wish .pwh-ticket b{display:block;margin-top:8px;font-size:38px;line-height:1.14;letter-spacing:-1px;font-weight:800;}
+#wish .pwh-ticket p{margin:12px 0 0;font-size:10.5px;line-height:1.9;color:#CBD2FF;}
+#wish .wish-wrap{padding-top:52px;padding-bottom:76px;}
+
+#wish .wish-card{
+  background:#07090F;border:1px solid #000;border-radius:0;padding:26px 26px 22px;
+  box-shadow:10px 12px 0 var(--pp-blue);
+}
+#wish .wish-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:18px;
+  padding:0 0 16px;border-bottom:1px solid rgba(240,235,221,.22);
+}
+#wish .wish-head b{font-size:19px;letter-spacing:1.4px;color:var(--pp-bone);font-weight:800;}
+#wish .wish-head span{margin-top:6px;font-size:11px;line-height:1.8;color:#9CA6CC;letter-spacing:.4px;}
+#wish .wish-count{color:#8E97BE;font-size:9px;letter-spacing:2px;text-transform:uppercase;text-align:right;}
+#wish .wish-count b{display:block;font-size:34px;line-height:1;color:var(--pp-bone);font-family:var(--pp-serif);margin-bottom:5px;}
+
+#wish .wish-search{margin:18px 0 14px;gap:8px;}
+#wish .ws-box{
+  flex:1 1 360px;min-width:0;padding:0;gap:0;
+  background:var(--pp-bone);border:0;border-radius:0;box-shadow:none;
+}
+#wish .ws-box:focus-within{box-shadow:0 0 0 2px var(--pp-blue);}
+#wish .ws-ico{display:none;}
+#wish .ws-box input{
+  padding:13px 15px;font-size:13px;color:var(--pp-ink);letter-spacing:.4px;
+}
+#wish .ws-box input::placeholder{color:#7A7F92;}
+#wish .ws-box button{
+  padding:13px 24px;border-radius:0;background:var(--pp-blue);color:var(--pp-bone);
+  font-size:11px;letter-spacing:2.4px;font-weight:700;
+}
+#wish .ws-clear{
+  border:1px solid rgba(240,235,221,.28);border-radius:0;background:transparent;
+  color:#B7BEDB;font-size:10px;letter-spacing:2px;padding:13px 18px;
+}
+#wish .ws-clear:hover{background:rgba(240,235,221,.1);color:var(--pp-bone);}
+#wish .ws-tip{margin-top:2px;font-size:10.5px;letter-spacing:.6px;color:#8790B4;}
+#wish .ws-tip b{color:#C6D0FF;font-family:var(--pp-serif);font-size:13px;}
+#wish .ws-tip.on{color:#A8B6FF;}
+
+#wish .wish-tree{
+  height:690px;border-radius:0;margin-top:8px;
+  border:1px solid rgba(240,235,221,.20);
+  background:
+    radial-gradient(50% 42% at 50% 10%,rgba(40,62,150,.34),transparent 72%),
+    radial-gradient(120% 92% at 50% 8%,#0B1533 0%,#060B1C 48%,#02030A 100%);
+  box-shadow:inset 0 0 90px rgba(0,0,0,.8);
+}
+#wish .wtHint{
+  bottom:14px;font-size:9px;letter-spacing:2.4px;color:rgba(240,235,221,.46);
+}
+#wish .wtStr{width:1px;height:18px;background:linear-gradient(rgba(240,235,221,.72),rgba(240,235,221,.06));}
+#wish .wtRose{width:62px;margin-top:-6px;}
+#wish .wtRose img{
+  filter:brightness(.36) saturate(.72) drop-shadow(0 6px 16px rgba(0,0,0,.9));
+  transition:filter .4s ease,transform .4s ease;
+}
+#wish .wtTag:hover .wtRose img{filter:brightness(.7) saturate(.9);}
+#wish .wtTag.hit .wtRose img{
+  filter:brightness(1.45) saturate(1.25)
+    drop-shadow(0 0 16px rgba(70,110,255,.95))
+    drop-shadow(0 0 44px rgba(40,80,255,.62));
+}
+#wish .wtTag.hit{filter:drop-shadow(0 0 26px rgba(44,84,255,.55));}
+#wish .wtTag.hit::after{
+  content:"找到了";top:-10px;border-radius:0;background:var(--pp-blue);color:var(--pp-bone);
+  font-size:8px;letter-spacing:2.4px;padding:3px 8px;box-shadow:3px 4px 0 rgba(0,0,0,.75);
+}
+#wish .wtTag.new .wtRose{animation:wtRoseOpen .8s cubic-bezier(.2,1.4,.4,1) both;}
+@keyframes wtRoseOpen{0%{opacity:.2;transform:scale(.4) rotate(-12deg);}60%{opacity:1;transform:scale(1.12) rotate(3deg);}100%{transform:scale(1) rotate(0);}}
+
+#wish .wish-empty{color:#7E87AB;font-size:11px;letter-spacing:.8px;margin-top:14px;}
+#wish .wish-form{margin-top:18px;gap:0;}
+#wish .wish-form input{
+  flex:1 1 320px;padding:14px 16px;border:0;border-radius:0;
+  background:var(--pp-bone);color:var(--pp-ink);font-size:13px;letter-spacing:.4px;
+}
+#wish .wish-form input::placeholder{color:#7A7F92;}
+#wish .wish-form input:focus{box-shadow:0 0 0 2px var(--pp-blue);}
+#wish .wish-form button{
+  flex:none;padding:14px 28px;border-radius:0;background:var(--pp-blue);color:var(--pp-bone);
+  font-size:11px;letter-spacing:2.8px;font-weight:700;
+}
+#wish .wish-form button:disabled{background:#313A63;color:#8A92B2;}
+#wish .wish-tip{color:#8B94B8;font-size:10.5px;letter-spacing:.5px;}
+#wish .wish-wall{margin-top:20px;border-top:1px solid rgba(240,235,221,.20);padding-top:16px;}
+#wish .ww-h{font-size:9px;letter-spacing:2.4px;color:#8C96BC;margin-bottom:10px;text-transform:uppercase;}
+#wish .ww-row{border-bottom:1px solid rgba(240,235,221,.10);color:#DCD7CB;font-size:11.5px;padding:9px 0;}
+#wish .ww-row em{color:#7982A8;font-size:10px;letter-spacing:1px;}
+
+#wish .wtPop{background:rgba(2,4,10,.78);backdrop-filter:blur(10px);}
+#wish .wtPopCard{
+  border-radius:0;width:min(330px,86%);padding:30px 24px 22px;
+  background:var(--pp-bone);border:1px solid var(--pp-ink);
+  box-shadow:12px 14px 0 var(--pp-blue);
+}
+#wish .wtPopRose{width:100px;height:100px;margin:-62px auto 2px;}
+#wish .wtPopRose img{filter:drop-shadow(0 12px 18px rgba(0,0,0,.55));}
+#wish .wtPopTxt{color:var(--pp-ink);font-size:14px;line-height:1.85;letter-spacing:.3px;}
+#wish .wtPopBy{color:var(--pp-muted);font-size:10px;letter-spacing:1.4px;margin-top:12px;}
+#wish .wtPopNo{
+  border-radius:0;background:var(--pp-blue);color:var(--pp-bone);
+  font-size:8.5px;letter-spacing:2.4px;padding:4px 10px;
+}
+#wish .wtPopClose{color:var(--pp-ink);}
+
+@media(max-width:760px){
+  #wish .p-hero-wish{height:auto;padding:18px 18px 22px;border-bottom:1px solid var(--pp-ink);}
+  #wish .pwh-big{position:static;font-size:104px;letter-spacing:-6px;line-height:.85;}
+  #wish .pwh-zh{position:static;font-size:34px;letter-spacing:3px;margin:2px 0 14px;}
+  #wish .pwh-zh em{font-size:7px;letter-spacing:2.4px;margin-top:7px;}
+  #wish .pwh-rose{
+    position:relative;right:auto;top:auto;width:100%;height:318px;
+    transform:rotate(-1deg);box-shadow:8px 9px 0 var(--pp-blue);
+  }
+  #wish .pwh-rose img{padding:14px 12px 0;}
+  #wish .pwh-rose figcaption{font-size:6.5px;letter-spacing:1.6px;padding:9px 10px;}
+  #wish .pwh-ticket{
+    position:relative;left:auto;bottom:auto;width:calc(100% - 8px);
+    margin:18px 0 0;padding:16px 18px 18px;transform:rotate(-1.5deg);box-shadow:7px 8px 0 var(--pp-ink);
+  }
+  #wish .pwh-ticket b{font-size:25px;margin-top:6px;}
+  #wish .pwh-ticket p{font-size:9.5px;line-height:1.8;margin-top:8px;}
+  #wish .wish-wrap{padding:22px 18px 46px;}
+  #wish .wish-card{padding:16px 14px 16px;box-shadow:7px 8px 0 var(--pp-blue);}
+  #wish .wish-head{padding-bottom:12px;}
+  #wish .wish-head b{font-size:16px;}
+  #wish .wish-head span{font-size:10px;}
+  #wish .wish-count b{font-size:28px;}
+  #wish .wish-search{display:block;margin:14px 0 10px;}
+  #wish .ws-box{display:flex;width:100%;}
+  #wish .ws-box input{flex:1;min-width:0;font-size:12.5px;padding:12px 12px;}
+  #wish .ws-box button{padding:12px 18px;font-size:10px;letter-spacing:1.8px;}
+  #wish .ws-clear{display:block;width:100%;margin-top:6px;padding:10px;font-size:9px;}
+  #wish .ws-tip{font-size:9.5px;line-height:1.7;}
+  #wish .wish-tree{height:470px;}
+  #wish .wtRose{width:46px;}
+  #wish .ws-box input{color:var(--pp-ink);}
+  #wish .wish-form{margin-top:14px;}
+  #wish .wish-form input{flex:1 1 100%;font-size:12.5px;padding:12px 13px;}
+  #wish .wish-form button{flex:1 1 100%;padding:12px;font-size:10px;letter-spacing:2.4px;}
+  #wish .wtHint{font-size:7.5px;letter-spacing:1.4px;bottom:10px;}
+  #wish .wtPopCard{width:min(300px,88%);}
+  #wish .wtPopRose{width:86px;height:86px;}
+}
