@@ -270,7 +270,7 @@
         g.userData.idx = seats.length;
         scene.add(g);
         seats.push({ grp: g, mat: cushMat });
-        seatMeshes.push(cush);
+        seatMeshes.push(g);
       }
     });
 
@@ -320,9 +320,12 @@
       var r = canvas.getBoundingClientRect();
       ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
       raycaster.setFromCamera(ndc, camera);
-      var hit = raycaster.intersectObjects(seatMeshes, false)[0];
+      var hit = raycaster.intersectObjects(seatMeshes, true)[0];
       if (!hit) return;
-      var idx = hit.object.parent.userData.idx;
+      var node = hit.object, idx;
+      while (node && node.userData.idx == null) node = node.parent;
+      idx = node ? node.userData.idx : null;
+      if (idx == null) return;
       var s = seats[idx];
       if (s !== seats[seq[input.length]]) {
         flash(s, 520, 0xE2593C);
@@ -338,6 +341,15 @@
         level++; playing = true;
         setTimeout(function () { newRound(); }, 900);
       } else refreshLabel();
+    });
+
+    // 鼠标移到椅子任何位置都显示手型，提示“这把椅子可以点”
+    canvas.addEventListener('pointermove', function (e) {
+      if (playing) { canvas.style.cursor = 'default'; return; }
+      var r = canvas.getBoundingClientRect();
+      ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+      raycaster.setFromCamera(ndc, camera);
+      canvas.style.cursor = raycaster.intersectObjects(seatMeshes, true).length ? 'pointer' : 'grab';
     });
 
     function resize() { var w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
