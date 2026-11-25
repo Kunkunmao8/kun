@@ -1793,6 +1793,196 @@ body{background:#F3F7FF;color:#1B2A45;}
 	#wish .wtPopCard{width:min(300px,88%);padding:24px 18px 18px}
 	#wish .wtPopTxt{font-size:14px}
 }
+/* ===== V2 编辑式版式：统一所有页面 ===== */
+:root{--v2-ink:#0F1A31;--v2-blue:#2F5CD4;--v2-line:#D9E4F4;--v2-paper:#F9FBFF;--v2-bg:#EDF2FB;--v2-muted:#7E90AC}
+body{background:var(--v2-bg);color:var(--v2-ink);}
+.container{width:min(1344px,calc(100% - 96px));max-width:1344px;margin:0 auto;padding:0;}
+.site-header{height:72px;background:#fff;border-bottom:1px solid #E4EBF7;}
+.site-header .header-inner{height:72px;}
+.brand,.logo{letter-spacing:2px;font-weight:800;}
+#home .banner,#music .banner,#work .banner,#pillow .banner{width:min(1344px,calc(100% - 96px));height:360px;margin:24px auto 0;border-radius:26px;overflow:hidden;box-shadow:0 22px 56px -30px rgba(18,38,88,.45);border:0;}
+#home .banner-img,#music .banner-img,#work .banner-img,#pillow .banner-img{height:100%;object-fit:cover;}
+#home .banner::after,#music .banner::after,#work .banner::after,#pillow .banner::after{background:linear-gradient(90deg,rgba(7,13,27,.84) 0%,rgba(7,13,27,.38) 55%,rgba(7,13,27,.06) 100%),linear-gradient(0deg,rgba(7,13,27,.72) 0%,rgba(7,13,27,.1) 55%,transparent 100%);}
+#home .banner-text,#music .banner-text,#work .banner-text,#pillow .banner-text{padding-bottom:38px;}
+#home .banner-text .container,#music .banner-text .container,#work .banner-text .container,#pillow .banner-text .container{padding:0 40px;}
+.banner-kicker{font-size:10px;letter-spacing:5px;color:#A8C4FF;margin-bottom:12px;}
+.banner h1{font-size:46px;letter-spacing:6px;line-height:1.1;margin-bottom:10px;}
+.banner-sub{font-size:13px;letter-spacing:1.5px;color:#C8D6ED;}
+#home .banner + section,#music .banner + section,#work .banner + section,#pillow .banner + section{width:auto!important;margin:0 auto!important;background:transparent!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-radius:0!important;padding:0!important;z-index:auto!important;position:static!important;}
+.section-head{margin:52px 0 20px;align-items:flex-end;}
+.section-title{font-size:26px;font-weight:700;letter-spacing:2px;padding-left:14px;border-left:4px solid var(--v2-blue);}
+.section-note{font-size:11px;letter-spacing:2px;color:#8799B6;}
+#home .card-wrap,#work .card-wrap{display:grid;grid-template-columns:1.32fr 1fr;grid-auto-rows:252px;gap:16px;justify-content:stretch;align-items:stretch;margin:0;}
+#home .card,#work .card{width:auto!important;height:100%;border:0!important;border-radius:22px;overflow:hidden;position:relative;background:#0B1222!important;box-shadow:0 20px 44px -30px rgba(15,30,70,.55);transform:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;}
+#home .card:first-child,#work .card:first-child{grid-row:span 2;}
+#home .card img,#work .card img{position:absolute;inset:0;width:100%;height:100%!important;object-fit:cover;opacity:.88;transition:transform .6s ease;}
+#home .card:hover img,#work .card:hover img{transform:scale(1.04);}
+#home .card::after,#work .card::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(6,10,20,0) 36%,rgba(6,10,20,.35) 58%,rgba(6,10,20,.9) 100%);}
+#home .card-text,#work .card-text{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:26px 28px 28px;color:#fff;}
+#home .card h4,#work .card h4{color:#fff;font-size:24px;letter-spacing:2px;margin-bottom:8px;}
+#home .card p,#work .card p{color:#DAE4F4;font-size:13.5px;line-height:1.75;margin:0;}
+#home .card .tag,#work .card .tag{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:10px;letter-spacing:2px;padding:5px 10px;}
+#home .card-links{margin-top:12px;}
+#home .card-link{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.26);color:#fff;}
+#home .card-link:hover{background:#fff;color:#21408F;}
+.table-box{border-radius:22px;border:1px solid var(--v2-line);box-shadow:0 18px 40px -32px rgba(20,45,110,.4);overflow:hidden;}
+.table-box table thead th{background:#16234A!important;color:#fff!important;text-align:left;padding:16px 24px;font-size:11px;letter-spacing:2px;}
+.table-box table td{padding:16px 24px;font-size:13px;color:#26364F;border-bottom:1px solid #E5EDF9;}
+.table-box table tbody tr:nth-child(odd),.table-box table tbody tr:nth-child(even){background:#FBFDFF!important;}
+.table-box table tbody tr:hover{background:#EFF5FF!important;}
+#work .video-wrap{display:grid;grid-template-columns:1.55fr 1fr;grid-template-rows:repeat(2,1fr);gap:16px;}
+#work .video-card{border:0!important;border-radius:20px!important;overflow:hidden;background:#0E1830!important;box-shadow:0 18px 40px -30px rgba(15,30,70,.55);}
+#work .video-card:first-child{grid-row:span 2;}
+#work .video-frame{aspect-ratio:auto!important;height:100%;min-height:170px;}
+#work .video-card:first-child .video-frame{min-height:480px;}
+#work .video-text{background:#fff;padding:14px 18px 18px;}
+#work .video-text h4{font-size:16px;letter-spacing:1px;}
+#work .gallery-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
+#work .gallery-item{border-radius:16px;overflow:hidden;}
+#work .gallery-item.wide{grid-column:span 2;aspect-ratio:16/10;}
+#work .album-card,#work .clip-card{background:#fff!important;}
+#pillow .room{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0;overflow:visible;}
+#pillow .room-head{background:#16234A;border-radius:16px 16px 0 0;padding:16px 24px;}
+#pillow .gate{border:1px solid var(--v2-line);border-top:0;background:#F9FBFF;padding:28px 24px 34px;}
+#pillow .gate .gate-card{box-shadow:none;border:0;background:transparent;}
+#pillow .msgs{background:#F9FBFF!important;border:1px solid var(--v2-line);border-top:0;border-radius:0 0 16px 16px;padding:6px 24px 20px!important;}
+#pillow .fpost{background:transparent!important;border:0!important;border-bottom:1px solid #DFE8F6!important;border-radius:0!important;box-shadow:none!important;padding:20px 4px!important;margin:0!important;}
+#pillow .fpost.mine{background:linear-gradient(90deg,#F1F7FF,transparent)!important;}
+#pillow .fpost:last-child{border-bottom:0!important;}
+#pillow .fbar{margin-top:10px;}
+#pillow .freps{background:#F2F7FF;border-radius:12px;padding:12px 14px;border:1px solid #E0EAF8;}
+#mine .me-hero{border:0!important;border-radius:24px!important;box-shadow:0 24px 56px -34px rgba(15,30,70,.5);overflow:hidden;background:#0B1222!important;margin-top:24px;}
+#mine .me-cover{height:380px;}
+#mine .me-body{position:relative;padding:0 40px 34px;background:linear-gradient(180deg,rgba(11,18,34,.82),#0B1222 34%);}
+#mine .me-ava-wrap{margin-top:-54px;}
+#mine .me-name{color:#fff;font-size:38px;letter-spacing:3px;margin-top:18px;}
+#mine .me-sub{color:#AFC2DE;}
+#mine .me-stats{display:flex;gap:36px;color:#fff;}
+#mine .me-stats b{color:#fff;font-size:26px;}
+#mine .me-bio{color:#D5E2F3;}
+#mine .me-actions button,#mine .me-actions a{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff;}
+@media (max-width:900px){
+  .container{width:calc(100% - 40px);padding:0;}
+  #home .banner,#music .banner,#work .banner,#pillow .banner{width:calc(100% - 32px);height:300px;margin:16px auto 0;border-radius:22px;}
+  #home .banner-text .container,#music .banner-text .container,#work .banner-text .container,#pillow .banner-text .container{padding:0 24px;}
+  .banner h1{font-size:30px;letter-spacing:3px;}
+  .banner-kicker{font-size:9px;letter-spacing:3px;}
+  .banner-sub{font-size:12px;}
+  .section-head{margin:36px 0 16px;}
+  .section-title{font-size:22px;}
+  .section-note{display:none;}
+  #home .card-wrap,#work .card-wrap{grid-template-columns:1fr;grid-auto-rows:auto;}
+  #home .card,#work .card{height:340px;}
+  #home .card:first-child,#work .card:first-child{grid-row:auto;height:460px;}
+  #work .video-wrap{grid-template-columns:1fr;grid-template-rows:auto;}
+  #work .video-card:first-child{grid-row:auto;}
+  #work .video-card:first-child .video-frame{min-height:0;aspect-ratio:4/5;}
+  #work .video-frame{aspect-ratio:4/5!important;}
+  #work .gallery-grid{grid-template-columns:repeat(2,1fr);}
+  #work .gallery-item.wide{grid-column:1/-1;}
+  #mine .me-cover{height:250px;}
+  #mine .me-body{padding:0 22px 28px;}
+  #mine .me-name{font-size:28px;}
+  #mine .me-stats{gap:24px;}
+  .table-box table thead th,.table-box table td{padding:12px 14px;font-size:12px;}
+}
+/* ===== 音乐页：随身听房间 ===== */
+html{scroll-padding-top:96px;}
+#home .banner+section,#music .banner+section,#work .banner+section,#pillow .banner+section{margin-top:32px!important;}
+.music-room{display:grid;grid-template-columns:1.12fr .92fr;gap:30px;align-items:start;margin-top:4px;}
+.mr-copy{position:relative;padding:8px 0 0;}
+.mr-kicker{font-size:10px;letter-spacing:5px;color:#7C90B2;display:flex;align-items:center;gap:12px;}
+.mr-kicker:before{content:"";width:30px;height:2px;background:#2F5CD4;}
+.mr-title{font-size:72px;line-height:1.02;letter-spacing:6px;font-weight:800;margin:12px 0 0;color:#0F1A31;}
+.mr-title em{font-style:normal;color:#2F5CD4;}
+.mr-sub{font-size:13px;line-height:2;color:#617492;margin:14px 0 22px;letter-spacing:.8px;}
+.tape-list{display:flex;flex-direction:column;gap:10px;}
+.tape-row{display:flex;align-items:center;gap:16px;background:#F9FBFF;border:1px solid #D5E1F3;border-radius:14px;padding:12px 16px;min-height:86px;box-shadow:0 12px 28px -24px rgba(18,38,80,.45);position:relative;overflow:hidden;transition:transform .2s,border-color .2s;}
+.tape-row:hover{transform:translateX(4px);border-color:#AFC6EA;}
+.tape-row.on{border-color:#AFC6EA;background:linear-gradient(100deg,#EAF1FF,#F9FBFF 62%);}
+.tape-row.on:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#E8A24A;}
+.tape-reels{width:70px;height:50px;border-radius:8px;background:linear-gradient(180deg,#E8EEF9,#D2DDEE);border:1px solid #C4D3E9;position:relative;flex:none;}
+.tape-reels span{position:absolute;top:50%;width:26px;height:26px;border-radius:50%;border:5px solid #263A5E;background:#F8FBFF;transform:translateY(-50%);}
+.tape-reels span:first-child{left:6px}.tape-reels span:last-child{right:6px}
+.tape-info{flex:1;min-width:0}
+.tape-info h4{font-size:18px;letter-spacing:2px;color:#101A30;margin:0;white-space:nowrap;}
+.tape-info h4 small{font-size:9px;letter-spacing:2px;color:#8A9DB9;font-weight:400;margin-left:8px;}
+.tape-info p{font-size:10.5px;color:#71839F;margin:4px 0 0;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tape-go{font-size:9px;letter-spacing:1px;color:#2F5CD4;text-decoration:none;border-bottom:1px solid #BFD2F1;padding-bottom:2px;flex:none;white-space:nowrap;}
+.walkman{width:100%;max-width:504px;justify-self:center;background:linear-gradient(154deg,#FCF9F1,#F3EEE2 46%,#E5DECD);border-radius:34px;padding:26px 26px 20px;box-shadow:24px 36px 66px -42px rgba(26,44,80,.55),inset 0 2px 0 #fff,inset 0 -8px 22px rgba(120,106,80,.16);position:relative;}
+.walkman:after{content:"";position:absolute;inset:9px;border:1px solid rgba(80,66,42,.13);border-radius:27px;pointer-events:none;}
+.wm-brand{display:flex;align-items:center;gap:8px;padding:0 4px 12px;border-bottom:1px solid rgba(70,56,34,.14);position:relative;z-index:2;}
+.wm-dot{width:7px;height:7px;border-radius:50%;background:#2F5CD4;box-shadow:0 0 0 3px rgba(47,92,212,.16);}
+.wm-brand b{font-size:10px;letter-spacing:4px;color:#4C4230;font-weight:700;}
+.wm-brand i{margin-left:auto;font-style:normal;font-size:7.5px;letter-spacing:2px;color:#978A70;}
+.wm-window{margin-top:14px;height:232px;border-radius:16px;background:#1A2338;padding:10px;position:relative;box-shadow:inset 0 0 0 2px #0D1424,inset 0 8px 20px rgba(0,0,0,.45);overflow:hidden;}
+.wm-window img{width:100%;height:100%;object-fit:cover;border-radius:11px;opacity:.7;}
+.wm-window:after{content:"";position:absolute;inset:10px;border-radius:11px;background:linear-gradient(180deg,rgba(8,14,28,.12),rgba(8,14,28,.82));}
+.wm-reel{position:absolute;width:82px;height:82px;border-radius:50%;border:6px solid rgba(232,240,255,.82);background:rgba(12,22,42,.4);box-shadow:0 0 0 4px rgba(0,0,0,.24),inset 0 0 22px rgba(0,0,0,.5);z-index:3;}
+.wm-reel:before{content:"";position:absolute;inset:20px;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(240,246,255,.9) 0 10deg,rgba(40,60,90,.4) 10deg 40deg);}
+.wm-reel:after{content:"";position:absolute;left:50%;top:50%;width:14px;height:14px;border-radius:50%;background:#1A2338;transform:translate(-50%,-50%);}
+.wm-reel.l{left:28px;top:62px}.wm-reel.r{right:28px;top:62px}
+.wm-live{position:absolute;right:18px;top:16px;z-index:4;font-size:7.5px;letter-spacing:2px;color:#F3D7A2;border:1px solid rgba(243,215,162,.45);border-radius:999px;padding:4px 9px;}
+.wm-glass-copy{position:absolute;left:18px;right:18px;bottom:14px;z-index:4;color:#fff;}
+.wm-glass-copy small{font-size:7px;letter-spacing:3px;color:#D6B57A;}
+.wm-glass-copy b{display:block;font-size:23px;letter-spacing:4px;margin-top:4px;}
+.wm-glass-copy span{font-size:9px;letter-spacing:1.5px;color:#CBD8EE;}
+.wm-now{font-size:12px;letter-spacing:1px;color:#4C4230;margin:14px 4px 8px;min-height:18px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wm-transport{display:flex;align-items:center;gap:10px;padding:0 4px;}
+.wm-btn{width:40px;height:40px;border-radius:50%;border:0;background:linear-gradient(180deg,#3B67D8,#2648A6);box-shadow:0 5px 0 #17337E,0 10px 16px -8px rgba(20,40,90,.6);color:#fff;font-size:14px;cursor:pointer;flex:none;font-family:inherit;}
+.wm-btn:active{transform:translateY(2px);box-shadow:0 3px 0 #17337E;}
+.wm-prog{flex:1;height:3px;border-radius:9px;background:#D9D2C0;overflow:hidden;}
+.wm-prog span{display:block;height:3px;width:0;background:#C08A3E;}
+.wm-time{font-size:9px;color:#8A795C;font-variant-numeric:tabular-nums;}
+.wm-list{display:grid;grid-template-columns:1fr 1fr;gap:6px 8px;margin-top:14px;max-height:150px;overflow:auto;padding:2px 2px 4px;scrollbar-width:thin;}
+.wm-list .track-pill{display:flex;align-items:center;gap:3px;background:#F7F3E9;border:1px solid #DED5C2;border-radius:8px;padding:5px 7px;min-width:0;}
+.wm-list .track-pill button{flex:1;min-width:0;border:0;background:transparent;color:#3E382C;font-size:9px;letter-spacing:.4px;text-align:left;cursor:pointer;font-family:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0;}
+.wm-list .track-pill button:hover{color:#2F5CD4;}
+.wm-list .qq-mini{color:#9C8A68;font-size:8px;text-decoration:none;border:1px solid #D8CBB0;border-radius:4px;padding:1px 3px;}
+.wm-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding:0 4px;}
+.wm-file span{font-size:9px;color:#7C6C50;border-bottom:1px solid #C9B999;cursor:pointer;letter-spacing:1px;}
+.wm-hint{font-size:8px;color:#9C8D72;letter-spacing:1px;}
+@media(max-width:900px){
+ .music-room{grid-template-columns:1fr;gap:26px;}
+ .mr-title{font-size:54px;}
+ .walkman{max-width:100%;}
+ .tape-info p{white-space:normal;}
+ .wm-window{height:210px;}
+ .wm-list{grid-template-columns:1fr;}
+}
+/* 手机端最终修正 */
+@media (max-width:900px){
+  .container{width:calc(100% - 32px)!important;margin-left:auto!important;margin-right:auto!important;padding:0!important;}
+  .section-head{flex-direction:column!important;align-items:flex-start!important;gap:6px!important;}
+  .mr-title{font-size:40px!important;letter-spacing:2px!important;line-height:1.08!important;}
+  .mr-kicker{letter-spacing:2px!important;font-size:8.5px!important;}
+  .mr-sub{font-size:12px!important;line-height:1.9!important;}
+  .music-room{grid-template-columns:1fr!important;gap:22px!important;}
+  .tape-row{padding:10px 12px!important;gap:10px!important;min-height:78px!important;}
+  .tape-reels{width:56px!important;height:44px!important;}
+  .tape-reels span{width:22px!important;height:22px!important;border-width:4px!important;}
+  .tape-info h4{font-size:16px!important;letter-spacing:1px!important;}
+  .tape-info p{font-size:9.5px!important;white-space:nowrap!important;}
+  .tape-go{font-size:8px!important;}
+  .walkman{padding:20px 18px 16px!important;border-radius:26px!important;}
+  .wm-window{height:200px!important;}
+  .wm-reel{width:66px!important;height:66px!important;}
+  .wm-reel.l{left:22px!important;top:54px!important}.wm-reel.r{right:22px!important;top:54px!important}
+  .wm-glass-copy b{font-size:20px!important;}
+  .wm-list{grid-template-columns:1fr 1fr!important;max-height:none!important;}
+  .wm-list .track-pill button{font-size:8.5px!important;}
+  #home .card,#work .card{height:320px!important;}
+  #home .card:first-child,#work .card:first-child{height:440px!important;}
+  #home .card-text,#work .card-text{padding:20px 20px 22px!important;}
+  #home .card h4,#work .card h4{font-size:20px!important;}
+  #home .card p,#work .card p{font-size:12px!important;}
+  #pillow .msgs{padding:4px 14px 16px!important;}
+  #pillow .room-head{padding:14px 16px!important;}
+  #mine .me-body{padding:0 20px 26px!important;}
+}
+@media (max-width:900px){
+#home>section.container,#music>section.container,#work>section.container,#pillow>section.container,#mine>section.container,#home section.container:not(.banner),#music section.container:not(.banner),#work section.container:not(.banner),#pillow section.container:not(.banner){width:calc(100% - 32px)!important;margin-left:auto!important;margin-right:auto!important;padding-left:0!important;padding-right:0!important;}
+}
 </style>
 <link rel="stylesheet" href="./games.css?v=9">
 </head>
@@ -2205,54 +2395,67 @@ body{background:#F3F7FF;color:#1B2A45;}
 			</div>
 		</section>
 		<section class="container">
-			<div class="section-head">
-				<h3 class="section-title">专辑</h3>
-				<span class="section-note">从《1》到《KUN》，八年四张</span>
-			</div>
-			<div class="music-grid">
-				<div class="album-block">
-					<img decoding="async" loading="lazy" class="cover" src="images/t/cover-1.jpg" alt="EP《1》封面：蓝色水面中的雕塑">
-					<div class="meta">
-						<div class="date">2018.08.02 · EP</div>
-						<h4>《1》</h4>
-						<p>出道后的第一张个人 EP，三首歌三种风格，Future R&amp;B 与 Urban 混在一起。全部由他参与词曲，最后决定免费上线。</p>
-						<div class="track-chips"><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/004VMZFB1Sgnoz" target="_blank" rel="noopener">Pull Up</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/000syT4u2bWoWa" target="_blank" rel="noopener">You Can Be My GirlFriend</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/003custc49mKeO" target="_blank" rel="noopener">It's You</a></div>
-						<div class="album-links"><a href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener">去 QQ 音乐听</a></div>
+			<div class="music-room">
+			<div class="mr-copy">
+				<div class="mr-kicker">DISCOGRAPHY · 2018—2026</div>
+				<h2 class="mr-title">随身听<em>。</em></h2>
+				<p class="mr-sub">四张专辑，一台随身听。<br>顺着磁带挑一张，按下播放，就在这里听。</p>
+				<div class="tape-list">
+					<div class="tape-row on">
+						<div class="tape-reels"><span></span><span></span></div>
+						<div class="tape-info"><h4>《1》<small>2018 · EP</small></h4><p>三首歌三种风格，全部由他参与词曲。</p></div>
+						<a class="tape-go" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener">QQ 音乐 ↗</a>
 					</div>
-				</div>
-				<div class="album-block">
-					<img decoding="async" loading="lazy" class="cover" src="images/t/cover-young.jpg" alt="EP《YOUNG》封面">
-					<div class="meta">
-						<div class="date">2019.07.26 · EP</div>
-						<h4>《YOUNG》</h4>
-						<p>写给二十岁的一张。同名曲把「年轻」和「不服」放在一起，《蒙着眼》则是把被误解的那部分正面写出来。</p>
-						<div class="track-chips"><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/004BxrBT3coQnC" target="_blank" rel="noopener">YOUNG</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/001dYnnv3dRLHu" target="_blank" rel="noopener">蒙着眼</a></div>
-						<div class="album-links"><a href="https://y.qq.com/n/ryqq/albumDetail/0019Oi682i0RfX" target="_blank" rel="noopener">去 QQ 音乐听</a></div>
+					<div class="tape-row">
+						<div class="tape-reels"><span></span><span></span></div>
+						<div class="tape-info"><h4>《YOUNG》<small>2019 · EP</small></h4><p>写给二十岁的一张，同名曲和《蒙着眼》放在一起。</p></div>
+						<a class="tape-go" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener">QQ 音乐 ↗</a>
 					</div>
-				</div>
-				<div class="album-block">
-					<img decoding="async" loading="lazy" class="cover" src="images/t/cover-lost.jpg" alt="专辑《迷》封面">
-					<div class="meta">
-						<div class="date">2021.04.13 · 专辑</div>
-						<h4>《迷》</h4>
-						<p>首张个人创作专辑。11 首歌像一座迷宫，从《#0000FF》进去，最后停在《爱与痛》。同年拿下 TMEA 年度最具影响力制作人。</p>
-						<div class="track-chips"><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/001XVOln2skp4w" target="_blank" rel="noopener">#0000FF</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/0048ioeg3F6148" target="_blank" rel="noopener">迷</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/0018MJus1NqIKj" target="_blank" rel="noopener">默片</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/001pMei1320gi0" target="_blank" rel="noopener">感受她</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/003sriwl3ZxrUg" target="_blank" rel="noopener">梦 (Band ver)</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/004K50VI1vFdlw" target="_blank" rel="noopener">怪</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/003hjq7P16om23" target="_blank" rel="noopener">欲</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/002mgOFJ2eXtxl" target="_blank" rel="noopener">HAHA</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/002h3Pmu3aOBlv" target="_blank" rel="noopener">nobody cares</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/000VcoXC0okTGS" target="_blank" rel="noopener">爱与痛 (outro)</a></div>
-						<div class="album-links"><a href="https://y.qq.com/n/ryqq/albumDetail/003jicxY0UK9ew" target="_blank" rel="noopener">去 QQ 音乐听</a></div>
+					<div class="tape-row">
+						<div class="tape-reels"><span></span><span></span></div>
+						<div class="tape-info"><h4>《迷》<small>2021 · ALBUM</small></h4><p>11 首歌像一座迷宫，从 #0000FF 进去。</p></div>
+						<a class="tape-go" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener">QQ 音乐 ↗</a>
 					</div>
-				</div>
-				<div class="album-block">
-					<img decoding="async" loading="lazy" class="cover" src="images/t/cover-kun.jpg" alt="专辑《KUN》封面">
-					<div class="meta">
-						<div class="date">2026.02.06 · 专辑</div>
-						<h4>《KUN》</h4>
-						<p>11 首全英文作品，按一部「有声电影」的结构排曲序。从 Honour 开场，到 Fool 收尾，中间有和 Free Nationals 合作的 Don't Call。实体专辑 5 月 15 日上线。</p>
-						<div class="track-chips"><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/003FOJaJ4eG7Tq" target="_blank" rel="noopener">Honour</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/000e5ren4ZiL3U" target="_blank" rel="noopener">Deadman</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/003heP8Q1qbNfb" target="_blank" rel="noopener">Jasmine</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/004O0a1f4T0RI8" target="_blank" rel="noopener">Don't Call</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/002fPaQv118dx5" target="_blank" rel="noopener">Back in Time</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/0030OdRs35HUaA" target="_blank" rel="noopener">What a Day</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/003PEVbC2RDUYJ" target="_blank" rel="noopener">Paranoid</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/000wepPw2m6549" target="_blank" rel="noopener">Washed Away</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/00400RDv0ozgWg" target="_blank" rel="noopener">Colder</a><a class="track-chip" href="https://y.qq.com/n/ryqq/songDetail/002o7k8W1GQ7BI" target="_blank" rel="noopener">Fool</a></div>
-						<div class="album-links"><a href="https://music.apple.com/ca/album/kun/1861571910" target="_blank" rel="noopener">Apple Music</a><a href="https://y.qq.com/n/ryqq/albumDetail/003Q9it10RWLId" target="_blank" rel="noopener">QQ 音乐</a></div>
+					<div class="tape-row">
+						<div class="tape-reels"><span></span><span></span></div>
+						<div class="tape-info"><h4>《KUN》<small>2026 · ALBUM</small></h4><p>11 首全英文，按一部有声电影的结构排曲序。</p></div>
+						<a class="tape-go" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener">QQ 音乐 ↗</a>
 					</div>
 				</div>
 			</div>
+			<div class="walkman">
+				<div class="wm-brand"><span class="wm-dot"></span><b>KUN WALKMAN</b><i>SIDE A · STEREO</i></div>
+				<div class="wm-window">
+					<img src="images/t/cover-kun.jpg" alt="《KUN》专辑封面">
+					<div class="wm-reel l"></div><div class="wm-reel r"></div>
+					<span class="wm-live">NOW PLAYING</span>
+					<div class="wm-glass-copy"><small>2026 · ALBUM</small><b>《KUN》</b><span>现象 PHENOMENON</span></div>
+				</div>
+				<div class="wm-now" id="playerNow">点下面任意一首开始播放</div>
+				<audio id="kunAudio" preload="none"></audio>
+				<div class="wm-transport">
+					<button type="button" class="wm-btn" id="wmPlay" aria-label="播放或暂停">▶</button>
+					<div class="wm-prog"><span id="wmProg"></span></div>
+					<span class="wm-time" id="wmTime">00:00</span>
+				</div>
+				<div class="wm-list" id="playerList">
+					<span class="track-pill"><button type="button" data-track="01-现象(PHENOMENON)">现象 PHENOMENON</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/003bqrGj4ASCgm" target="_blank" rel="noopener">QQ</a></span>
+					<span class="track-pill"><button type="button" data-track="02-标签(TITLE)">标签 TITLE</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/003IkYH41sritv" target="_blank" rel="noopener">QQ</a></span>
+					<span class="track-pill"><button type="button" data-track="03-修行(NARCISSISM)">修行 NARCISSISM</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/0022t9O91PvD4R" target="_blank" rel="noopener">QQ</a></span>
+					<span class="track-pill"><button type="button" data-track="04-感受她(Live)">感受她 Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/001pMei1320gi0" target="_blank" rel="noopener">QQ</a></span>
+					<span class="track-pill"><button type="button" data-track="05-情人(Live)">情人 Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/000aWBBQ2fMyBJ" target="_blank" rel="noopener">QQ</a></span>
+					<span class="track-pill"><button type="button" data-track="06-迷(Live)">迷 Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/0048ioeg3F6148" target="_blank" rel="noopener">QQ</a></span>
+					<span class="track-pill"><button type="button" data-track="07-HAHA(Live)">HAHA Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/002mgOFJ2eXtxl" target="_blank" rel="noopener">QQ</a></span>
+					<span class="track-pill"><button type="button" data-track="08-It's You(Live)">It's You Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/003custc49mKeO" target="_blank" rel="noopener">QQ</a></span>
+					<span class="track-pill"><button type="button" data-track="09-默片(Live)">默片 Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/0018MJus1NqIKj" target="_blank" rel="noopener">QQ</a></span>
+					<span class="track-pill"><button type="button" data-track="10-nobody cares(Live)">nobody cares Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/002h3Pmu3aOBlv" target="_blank" rel="noopener">QQ</a></span>
+				</div>
+				<div class="wm-foot"><label class="wm-file"><span>选本地音源</span><input type="file" id="kunAudioFile" accept="audio/*" hidden></label><span class="wm-hint">10 首站内音源</span></div>
+				<p class="player-tip" id="playerTip" style="display:none"></p>
+			</div>
+		</div>
 
-			<div class="section-head">
+		<div class="section-head">
 				<h3 class="section-title">单曲</h3>
 				<span class="section-note">按年份排，点歌名去听</span>
 			</div>
@@ -2281,32 +2484,7 @@ body{background:#F3F7FF;color:#1B2A45;}
 				</table>
 			</div>
 
-			<div class="section-head">
-				<h3 class="section-title">随身听</h3>
-				<span class="section-note">放一首，边看边听</span>
-			</div>
-			<div class="player-card">
-				<div class="player-now" id="playerNow">未选择曲目</div>
-				<audio id="kunAudio" controls preload="none"></audio>
-				<div class="player-list" id="playerList">
-					<span class="track-pill"><button type="button" data-track="01-现象(PHENOMENON)">现象 PHENOMENON</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/003bqrGj4ASCgm" target="_blank" rel="noopener" title="在 QQ 音乐听这首">QQ</a></span>
-					<span class="track-pill"><button type="button" data-track="02-标签(TITLE)">标签 TITLE</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/003IkYH41sritv" target="_blank" rel="noopener" title="在 QQ 音乐听这首">QQ</a></span>
-					<span class="track-pill"><button type="button" data-track="03-修行(NARCISSISM)">修行 NARCISSISM</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/0022t9O91PvD4R" target="_blank" rel="noopener" title="在 QQ 音乐听这首">QQ</a></span>
-					<span class="track-pill"><button type="button" data-track="04-感受她(Live)">感受她 Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/001pMei1320gi0" target="_blank" rel="noopener" title="在 QQ 音乐听这首">QQ</a></span>
-					<span class="track-pill"><button type="button" data-track="05-情人(Live)">情人 Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/000aWBBQ2fMyBJ" target="_blank" rel="noopener" title="在 QQ 音乐听这首">QQ</a></span>
-					<span class="track-pill"><button type="button" data-track="06-迷(Live)">迷 Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/0048ioeg3F6148" target="_blank" rel="noopener" title="在 QQ 音乐听这首">QQ</a></span>
-					<span class="track-pill"><button type="button" data-track="07-HAHA(Live)">HAHA Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/002mgOFJ2eXtxl" target="_blank" rel="noopener" title="在 QQ 音乐听这首">QQ</a></span>
-					<span class="track-pill"><button type="button" data-track="08-It's You(Live)">It's You Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/003custc49mKeO" target="_blank" rel="noopener" title="在 QQ 音乐听这首">QQ</a></span>
-					<span class="track-pill"><button type="button" data-track="09-默片(Live)">默片 Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/0018MJus1NqIKj" target="_blank" rel="noopener" title="在 QQ 音乐听这首">QQ</a></span>
-					<span class="track-pill"><button type="button" data-track="10-nobody cares(Live)">nobody cares Live</button><a class="qq-mini" href="https://y.qq.com/n/ryqq/songDetail/002h3Pmu3aOBlv" target="_blank" rel="noopener" title="在 QQ 音乐听这首">QQ</a></span>
-				</div>
-				<label class="player-file">
-					<span class="ghost-btn">选本地音源</span>
-					<input type="file" id="kunAudioFile" accept="audio/*" hidden>
-				</label>
-				<p class="player-tip" id="playerTip">站内已放好这 10 首音源（music 文件夹），点歌名就能播；也可以临时选一个本地文件试听。</p>
-			</div>
-		</section>
+			</section>
 	</div>
 
 
@@ -4913,7 +5091,7 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 			btn.addEventListener('click', function () {
 				var t = btn.getAttribute('data-track');
 				audio.src = 'music/' + encodeURIComponent(t) + '.m4a';
-				if (now) { now.textContent = btn.textContent + ' · music/' + t + '.m4a'; }
+				if (now) { now.textContent = btn.textContent; }
 				if (tip) { tip.textContent = '正在加载 music/' + t + '.m4a …'; }
 				audio.play().then(function () {
 					if (tip) { tip.textContent = '正在播放：' + btn.textContent + '（music/' + t + '.m4a）'; }
@@ -5998,6 +6176,23 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 </script>
 
 <script src="./games.js?v=12"></script>
+<script>
+(function(){
+  function init(){
+    var a=document.getElementById('kunAudio'),btn=document.getElementById('wmPlay'),prog=document.getElementById('wmProg'),time=document.getElementById('wmTime');
+    if(!a||!btn) return;
+    function fmt(n){ n=Math.floor(n||0); return (n<10?'0':'')+n+':'+('0'+Math.floor((n%60))).slice(-2); }
+    btn.onclick=function(){
+      if(!a.src){ var f=document.querySelector('#playerList button[data-track]'); if(f){ f.click(); return; } }
+      if(a.paused){ a.play().catch(function(){}); } else { a.pause(); }
+    };
+    a.addEventListener('play',function(){ btn.textContent='❚❚'; });
+    a.addEventListener('pause',function(){ btn.textContent='▶'; });
+    a.addEventListener('timeupdate',function(){ if(prog&&a.duration){ prog.style.width=(a.currentTime/a.duration*100)+'%'; } if(time) time.textContent=fmt(a.currentTime); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
 </body>
 </html>
 
