@@ -26,6 +26,7 @@
   ];
 
   function openWish() {
+    try { sessionStorage.setItem('kun_wish_from_games', '1'); } catch (e) {}
     if (location.hash !== '#wish') { location.hash = 'wish'; return; }
     document.querySelectorAll('.page').forEach(function (x) { x.classList.remove('active'); });
     var p = document.getElementById('wish');

@@ -2246,3 +2246,26 @@ figure,figure img,.gallery-item img,.photo-item img,.photo-item video,.clip-card
   .cw-photo{height:auto!important;aspect-ratio:1179/779!important;}
   .pg-photo{height:auto!important;aspect-ratio:1600/900!important;}
 }
+
+/* V5.17 · 游戏厅顶图换成蔡徐坤横屏舞台照，按原图完整显示 */
+@media (min-width:901px){
+  .p-hero-games{height:calc(300px + 47.49vw)!important;}
+  .pg-photo{aspect-ratio:1100/653!important;}
+}
+@media (max-width:900px){
+  .pg-photo{aspect-ratio:1100/653!important;}
+}
+
+/* V5.18 · 从游戏厅进许愿树的固定返回键 */
+.wish-return-games{
+  position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:9000;
+  min-height:48px;padding:12px 26px;border-radius:999px;border:2px solid #FFFFFF;
+  background:linear-gradient(180deg,#3F70E8,#2F5CD4);color:#FFFFFF;
+  font:700 14px/1 "PingFang SC","Microsoft YaHei",system-ui,sans-serif;letter-spacing:.8px;
+  cursor:pointer;box-shadow:0 10px 30px rgba(47,92,212,.45);
+}
+.wish-return-games:hover{background:linear-gradient(180deg,#4B7CF0,#2A52C2);}
+.wish-return-games[hidden]{display:none!important;}
+@media (max-width:560px){
+  .wish-return-games{bottom:16px;min-height:44px;padding:11px 20px;font-size:13px;}
+}

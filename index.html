@@ -1985,7 +1985,7 @@ html{scroll-padding-top:96px;}
 }
 </style>
 <link rel="stylesheet" href="./games.css?v=10">
-<link rel="stylesheet" href="./poster.css?v=25">
+<link rel="stylesheet" href="./poster.css?v=27">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -3434,6 +3434,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 			<p>树在暗处。你写下的那句话，<br>会成为唯一亮着的那朵玫瑰。</p>
 		</div>
 	</section>
+	<button type="button" class="wish-return-games" id="wishReturnGames" hidden>← 返回游戏厅</button>
 	<section class="container wish-wrap">
 		<div class="wish-card">
 			<div class="wish-head">
@@ -3513,7 +3514,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 
 <section class="p-hero p-hero-games">
   <div class="pg-zh">游戏厅</div>
-  <figure class="pg-photo"><img decoding="async" src="images/hero-games-blue.jpg" alt="深蓝夜色里的一排旧街机"><div class="tint"></div></figure>
+  <figure class="pg-photo"><img decoding="async" src="images/award-stage.jpg" alt="蔡徐坤穿白色西装在蓝色舞台上拿奖杯"><div class="tint"></div></figure>
   <div class="pg-chips"><span class="pg-chip"><b>01</b>许愿树</span><span class="pg-chip"><b>02</b>金海记忆剧场</span><span class="pg-chip"><b>03</b>蓝玫瑰镜面迷宫</span><span class="pg-chip"><b>04</b>翻牌配对</span></div>
 </section>
 
@@ -6190,7 +6191,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 
 </script>
 
-<script src="./games.js?v=18"></script>
+<script src="./games.js?v=19"></script>
 <script>
 (function(){
   function init(){
@@ -6231,6 +6232,22 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
       btn.innerHTML = open ? '收起曲目 <i>↑</i>' : (btn.getAttribute('data-more') || '全部曲目') + ' <i>↓</i>';
     });
   });
+})();
+</script>
+<script>
+(function(){
+  var b=document.getElementById('wishReturnGames');
+  if(!b) return;
+  function fromGames(){ try{ return sessionStorage.getItem('kun_wish_from_games')==='1'; }catch(e){ return false; } }
+  function sync(){
+    var isWish=(location.hash||'').replace('#','')==='wish';
+    b.hidden=!(isWish&&fromGames());
+  }
+  b.addEventListener('click',function(){
+    try{ sessionStorage.removeItem('kun_wish_from_games'); }catch(e){}
+    b.hidden=true; location.hash='games';
+  });
+  window.addEventListener('hashchange',sync); sync();
 })();
 </script>
 </body>
