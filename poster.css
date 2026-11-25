@@ -2299,11 +2299,11 @@ figure,figure img,.gallery-item img,.photo-item img,.photo-item video,.clip-card
 #music a.pmr-track:hover i{background:var(--pp-bone);color:var(--pp-blue-deep);}
 
 /* V5.23 · 首页作品与舞台清单表格 */
-#home .home-table{margin-top:6px;overflow-x:auto;background:#fff;}
+#home .home-table{margin-top:6px;overflow:hidden!important;background:#fff;border-radius:18px!important;}
 #home .home-table table{min-width:660px;}
 #home .home-table .table-link{font-size:13px;}
 @media (max-width:700px){
-  #home .home-table{overflow-x:hidden;}
+  #home .home-table{overflow:hidden!important;border-radius:18px!important;}
   #home .home-table table{min-width:0;width:100%;table-layout:fixed;}
   #home .home-table th,#home .home-table td{padding:10px 6px!important;text-align:left!important;}
   #home .home-table th{font-size:9px!important;letter-spacing:.4px!important;white-space:nowrap!important;}
