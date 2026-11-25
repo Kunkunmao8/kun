@@ -1985,7 +1985,7 @@ html{scroll-padding-top:96px;}
 }
 </style>
 <link rel="stylesheet" href="./games.css?v=10">
-<link rel="stylesheet" href="./poster.css?v=27">
+<link rel="stylesheet" href="./poster.css?v=28">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -6241,7 +6241,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
   function fromGames(){ try{ return sessionStorage.getItem('kun_wish_from_games')==='1'; }catch(e){ return false; } }
   function sync(){
     var isWish=(location.hash||'').replace('#','')==='wish';
-    b.hidden=!(isWish&&fromGames());
+    b.hidden=!isWish;
   }
   b.addEventListener('click',function(){
     try{ sessionStorage.removeItem('kun_wish_from_games'); }catch(e){}
