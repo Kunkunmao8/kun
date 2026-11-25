@@ -1985,7 +1985,7 @@ html{scroll-padding-top:96px;}
 }
 </style>
 <link rel="stylesheet" href="./games.css?v=9">
-<link rel="stylesheet" href="./poster.css?v=13">
+<link rel="stylesheet" href="./poster.css?v=14">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -5083,6 +5083,13 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 	}
 
 	var audio = document.getElementById('kunAudio');
+	var AUDIO_BASE = 'https://yzzktnkfprpystxbhnln.supabase.co/storage/v1/object/public/photos/audio/';
+	var AUDIO_FILES = {
+		'01':'01-phenomenon.m4a','02':'02-title.m4a','03':'03-narcissism.m4a',
+		'04':'04-feel-her-live.m4a','05':'05-lover-live.m4a','06':'06-lost-live.m4a',
+		'07':'07-haha-live.m4a','08':'08-its-you-live.m4a','09':'09-silent-film-live.m4a',
+		'10':'10-nobody-cares-live.m4a'
+	};
 	var now = document.getElementById('playerNow');
 	var tip = document.getElementById('playerTip');
 	var file = document.getElementById('kunAudioFile');
@@ -5108,7 +5115,7 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 			var title = btn.getAttribute('data-title') || t;
 			var alb = btn.getAttribute('data-album') || '';
 			var img = btn.getAttribute('data-cover') || '';
-			var src = 'music/' + n + '-' + t + '.m4a';
+			var src = AUDIO_FILES[n] ? (AUDIO_BASE + AUDIO_FILES[n]) : ('music/' + n + '-' + t + '.m4a');
 			audio.src = encodeURI(src);
 			if (now) { now.textContent = title; }
 			if (albumNow && alb) { albumNow.textContent = alb; }
