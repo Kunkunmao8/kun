@@ -4,22 +4,22 @@
   if (!app || !window.THREE) return;
 
   var GAMES = [
-    { id: 'wish', name: '许愿树', en: 'WISH TREE', cat: 'heal', hot: true, cover: 'images/games/wish.jpg', c1: '#2b5f8f',
+    { id: 'wish', name: '许愿树', en: 'WISH TREE', cat: 'heal', hot: true, cover: 'images/games/simple-wish.jpg', c1: '#2b5f8f',
       chip: '治愈 · 互动', icon: '愿', tag: '3D 许愿', diff: '★',
       desc: '一棵可以转着看的蓝玫瑰树，写一句祝福就多开一朵花。',
       tags: ['3D 可旋转', '蓝玫瑰挂牌', '随手可玩'], go: '去许愿', link: '#wish' },
     { id: 'g5', name: '金海记忆剧场', en: 'GOLD SEA', cat: 'memory', c1: '#8a4a2f',
-      chip: '记忆 · 剧场', cover: 'images/games/show.jpg', tag: '3D 记忆', diff: '★★★',
+      chip: '记忆 · 剧场', cover: 'images/games/simple-show.jpg', tag: '3D 记忆', diff: '★★★',
       desc: '金色灯海一盏盏亮起，按顺序点回去。播放速度可调，关卡往上无限叠。',
       tags: ['3D 剧场', '速度可调', '无限关卡'], go: '进入剧场',
       hint: '灯亮时别急，先记住第一个。' },
     { id: 'g6', name: '蓝玫瑰镜面迷宫', en: 'MIRROR MAZE', cat: 'puzzle', c1: '#2f6f74',
-      chip: '解谜 · 无限关', cover: 'images/games/maze.jpg', tag: '3D 光路', diff: '★★★★',
+      chip: '解谜 · 无限关', cover: 'images/games/simple-maze.jpg', tag: '3D 光路', diff: '★★★★',
       desc: '9×9 棋盘，第 1 关只有 1 朵蓝玫瑰，之后慢慢加到 2–3 朵，镜子越来越多。',
       tags: ['3D 光路', '无限关卡', '现场生成'], go: '进入镜厅',
       hint: '点镜子转 90°，跟着右下小地图走。' },
     { id: 'g7', name: '翻牌配对', en: 'FLIP PAIRS', cat: 'memory', c1: '#2F5CD4',
-      chip: '记忆 · 翻牌', cover: 'images/games/flip.jpg', icon: '牌', tag: '记忆 · 翻牌', diff: '★★★',
+      chip: '记忆 · 翻牌', cover: 'images/games/simple-flip.jpg', icon: '牌', tag: '记忆 · 翻牌', diff: '★★★',
       desc: '翻开两张，找出同一帧舞台照片。每关先亮牌几秒，记住位置；关卡越高牌越多。',
       tags: ['经典翻牌', '先看后翻', '关卡递增'], go: '开始翻牌',
       hint: '先记四角，再记中间，别急着点。' },
@@ -946,9 +946,8 @@
       card.style.setProperty('--c1', g.c1 || '#22407a');
       var tagHtml = (g.tags || []).map(function (t, i) { return '<span class="gx-tag' + (i === 0 ? ' gold' : '') + '">' + t + '</span>'; }).join('');
       card.innerHTML =
-        '<div class="gx-cover gx-cover-type">' +
-          '<span class="gx-no">0' + (gi + 1) + ' / 04</span>' +
-          '<div class="gx-cover-word"><b>' + (g.en || g.name) + '</b><small>' + g.name + '</small></div>' +
+        '<div class="gx-cover">' +
+          '<img class="gx-shot" src="' + g.cover + '" alt="' + g.name + ' 封面" decoding="async">' +
           '<span class="gx-chip' + (g.hot ? ' hot' : '') + '">' + (g.chip || g.tag) + '</span></div>' +
         '<div class="gx-body"><h3 class="gx-title">' + g.name + '<small>' + (g.en || '') + '</small></h3>' +
           '<p class="gx-desc">' + g.desc + '</p>' +
