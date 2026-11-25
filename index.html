@@ -1985,7 +1985,7 @@ html{scroll-padding-top:96px;}
 }
 </style>
 <link rel="stylesheet" href="./games.css?v=9">
-<link rel="stylesheet" href="./poster.css?v=5">
+<link rel="stylesheet" href="./poster.css?v=6">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -2369,15 +2369,15 @@ html{scroll-padding-top:96px;}
     <div class="pm-title-row">
       <div>
         <h1 class="pm-big">SIDE A<span>随身听。</span></h1>
-        <p class="pm-note">四张唱片，一台机器。从第一面开始，别停。</p>
+        <p class="pm-note">四张唱片，十个能听的现场。戴上耳机，从第一首开始。</p>
       </div>
       <div class="pm-stamp"><div class="k">NOW ON AIR</div><b>KUN<br>WALKMAN</b><span>STEREO · 30 IPS<br>MADE IN CHANGSHA</span></div>
     </div>
   </section>
 
-  <section class="pm-grid">
+  <section class="pm-deck">
     <div class="pm-player">
-      <div class="pmp-top"><b>KUN</b><span>PORTABLE SOUND / 2026</span></div>
+      <div class="pmp-top"><b>KUN</b><span>PORTABLE SOUND / 2026</span><span class="pmp-on">ON AIR</span></div>
       <div class="pmp-body">
         <div class="pmp-window">
           <img src="images/t/cover-kun.jpg" alt="《KUN》专辑封面">
@@ -2385,71 +2385,75 @@ html{scroll-padding-top:96px;}
           <span class="now">NOW PLAYING / SIDE A</span>
         </div>
         <div class="pmp-side">
-          <div><div class="lab">TRACK 01</div><div class="now-title" id="playerNow">点一首，开始播放</div></div>
+          <div><div class="lab">CURRENT TRACK</div><div class="now-title" id="playerNow">点一首，开始播放</div></div>
           <button type="button" class="play" id="wmPlay" aria-label="播放或暂停">▶</button>
         </div>
       </div>
       <div class="pmp-prog-row"><div class="pmp-prog"><span id="wmProg"></span></div><span class="pmp-prog-time" id="wmTime">00:00</span></div>
-      <div class="pmp-foot"><label><span>选本地音源</span><input type="file" id="kunAudioFile" accept="audio/*" hidden></label><span>10 TRACKS / 46:18</span></div>
+      <div class="pmp-ctl">
+        <label class="pmp-file"><span>＋ 选本地音源</span><input type="file" id="kunAudioFile" accept="audio/*" hidden></label>
+        <span class="pmp-cap">10 TRACKS / 46:18</span>
+      </div>
+      <div class="pmp-track-head"><b>曲目 / TRACKS</b><span>点一首，直接从这台机器里播</span></div>
+      <div class="pm-track-deck" id="playerList">
+        <button class="pm-track" type="button" data-n="01" data-track="现象(PHENOMENON)" data-title="现象 PHENOMENON"><span>01</span><b>现象</b><small>PHENOMENON</small><i>▶</i></button>
+        <button class="pm-track" type="button" data-n="02" data-track="标签(TITLE)" data-title="标签 TITLE"><span>02</span><b>标签</b><small>TITLE</small><i>▶</i></button>
+        <button class="pm-track" type="button" data-n="03" data-track="修行(NARCISSISM)" data-title="修行 NARCISSISM"><span>03</span><b>修行</b><small>NARCISSISM</small><i>▶</i></button>
+        <button class="pm-track" type="button" data-n="04" data-track="感受她(Live)" data-title="感受她 Live"><span>04</span><b>感受她</b><small>LIVE</small><i>▶</i></button>
+        <button class="pm-track" type="button" data-n="05" data-track="情人(Live)" data-title="情人 Live"><span>05</span><b>情人</b><small>LIVE</small><i>▶</i></button>
+        <button class="pm-track" type="button" data-n="06" data-track="迷(Live)" data-title="迷 Live"><span>06</span><b>迷</b><small>LIVE</small><i>▶</i></button>
+        <button class="pm-track" type="button" data-n="07" data-track="HAHA(Live)" data-title="HAHA Live"><span>07</span><b>HAHA</b><small>LIVE</small><i>▶</i></button>
+        <button class="pm-track" type="button" data-n="08" data-track="It's You(Live)" data-title="It's You Live"><span>08</span><b>It's You</b><small>LIVE</small><i>▶</i></button>
+        <button class="pm-track" type="button" data-n="09" data-track="默片(Live)" data-title="默片 Live"><span>09</span><b>默片</b><small>LIVE</small><i>▶</i></button>
+        <button class="pm-track" type="button" data-n="10" data-track="nobody cares(Live)" data-title="nobody cares Live"><span>10</span><b>nobody cares</b><small>LIVE</small><i>▶</i></button>
+      </div>
       <audio id="kunAudio" preload="none"></audio>
       <p class="player-tip" id="playerTip" style="display:none"></p>
     </div>
 
-    <div class="pm-albums">
-      <div class="lab"><span>SELECT A TAPE / 01—04</span><span>2018—2026</span></div>
-      <a class="pm-album" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener"><img src="images/t/cover-1.jpg" alt="《1》封面"><div><h3>《1》<small>2018 · EP</small></h3><p>三首歌三种风格，全部由他参与词曲。</p></div><em>PLAY ↗</em></a>
-      <a class="pm-album" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener"><img src="images/t/cover-young.jpg" alt="《YOUNG》封面"><div><h3>《YOUNG》<small>2019 · EP</small></h3><p>写给二十岁的一张，同名曲和《蒙着眼》放在一起。</p></div><em>PLAY ↗</em></a>
-      <a class="pm-album" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener"><img src="images/t/cover-lost.jpg" alt="《迷》封面"><div><h3>《迷》<small>2021 · ALBUM</small></h3><p>11 首歌像一座迷宫，从 #0000FF 进去。</p></div><em>PLAY ↗</em></a>
-      <a class="pm-album" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener"><img src="images/t/cover-kun.jpg" alt="《KUN》封面"><div><h3>《KUN》<small>2026 · ALBUM</small></h3><p>11 首全英文，按一部有声电影的结构排曲序。</p></div><em>PLAY ↗</em></a>
-      <div class="pm-footline"><span>10 TRACKS AVAILABLE</span><span>QQ MUSIC ↗</span></div>
-    </div>
+    <aside class="pm-tapes">
+      <div class="pm-side-head">
+        <h2>磁带架 / TAPES</h2>
+        <p>四张唱片，按年份抽出来放。</p>
+      </div>
+      <a class="pm-album pm-tape" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener">
+        <img src="images/t/cover-1.jpg" alt="《1》封面">
+        <div class="pm-tape-copy"><span>2018 · EP</span><h3>《1》</h3><p>三首歌三种风格，全部由他参与词曲。</p></div>
+        <em class="pm-btn">打开专辑 ↗</em>
+      </a>
+      <a class="pm-album pm-tape" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener">
+        <img src="images/t/cover-young.jpg" alt="《YOUNG》封面">
+        <div class="pm-tape-copy"><span>2019 · EP</span><h3>《YOUNG》</h3><p>写给二十岁的一张，同名曲和《蒙着眼》放在一起。</p></div>
+        <em class="pm-btn">打开专辑 ↗</em>
+      </a>
+      <a class="pm-album pm-tape" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener">
+        <img src="images/t/cover-lost.jpg" alt="《迷》封面">
+        <div class="pm-tape-copy"><span>2021 · ALBUM</span><h3>《迷》</h3><p>11 首歌像一座迷宫，从 #0000FF 进去。</p></div>
+        <em class="pm-btn">打开专辑 ↗</em>
+      </a>
+      <a class="pm-album pm-tape" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener">
+        <img src="images/t/cover-kun.jpg" alt="《KUN》封面">
+        <div class="pm-tape-copy"><span>2026 · ALBUM</span><h3>《KUN》</h3><p>11 首全英文，按一部有声电影的结构排曲序。</p></div>
+        <em class="pm-btn">打开专辑 ↗</em>
+      </a>
+      <div class="pm-side-foot"><span>FOUR TAPES / 2018—2026</span><span>QQ MUSIC ↗</span></div>
+    </aside>
   </section>
 
-  <section class="pm-tracks">
-    <div class="pm-tracks-head"><h3>曲目 / TRACKS</h3><span>点一首，直接在这里听</span></div>
-    <div class="pm-track-grid" id="playerList">
-      <button class="pm-track" type="button" data-n="01" data-track="现象(PHENOMENON)">现象 PHENOMENON</button>
-      <button class="pm-track" type="button" data-n="02" data-track="标签(TITLE)">标签 TITLE</button>
-      <button class="pm-track" type="button" data-n="03" data-track="修行(NARCISSISM)">修行 NARCISSISM</button>
-      <button class="pm-track" type="button" data-n="04" data-track="感受她(Live)">感受她 Live</button>
-      <button class="pm-track" type="button" data-n="05" data-track="情人(Live)">情人 Live</button>
-      <button class="pm-track" type="button" data-n="06" data-track="迷(Live)">迷 Live</button>
-      <button class="pm-track" type="button" data-n="07" data-track="HAHA(Live)">HAHA Live</button>
-      <button class="pm-track" type="button" data-n="08" data-track="It's You(Live)">It's You Live</button>
-      <button class="pm-track" type="button" data-n="09" data-track="默片(Live)">默片 Live</button>
-      <button class="pm-track" type="button" data-n="10" data-track="nobody cares(Live)">nobody cares Live</button>
+  <section class="pm-singles">
+    <div class="pm-singles-head">
+      <div><span class="k">SINGLES / 2017—2025</span><h2>单曲架。</h2></div>
+      <p>挑一首，按钮在每张唱片的右下角。</p>
     </div>
-  </section>
-
-  <section class="pm-archive">
-    <div class="section-head">
-				<h3 class="section-title">单曲</h3>
-				<span class="section-note">按年份排，点歌名去听</span>
-			</div>
-			<div class="table-box">
-				<table>
-					<thead>
-						<tr>
-							<th>年份</th>
-							<th>作品</th>
-							<th>备注</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr><td>2017</td><td><a class="table-link" href="https://y.qq.com/n/ryqq/songDetail/003cH2go41ck0E" target="_blank" rel="noopener">I Wanna Get Love</a></td><td>12.15 首支个人单曲，一切从这里开始</td></tr>
-						<tr><td>2018</td><td><a class="table-link" href="https://y.qq.com/n/ryqq/songDetail/002kRCBE4dfcU2" target="_blank" rel="noopener">Wait Wait Wait</a></td><td>第一首真正被大范围听到的舞曲</td></tr>
-						<tr><td>2019</td><td><a class="table-link" href="https://y.qq.com/n/ryqq/songDetail/003Fe8vW2OUnje" target="_blank" rel="noopener">没有意外</a></td><td>02.18 第一支独立中文作词单曲，24 小时拿下多榜第一</td></tr>
-						<tr><td>2019</td><td><a class="table-link" href="https://y.qq.com/n/ryqq/songDetail/004MQXqz4CsAb6" target="_blank" rel="noopener">Hard To Get</a></td><td>和《Bigger》同一年发的英文单曲</td></tr>
-						<tr><td>2019</td><td><a class="table-link" href="https://y.qq.com/n/ryqq/songDetail/002Ys4kK27lbtH" target="_blank" rel="noopener">重生</a></td><td>11.15 上线，把「重新来过」写进副歌</td></tr>
-						<tr><td>2020</td><td><a class="table-link" href="https://y.qq.com/n/ryqq/songDetail/000dmDNI4StGwk" target="_blank" rel="noopener">Home</a></td><td>给「回去」这件事写的一首</td></tr>
-						<tr><td>2020</td><td><a class="table-link" href="https://y.qq.com/n/ryqq/songDetail/000aWBBQ2fMyBJ" target="_blank" rel="noopener">情人</a></td><td>05.24 上线，刷新十几项榜单冠军，也是演唱会上必唱的一首</td></tr>
-						<tr><td>2023</td><td><a class="table-link" href="https://y.qq.com/n/ryqq/songDetail/003bqrGj4ASCgm" target="_blank" rel="noopener">现象</a></td><td>02.24 随《PHENOMENON》上线，演唱会开场曲</td></tr>
-						<tr><td>2023</td><td><a class="table-link" href="https://y.qq.com/n/ryqq/songDetail/003B9Te41C8hVK" target="_blank" rel="noopener">Spotlight</a></td><td>11.22 上线，吉隆坡站首唱</td></tr>
-						<tr><td>2024</td><td><a class="table-link" href="https://y.qq.com/n/ryqq/songDetail/004ckBFY4OqeWG" target="_blank" rel="noopener">Afterglow</a></td><td>06 月与 Versace 合作的一首，多地区 iTunes 登顶</td></tr>
-						<tr><td>2025</td><td><a class="table-link" href="https://y.qq.com/n/ryqq/songDetail/000e5ren4ZiL3U" target="_blank" rel="noopener">Deadman</a></td><td>05.28 上线，15 分钟在线听歌人数冲上高位</td></tr>
-					</tbody>
-				</table>
-			</div>
+    <div class="pm-single-grid">
+      <a class="pm-single" href="https://y.qq.com/n/ryqq/songDetail/003cH2go41ck0E" target="_blank" rel="noopener"><span>2017</span><b>I Wanna Get Love</b><p>12.15 首支个人单曲，一切从这里开始。</p><em class="pm-btn">去听 ↗</em></a>
+      <a class="pm-single" href="https://y.qq.com/n/ryqq/songDetail/002kRCBE4dfcU2" target="_blank" rel="noopener"><span>2018</span><b>Wait Wait Wait</b><p>第一首真正被大范围听到的舞曲。</p><em class="pm-btn">去听 ↗</em></a>
+      <a class="pm-single" href="https://y.qq.com/n/ryqq/songDetail/003Fe8vW2OUnje" target="_blank" rel="noopener"><span>2019</span><b>没有意外</b><p>02.18 第一支独立中文作词单曲，24 小时拿下多榜第一。</p><em class="pm-btn">去听 ↗</em></a>
+      <a class="pm-single" href="https://y.qq.com/n/ryqq/songDetail/000aWBBQ2fMyBJ" target="_blank" rel="noopener"><span>2020</span><b>情人</b><p>05.24 上线，刷新十几项榜单冠军，也是演唱会上必唱的一首。</p><em class="pm-btn">去听 ↗</em></a>
+      <a class="pm-single" href="https://y.qq.com/n/ryqq/songDetail/003bqrGj4ASCgm" target="_blank" rel="noopener"><span>2023</span><b>现象</b><p>02.24 随《PHENOMENON》上线，演唱会开场曲。</p><em class="pm-btn">去听 ↗</em></a>
+      <a class="pm-single" href="https://y.qq.com/n/ryqq/songDetail/000e5ren4ZiL3U" target="_blank" rel="noopener"><span>2025</span><b>Deadman</b><p>05.28 上线，15 分钟在线听歌人数冲上高位。</p><em class="pm-btn">去听 ↗</em></a>
+    </div>
+    <a class="pm-more" href="https://y.qq.com/n/ryqq/albumDetail/002wdavM3BDAQ3" target="_blank" rel="noopener">更多作品 · QQ 音乐 ↗</a>
   </section>
 </div>
 
@@ -5030,13 +5034,18 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 		list.querySelectorAll('button[data-track]').forEach(function (btn) {
 			btn.addEventListener('click', function () {
 				var t = btn.getAttribute('data-track');
-				audio.src = 'music/' + encodeURIComponent(t) + '.m4a';
-				if (now) { now.textContent = btn.textContent; }
-				if (tip) { tip.textContent = '正在加载 music/' + t + '.m4a …'; }
+				var n = btn.getAttribute('data-n') || '';
+				var title = btn.getAttribute('data-title') || t;
+				var file = 'music/' + n + '-' + t + '.m4a';
+				audio.src = encodeURI(file);
+				if (now) { now.textContent = title; }
+				if (tip) { tip.textContent = '正在加载 ' + title + ' …'; }
 				audio.play().then(function () {
-					if (tip) { tip.textContent = '正在播放：' + btn.textContent + '（music/' + t + '.m4a）'; }
+					if (tip) { tip.textContent = '正在播放：' + title; }
+					list.querySelectorAll('button[data-track]').forEach(function(b){ b.classList.remove('on'); });
+					btn.classList.add('on');
 				}).catch(function () {
-					if (tip) { tip.textContent = '这首音源没找到：确认 music 文件夹里有 ' + t + '.m4a。'; }
+					if (tip) { tip.textContent = '音源没能播放：检查 music 文件夹里的 ' + n + '-' + t + '.m4a。'; }
 				});
 			});
 		});
