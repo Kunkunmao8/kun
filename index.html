@@ -1985,7 +1985,7 @@ html{scroll-padding-top:96px;}
 }
 </style>
 <link rel="stylesheet" href="./games.css?v=9">
-<link rel="stylesheet" href="./poster.css?v=7">
+<link rel="stylesheet" href="./poster.css?v=4">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -2399,22 +2399,24 @@ html{scroll-padding-top:96px;}
           <button type="button" class="tt-play" id="wmPlay" aria-label="播放或暂停">▶</button>
           <div class="tt-prog-row"><div class="tt-prog"><span id="wmProg"></span></div><span class="tt-time" id="wmTime">00:00</span></div>
           <label class="tt-file"><span>＋ 选本地音源</span><input type="file" id="kunAudioFile" accept="audio/*" hidden></label>
-          <p class="tt-note">唱针落下，黑胶开始转。<br>下面抽屉里的十首，都能直接放。</p>
+          <p class="tt-note">唱针落下，黑胶开始转。<br>下面机身里的十个标签，都能直接放。</p>
           <div class="tt-meta"><span>10 TRACKS</span><span>STEREO</span></div>
         </div>
+        <div class="tt-drawer">
+          <div class="pmp-track-head"><b>曲目标签 / 10 TRACKS</b><span>点一个小标签，唱针就落到那首</span></div>
+          <div class="pm-track-deck" id="playerList">
+            <button class="pm-track" type="button" data-n="01" data-track="现象(PHENOMENON)" data-title="现象 PHENOMENON" data-album="《现象》" data-cover="images/t/phen-red.jpg"><span>01</span><b>现象</b><small>PHENOMENON</small><i>▶</i></button>
+            <button class="pm-track" type="button" data-n="02" data-track="标签(TITLE)" data-title="标签 TITLE" data-album="《现象》" data-cover="images/t/phen-red.jpg"><span>02</span><b>标签</b><small>TITLE</small><i>▶</i></button>
+            <button class="pm-track" type="button" data-n="03" data-track="修行(NARCISSISM)" data-title="修行 NARCISSISM" data-album="《现象》" data-cover="images/t/phen-red.jpg"><span>03</span><b>修行</b><small>NARCISSISM</small><i>▶</i></button>
+            <button class="pm-track" type="button" data-n="04" data-track="感受她(Live)" data-title="感受她 Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>04</span><b>感受她</b><small>LIVE</small><i>▶</i></button>
+            <button class="pm-track" type="button" data-n="05" data-track="情人(Live)" data-title="情人 Live" data-album="单曲 / LIVE" data-cover="images/t/lover2.jpg"><span>05</span><b>情人</b><small>LIVE</small><i>▶</i></button>
+            <button class="pm-track" type="button" data-n="06" data-track="迷(Live)" data-title="迷 Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>06</span><b>迷</b><small>LIVE</small><i>▶</i></button>
+            <button class="pm-track" type="button" data-n="07" data-track="HAHA(Live)" data-title="HAHA Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>07</span><b>HAHA</b><small>LIVE</small><i>▶</i></button>
+            <button class="pm-track" type="button" data-n="08" data-track="It's You(Live)" data-title="It's You Live" data-album="《1》" data-cover="images/t/cover-1.jpg"><span>08</span><b>It's You</b><small>LIVE</small><i>▶</i></button>
+            <button class="pm-track" type="button" data-n="09" data-track="默片(Live)" data-title="默片 Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>09</span><b>默片</b><small>LIVE</small><i>▶</i></button>
+            <button class="pm-track" type="button" data-n="10" data-track="nobody cares(Live)" data-title="nobody cares Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>10</span><b>nobody cares</b><small>LIVE</small><i>▶</i></button>
       </div>
-      <div class="pmp-track-head"><b>唱片抽屉 / 10 TRACKS</b><span>点一下，唱针自动落在这首</span></div>
-      <div class="pm-track-deck" id="playerList">
-        <button class="pm-track" type="button" data-n="01" data-track="现象(PHENOMENON)" data-title="现象 PHENOMENON" data-album="《现象》" data-cover="images/t/phen-red.jpg"><span>01</span><b>现象</b><small>PHENOMENON</small><i>▶</i></button>
-        <button class="pm-track" type="button" data-n="02" data-track="标签(TITLE)" data-title="标签 TITLE" data-album="《现象》" data-cover="images/t/phen-red.jpg"><span>02</span><b>标签</b><small>TITLE</small><i>▶</i></button>
-        <button class="pm-track" type="button" data-n="03" data-track="修行(NARCISSISM)" data-title="修行 NARCISSISM" data-album="《现象》" data-cover="images/t/phen-red.jpg"><span>03</span><b>修行</b><small>NARCISSISM</small><i>▶</i></button>
-        <button class="pm-track" type="button" data-n="04" data-track="感受她(Live)" data-title="感受她 Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>04</span><b>感受她</b><small>LIVE</small><i>▶</i></button>
-        <button class="pm-track" type="button" data-n="05" data-track="情人(Live)" data-title="情人 Live" data-album="单曲 / LIVE" data-cover="images/t/lover2.jpg"><span>05</span><b>情人</b><small>LIVE</small><i>▶</i></button>
-        <button class="pm-track" type="button" data-n="06" data-track="迷(Live)" data-title="迷 Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>06</span><b>迷</b><small>LIVE</small><i>▶</i></button>
-        <button class="pm-track" type="button" data-n="07" data-track="HAHA(Live)" data-title="HAHA Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>07</span><b>HAHA</b><small>LIVE</small><i>▶</i></button>
-        <button class="pm-track" type="button" data-n="08" data-track="It's You(Live)" data-title="It's You Live" data-album="《1》" data-cover="images/t/cover-1.jpg"><span>08</span><b>It's You</b><small>LIVE</small><i>▶</i></button>
-        <button class="pm-track" type="button" data-n="09" data-track="默片(Live)" data-title="默片 Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>09</span><b>默片</b><small>LIVE</small><i>▶</i></button>
-        <button class="pm-track" type="button" data-n="10" data-track="nobody cares(Live)" data-title="nobody cares Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>10</span><b>nobody cares</b><small>LIVE</small><i>▶</i></button>
+        </div>
       </div>
       <audio id="kunAudio" preload="none"></audio>
       <p class="player-tip" id="playerTip" style="display:none"></p>
@@ -2424,7 +2426,7 @@ html{scroll-padding-top:96px;}
   <section class="pm-shelf">
     <div class="pm-shelf-head">
       <div><span class="k">RECORD SHELF / 05 ALBUMS + SINGLES</span><h2>唱片架。</h2></div>
-      <p>每张唱片的曲目都摊开摆好。带蓝色播放键的那一行，可以直接转起来。</p>
+      <p>每张唱片先露三首，按向下按钮展开全部。带蓝色播放键的那一行，可以直接转起来。</p>
     </div>
 
     <div class="pm-records">
@@ -2466,8 +2468,9 @@ html{scroll-padding-top:96px;}
           <li><div class="pmr-track off"><span>01</span><b>前言</b><small>INTRO</small></div></li>
           <li><button class="pmr-track" type="button" data-n="01" data-track="现象(PHENOMENON)" data-title="现象 PHENOMENON" data-album="《现象》" data-cover="images/t/phen-red.jpg"><span>02</span><b>现象</b><small>PHENOMENON · 本地可播</small><i>▶</i></button></li>
           <li><button class="pmr-track" type="button" data-n="02" data-track="标签(TITLE)" data-title="标签 TITLE" data-album="《现象》" data-cover="images/t/phen-red.jpg"><span>03</span><b>标签</b><small>TITLE · 本地可播</small><i>▶</i></button></li>
-          <li><button class="pmr-track" type="button" data-n="03" data-track="修行(NARCISSISM)" data-title="修行 NARCISSISM" data-album="《现象》" data-cover="images/t/phen-red.jpg"><span>04</span><b>修行</b><small>NARCISSISM · 本地可播</small><i>▶</i></button></li>
+          <li class="extra"><button class="pmr-track" type="button" data-n="03" data-track="修行(NARCISSISM)" data-title="修行 NARCISSISM" data-album="《现象》" data-cover="images/t/phen-red.jpg"><span>04</span><b>修行</b><small>NARCISSISM · 本地可播</small><i>▶</i></button></li>
         </ol>
+        <button class="pmr-expand" type="button" data-expand data-more="全部 4 首" aria-expanded="false">全部 4 首 <i>↓</i></button>
         <div class="pmr-actions"><button class="pm-btn" type="button" data-play-album>播放本地曲目 ▶</button><a class="pm-btn pm-btn-ghost" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A6%20%E7%8E%B0%E5%9E%8F" target="_blank" rel="noopener">QQ 音乐 ↗</a></div>
       </article>
 
@@ -2481,15 +2484,16 @@ html{scroll-padding-top:96px;}
           <li><div class="pmr-track off"><span>01</span><b>#0000FF</b><small>INTRO</small></div></li>
           <li><button class="pmr-track" type="button" data-n="06" data-track="迷(Live)" data-title="迷 Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>02</span><b>迷</b><small>LOST · 本地可播</small><i>▶</i></button></li>
           <li><button class="pmr-track" type="button" data-n="09" data-track="默片(Live)" data-title="默片 Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>03</span><b>默片</b><small>SILENT FILM · 本地可播</small><i>▶</i></button></li>
-          <li><button class="pmr-track" type="button" data-n="04" data-track="感受她(Live)" data-title="感受她 Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>04</span><b>感受她</b><small>FEEL HER · 本地可播</small><i>▶</i></button></li>
-          <li><div class="pmr-track off"><span>05</span><b>梦 (Band.ver)</b><small>DREAM</small></div></li>
-          <li><div class="pmr-track off"><span>06</span><b>Interlude-</b><small>INTERLUDE</small></div></li>
-          <li><div class="pmr-track off"><span>07</span><b>怪</b><small>PLAY-DOH</small></div></li>
-          <li><div class="pmr-track off"><span>08</span><b>欲</b><small>DESIRE</small></div></li>
-          <li><button class="pmr-track" type="button" data-n="07" data-track="HAHA(Live)" data-title="HAHA Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>09</span><b>HAHA</b><small>LIVE · 本地可播</small><i>▶</i></button></li>
-          <li><button class="pmr-track" type="button" data-n="10" data-track="nobody cares(Live)" data-title="nobody cares Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>10</span><b>nobody cares</b><small>LIVE · 本地可播</small><i>▶</i></button></li>
-          <li><div class="pmr-track off"><span>11</span><b>爱与痛 (outro)</b><small>LOVE &amp; PAIN</small></div></li>
+          <li class="extra"><button class="pmr-track" type="button" data-n="04" data-track="感受她(Live)" data-title="感受她 Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>04</span><b>感受她</b><small>FEEL HER · 本地可播</small><i>▶</i></button></li>
+          <li class="extra"><div class="pmr-track off"><span>05</span><b>梦 (Band.ver)</b><small>DREAM</small></div></li>
+          <li class="extra"><div class="pmr-track off"><span>06</span><b>Interlude-</b><small>INTERLUDE</small></div></li>
+          <li class="extra"><div class="pmr-track off"><span>07</span><b>怪</b><small>PLAY-DOH</small></div></li>
+          <li class="extra"><div class="pmr-track off"><span>08</span><b>欲</b><small>DESIRE</small></div></li>
+          <li class="extra"><button class="pmr-track" type="button" data-n="07" data-track="HAHA(Live)" data-title="HAHA Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>09</span><b>HAHA</b><small>LIVE · 本地可播</small><i>▶</i></button></li>
+          <li class="extra"><button class="pmr-track" type="button" data-n="10" data-track="nobody cares(Live)" data-title="nobody cares Live" data-album="《迷》" data-cover="images/t/cover-lost.jpg"><span>10</span><b>nobody cares</b><small>LIVE · 本地可播</small><i>▶</i></button></li>
+          <li class="extra"><div class="pmr-track off"><span>11</span><b>爱与痛 (outro)</b><small>LOVE &amp; PAIN</small></div></li>
         </ol>
+        <button class="pmr-expand" type="button" data-expand data-more="全部 11 首" aria-expanded="false">全部 11 首 <i>↓</i></button>
         <div class="pmr-actions"><button class="pm-btn" type="button" data-play-album>播放本地曲目 ▶</button><a class="pm-btn pm-btn-ghost" href="https://y.qq.com/n/ryqq/albumDetail/003jicxY0UK9ew" target="_blank" rel="noopener">QQ 音乐 ↗</a></div>
       </article>
 
@@ -2503,15 +2507,16 @@ html{scroll-padding-top:96px;}
           <li><div class="pmr-track off"><span>01</span><b>Honour</b><small>3:01</small></div></li>
           <li><div class="pmr-track off"><span>02</span><b>Deadman</b><small>3:55</small></div></li>
           <li><div class="pmr-track off"><span>03</span><b>Jasmine</b><small>3:57</small></div></li>
-          <li><div class="pmr-track off"><span>04</span><b>Don't Call</b><small>FEAT. FREE NATIONALS</small></div></li>
-          <li><div class="pmr-track off"><span>05</span><b>Back in Time</b><small>2:33</small></div></li>
-          <li><div class="pmr-track off"><span>06</span><b>What a Day</b><small>3:20</small></div></li>
-          <li><div class="pmr-track off"><span>07</span><b>Night Into Night</b><small>INTERLUDE</small></div></li>
-          <li><div class="pmr-track off"><span>08</span><b>Paranoid</b><small>2:59</small></div></li>
-          <li><div class="pmr-track off"><span>09</span><b>Washed Away</b><small>3:18</small></div></li>
-          <li><div class="pmr-track off"><span>10</span><b>Colder</b><small>3:48</small></div></li>
-          <li><div class="pmr-track off"><span>11</span><b>Fool</b><small>3:54</small></div></li>
+          <li class="extra"><div class="pmr-track off"><span>04</span><b>Don't Call</b><small>FEAT. FREE NATIONALS</small></div></li>
+          <li class="extra"><div class="pmr-track off"><span>05</span><b>Back in Time</b><small>2:33</small></div></li>
+          <li class="extra"><div class="pmr-track off"><span>06</span><b>What a Day</b><small>3:20</small></div></li>
+          <li class="extra"><div class="pmr-track off"><span>07</span><b>Night Into Night</b><small>INTERLUDE</small></div></li>
+          <li class="extra"><div class="pmr-track off"><span>08</span><b>Paranoid</b><small>2:59</small></div></li>
+          <li class="extra"><div class="pmr-track off"><span>09</span><b>Washed Away</b><small>3:18</small></div></li>
+          <li class="extra"><div class="pmr-track off"><span>10</span><b>Colder</b><small>3:48</small></div></li>
+          <li class="extra"><div class="pmr-track off"><span>11</span><b>Fool</b><small>3:54</small></div></li>
         </ol>
+        <button class="pmr-expand" type="button" data-expand data-more="全部 11 首" aria-expanded="false">全部 11 首 <i>↓</i></button>
         <div class="pmr-actions"><a class="pm-btn" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A6%20KUN" target="_blank" rel="noopener">去 QQ 音乐听全辑 ↗</a></div>
       </article>
 
@@ -2525,10 +2530,11 @@ html{scroll-padding-top:96px;}
           <a class="pmr-single-row" href="https://y.qq.com/n/ryqq/songDetail/003cH2go41ck0E" target="_blank" rel="noopener"><span>2017</span><b>I Wanna Get Love</b><i>QQ ↗</i></a>
           <a class="pmr-single-row" href="https://y.qq.com/n/ryqq/songDetail/002kRCBE4dfcU2" target="_blank" rel="noopener"><span>2018</span><b>Wait Wait Wait</b><i>QQ ↗</i></a>
           <a class="pmr-single-row" href="https://y.qq.com/n/ryqq/songDetail/003Fe8vW2OUnje" target="_blank" rel="noopener"><span>2019</span><b>没有意外</b><i>QQ ↗</i></a>
-          <button class="pmr-single-row" type="button" data-n="05" data-track="情人(Live)" data-title="情人 Live" data-album="单曲 / LIVE" data-cover="images/t/lover2.jpg"><span>2020</span><b>情人</b><i>▶ 本地</i></button>
-          <a class="pmr-single-row" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A6%20Afterglow" target="_blank" rel="noopener"><span>2024</span><b>Afterglow</b><i>QQ ↗</i></a>
-          <a class="pmr-single-row" href="https://y.qq.com/n/ryqq/songDetail/000e5ren4ZiL3U" target="_blank" rel="noopener"><span>2025</span><b>Deadman</b><i>QQ ↗</i></a>
+          <button class="pmr-single-row extra" type="button" data-n="05" data-track="情人(Live)" data-title="情人 Live" data-album="单曲 / LIVE" data-cover="images/t/lover2.jpg"><span>2020</span><b>情人</b><i>▶ 本地</i></button>
+          <a class="pmr-single-row extra" href="https://y.qq.com/n/ryqq/search?w=%E8%94%A1%E5%BE%90%E5%9D%A6%20Afterglow" target="_blank" rel="noopener"><span>2024</span><b>Afterglow</b><i>QQ ↗</i></a>
+          <a class="pmr-single-row extra" href="https://y.qq.com/n/ryqq/songDetail/000e5ren4ZiL3U" target="_blank" rel="noopener"><span>2025</span><b>Deadman</b><i>QQ ↗</i></a>
         </div>
+        <button class="pmr-expand" type="button" data-expand data-more="全部 6 首" aria-expanded="false">全部 6 首 <i>↓</i></button>
         <div class="pmr-actions"><a class="pm-btn" href="https://y.qq.com/n/ryqq/singer/0019Oi682i0RfX" target="_blank" rel="noopener">更多单曲 · QQ 音乐 ↗</a></div>
       </article>
 
@@ -6266,6 +6272,19 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
     var v=f.querySelector('video'); if(!v) return;
     if(v.getAttribute('poster')) f.style.backgroundImage='url("'+v.getAttribute('poster')+'")';
     v.addEventListener('error',function(){ v.style.display='none'; });
+  });
+})();
+</script>
+<script>
+(function(){
+  document.querySelectorAll('#music [data-expand]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var card = btn.closest('.pm-record');
+      if (!card) return;
+      var open = card.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.innerHTML = open ? '收起曲目 <i>↑</i>' : (btn.getAttribute('data-more') || '全部曲目') + ' <i>↓</i>';
+    });
   });
 })();
 </script>
