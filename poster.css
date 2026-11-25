@@ -3,12 +3,12 @@
    蓝色海报 / 奶油纸 / 黑色票根 / 大留白
    ============================================================ */
 :root{
-  --pp-blue:#1B2BE0;
-  --pp-blue-deep:#111FB8;
+  --pp-blue:#2F3F8A;
+  --pp-blue-deep:#202B5E;
   --pp-ink:#0B0C0E;
   --pp-bone:#F0EBDD;
   --pp-paper:#E7E0D0;
-  --pp-muted:#5960A4;
+  --pp-muted:#5D6690;
   --pp-line:rgba(11,12,14,.24);
   --pp-cream-line:rgba(240,235,221,.26);
   --pp-serif:"Noto Serif CJK SC","Songti SC","Source Han Serif SC",serif;
@@ -76,7 +76,7 @@ body::selection, ::selection{background:var(--pp-blue);color:var(--pp-bone);}
   text-decoration:none;color:var(--pp-ink);transition:.2s;
 }
 .card:hover{transform:translateY(-4px)!important;box-shadow:10px 12px 0 var(--pp-blue)!important;}
-.card img{width:100%!important;height:330px!important;object-fit:cover!important;filter:saturate(.68) contrast(1.03);}
+.card img{width:100%!important;height:330px!important;object-fit:cover!important;filter:none;}
 .card-text{padding:18px 18px 22px!important;}
 .card h4{font-size:26px!important;line-height:1.2!important;font-weight:800!important;margin:0 0 8px!important;color:var(--pp-ink)!important;letter-spacing:1px;}
 .card p{font-size:11.5px!important;line-height:1.8!important;color:var(--pp-muted)!important;margin:0!important;}
@@ -108,8 +108,8 @@ td{
 }
 td:first-child{font-weight:700!important;letter-spacing:1px;white-space:nowrap;}
 td:nth-child(2){white-space:normal!important;}
-tr:nth-child(even){background:rgba(27,43,224,.045)!important;}
-tr:hover{background:rgba(27,43,224,.09)!important;}
+tr:nth-child(even){background:rgba(47,63,138,.045)!important;}
+tr:hover{background:rgba(47,63,138,.09)!important;}
 .table-link{color:var(--pp-ink)!important;border-bottom:1px solid var(--pp-blue)!important;font-weight:700!important;font-size:13px!important;}
 
 /* ============================================================
@@ -135,8 +135,8 @@ tr:hover{background:rgba(27,43,224,.09)!important;}
   background:var(--pp-ink);overflow:hidden;transform:rotate(-1.5deg);
   box-shadow:24px 26px 0 rgba(11,12,14,.9);
 }
-.ph-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.22) brightness(.92);}
-.ph-photo .tint{position:absolute;inset:0;background:var(--pp-blue);mix-blend-mode:multiply;opacity:.72;}
+.ph-photo img{width:100%;height:100%;object-fit:cover;filter:none;}
+.ph-photo .tint{display:none!important;}
 .ph-photo::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(240,235,221,.45);z-index:2;}
 .ph-photo .cap{
   position:absolute;left:0;bottom:0;background:var(--pp-bone);color:var(--pp-blue);
@@ -209,8 +209,8 @@ tr:hover{background:rgba(27,43,224,.09)!important;}
 .pmp-top b{font-size:16px;letter-spacing:5px;color:var(--pp-bone);}
 .pmp-body{position:relative;height:228px;background:var(--pp-bone);color:var(--pp-ink);display:grid;grid-template-columns:1fr 190px;gap:0;overflow:hidden;}
 .pmp-window{position:relative;overflow:hidden;background:var(--pp-ink);}
-.pmp-window img{width:100%;height:100%;object-fit:cover;filter:saturate(.72) contrast(1.06);}
-.pmp-window::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,12,14,.05),rgba(11,12,14,.35));}
+.pmp-window img{width:100%;height:100%;object-fit:cover;filter:none;}
+.pmp-window::after{display:none!important;}
 .pmp-reels{position:absolute;left:34%;top:50%;display:flex;gap:82px;transform:translate(-50%,-50%);z-index:2;}
 .pmp-reels i{width:55px;height:55px;border:1px solid rgba(240,235,221,.65);border-radius:50%;position:relative;}
 .pmp-reels i::after{content:"";position:absolute;inset:20px;border:1px solid rgba(240,235,221,.4);border-radius:50%;}
@@ -241,8 +241,8 @@ tr:hover{background:rgba(27,43,224,.09)!important;}
   padding:14px 0;border-top:1px solid var(--pp-line);text-decoration:none;color:var(--pp-ink);
 }
 .pm-album:last-child{border-bottom:1px solid var(--pp-line);}
-.pm-album:hover{background:rgba(27,43,224,.07);}
-.pm-album img{width:66px;height:66px;object-fit:cover;filter:saturate(.75);}
+.pm-album:hover{background:rgba(47,63,138,.07);}
+.pm-album img{width:66px;height:66px;object-fit:cover;filter:none;}
 .pm-album h3{font-size:22px;line-height:1.2;letter-spacing:.5px;margin:0;font-weight:800;}
 .pm-album h3 small{font-size:7px;letter-spacing:2px;color:var(--pp-muted);font-weight:400;margin-left:8px;}
 .pm-album p{font-size:9.5px;line-height:1.6;color:var(--pp-muted);margin:4px 0 0;}
@@ -288,8 +288,8 @@ tr:hover{background:rgba(27,43,224,.09)!important;}
   position:absolute;right:54px;top:72px;width:548px;height:640px;overflow:hidden;
   background:var(--pp-ink);transform:rotate(1.4deg);box-shadow:-20px 24px 0 var(--pp-blue);
 }
-.pw-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.15);}
-.pw-photo .tint{position:absolute;inset:0;background:var(--pp-blue);mix-blend-mode:multiply;opacity:.55;}
+.pw-photo img{width:100%;height:100%;object-fit:cover;filter:none;}
+.pw-photo .tint{display:none!important;}
 .pw-note{
   position:absolute;left:44px;bottom:150px;width:470px;z-index:4;
   background:var(--pp-blue);color:var(--pp-bone);padding:22px 24px 20px;transform:rotate(-2deg);
@@ -333,8 +333,8 @@ tr:hover{background:rgba(27,43,224,.09)!important;}
   position:absolute;right:54px;top:58px;width:470px;height:590px;overflow:hidden;
   transform:rotate(-1.2deg);background:var(--pp-ink);box-shadow:18px 22px 0 var(--pp-blue);
 }
-.cw-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(.85) contrast(1.08);}
-.cw-photo .tint{position:absolute;inset:0;background:var(--pp-blue);mix-blend-mode:multiply;opacity:.6;}
+.cw-photo img{width:100%;height:100%;object-fit:cover;filter:none;}
+.cw-photo .tint{display:none!important;}
 .cw-ticket{
   position:absolute;left:44px;bottom:56px;z-index:4;width:430px;
   background:var(--pp-blue);color:var(--pp-bone);padding:18px 22px;transform:rotate(-2deg);
@@ -393,8 +393,8 @@ tr:hover{background:rgba(27,43,224,.09)!important;}
   position:absolute;right:52px;top:58px;width:512px;height:520px;overflow:hidden;
   background:var(--pp-ink);transform:rotate(1.2deg);box-shadow:-18px 20px 0 var(--pp-blue);
 }
-.pg-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.15);}
-.pg-photo .tint{position:absolute;inset:0;background:var(--pp-blue);mix-blend-mode:multiply;opacity:.55;}
+.pg-photo img{width:100%;height:100%;object-fit:cover;filter:none;}
+.pg-photo .tint{display:none!important;}
 .pg-chips{
   position:absolute;left:48px;bottom:42px;display:flex;gap:8px;flex-wrap:wrap;z-index:4;max-width:700px;
 }
@@ -421,7 +421,7 @@ tr:hover{background:rgba(27,43,224,.09)!important;}
 }
 #games .gx-card:hover{transform:translateY(-4px)!important;box-shadow:10px 12px 0 var(--pp-blue)!important;border-color:var(--pp-ink)!important;}
 #games .gx-cover{height:280px!important;}
-#games .gx-shot{filter:saturate(.72) contrast(1.04)!important;}
+#games .gx-shot{filter:none!important;}
 #games .gx-body{padding:18px 20px 20px!important;}
 #games .gx-title{font-size:25px!important;font-weight:800!important;}
 #games .gx-title small{color:var(--pp-muted)!important;}
@@ -439,7 +439,7 @@ tr:hover{background:rgba(27,43,224,.09)!important;}
   box-shadow:none!important;overflow:visible!important;position:relative!important;
 }
 .me-cover-wrap{position:relative!important;height:540px!important;margin:0!important;border-radius:0!important;overflow:hidden;}
-.me-cover{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 30%!important;filter:saturate(.55) contrast(1.1);}
+.me-cover{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 30%!important;filter:none;}
 .me-cover-wrap::after{
   content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,12,14,.05),rgba(11,12,14,.45) 70%,rgba(11,12,14,.8));pointer-events:none;
 }
@@ -618,7 +618,7 @@ tr:hover{background:rgba(27,43,224,.09)!important;}
 #home .card img,#work .card img{
   position:relative!important;inset:auto!important;width:100%!important;
   height:330px!important;object-fit:cover!important;opacity:1!important;
-  transition:transform .5s ease;filter:saturate(.68) contrast(1.03);
+  transition:transform .5s ease;filter:none;
 }
 #home .card:hover img,#work .card:hover img{transform:scale(1.04);}
 #home .card::after,#work .card::after{display:none!important;}
@@ -637,7 +637,7 @@ tr:hover{background:rgba(27,43,224,.09)!important;}
 }
 .table-box table td{padding:13px 16px!important;font-size:13px!important;color:var(--pp-ink)!important;border-bottom:1px solid var(--pp-line)!important;}
 .table-box table tbody tr:nth-child(odd),.table-box table tbody tr:nth-child(even){background:transparent!important;}
-.table-box table tbody tr:hover{background:rgba(27,43,224,.08)!important;}
+.table-box table tbody tr:hover{background:rgba(47,63,138,.08)!important;}
 
 @media(max-width:900px){
   #home .banner + section.container,
@@ -812,7 +812,7 @@ html,body{overflow-x:clip!important;}
 }
 #wish .pwh-rose img{
   width:100%;flex:1;object-fit:contain;padding:26px 22px 4px;
-  filter:drop-shadow(0 20px 32px rgba(0,0,0,.8)) saturate(1.12);
+  filter:drop-shadow(0 20px 32px rgba(0,0,0,.8));
 }
 #wish .pwh-rose figcaption{
   display:flex;justify-content:space-between;gap:14px;padding:12px 14px 13px;
@@ -971,3 +971,183 @@ html,body{overflow-x:clip!important;}
   #wish .wtPopCard{width:min(300px,88%);}
   #wish .wtPopRose{width:86px;height:86px;}
 }
+
+/* ============ V4.1 · MUSIC / 随身听重做 ============ */
+#music{background:var(--pp-bone)!important;}
+#music .pm-deck{
+  display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:52px;align-items:start;
+  padding:24px 44px 78px;max-width:1440px;margin:0 auto;
+}
+#music .pm-player{
+  position:relative;width:100%;padding:24px 24px 22px;transform:rotate(-.8deg);
+  background:var(--pp-blue);color:var(--pp-bone);box-shadow:16px 18px 0 var(--pp-ink);
+}
+#music .pmp-top{margin-bottom:16px;}
+#music .pmp-on{
+  border:1px solid rgba(240,235,221,.55);padding:3px 8px;font-size:7px;letter-spacing:2px;
+  color:var(--pp-bone);
+}
+#music .pmp-body{height:248px;grid-template-columns:minmax(0,1fr) 214px;}
+#music .pmp-window{border-right:1px solid rgba(11,12,14,.16);}
+#music .pmp-reels{left:36%;gap:96px;}
+#music .pmp-side{padding:20px 18px;}
+#music .pmp-side .now-title{font-size:17px;line-height:1.4;min-height:48px;}
+#music .pmp-side .play{width:54px;height:54px;font-size:17px;border:1px solid rgba(240,235,221,.5);}
+#music .pmp-side .play:hover{background:var(--pp-blue-deep);}
+#music .pmp-prog-row{margin-top:16px;}
+#music .pmp-ctl{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:14px;
+}
+#music .pmp-file{
+  display:inline-flex;align-items:center;gap:8px;background:var(--pp-bone);color:var(--pp-ink);
+  padding:9px 13px;font-size:9px;letter-spacing:1.6px;font-weight:700;cursor:pointer;
+  transition:.18s;
+}
+#music .pmp-file:hover{background:var(--pp-ink);color:var(--pp-bone);}
+#music .pmp-cap{font-size:8px;letter-spacing:2px;color:#C6CAE8;}
+
+/* 曲目直接放进机身 */
+#music .pmp-track-head{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  margin:20px 0 9px;padding-top:14px;border-top:1px solid rgba(240,235,221,.24);
+}
+#music .pmp-track-head b{font-size:10px;letter-spacing:3px;color:var(--pp-bone);}
+#music .pmp-track-head span{font-size:8px;letter-spacing:1.2px;color:#C6CAE8;}
+#music .pm-track-deck{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;
+  background:rgba(240,235,221,.22);
+}
+#music .pm-track::before{display:none!important;content:none!important;}
+#music .pm-track{
+  position:relative;display:grid;grid-template-columns:25px minmax(0,1fr) 28px;grid-template-rows:auto auto;
+  gap:1px 7px;align-items:center;min-height:64px;padding:10px 10px;
+  background:var(--pp-bone);color:var(--pp-ink);border:0;text-align:left;
+  font-family:var(--pp-sans);cursor:pointer;transition:.18s;
+}
+#music .pm-track:hover,#music .pm-track.on{background:var(--pp-blue-deep);color:var(--pp-bone);}
+#music .pm-track > span{grid-column:1;grid-row:1/3;align-self:center;font-family:var(--pp-serif);font-size:11px;color:var(--pp-blue);}
+#music .pm-track b{grid-column:2;grid-row:1;min-width:0;font-size:11.5px;line-height:1.3;font-weight:700;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#music .pm-track small{grid-column:2;grid-row:2;min-width:0;font-size:6.8px;letter-spacing:1.2px;color:var(--pp-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#music .pm-track i{
+  grid-column:3;grid-row:1/3;justify-self:end;font-style:normal;width:24px;height:24px;border-radius:50%;
+  display:grid;place-items:center;background:var(--pp-blue);color:var(--pp-bone);font-size:9px;
+}
+#music .pm-track:hover i,#music .pm-track.on i{background:var(--pp-bone);color:var(--pp-blue-deep);}
+#music .pm-track:hover > span,#music .pm-track.on > span{color:#CDD4F2;}
+#music .pm-track:hover small,#music .pm-track.on small{color:#B9C0DC;}
+
+/* 磁带架 */
+#music .pm-tapes{padding-top:2px;}
+#music .pm-side-head{padding-bottom:14px;border-bottom:1px solid var(--pp-ink);}
+#music .pm-side-head h2{margin:0;font-size:27px;line-height:1.1;letter-spacing:-.5px;font-weight:800;}
+#music .pm-side-head p{margin:7px 0 0;font-size:9px;color:var(--pp-muted);letter-spacing:.4px;}
+#music .pm-album.pm-tape{
+  display:grid;grid-template-columns:72px minmax(0,1fr);grid-template-rows:auto auto;
+  gap:2px 14px;align-items:start;padding:15px 0 16px;border-top:0;
+  border-bottom:1px solid var(--pp-line);background:transparent;
+}
+#music .pm-album.pm-tape img{
+  grid-row:1/3;width:72px;height:72px;object-fit:cover;border:1px solid var(--pp-ink);
+}
+#music .pm-tape-copy{min-width:0;}
+#music .pm-tape-copy span{font-size:7px;letter-spacing:2.2px;color:var(--pp-muted);}
+#music .pm-tape-copy h3{margin:2px 0 0;font-size:21px;line-height:1.15;font-weight:800;letter-spacing:.3px;}
+#music .pm-tape-copy p{margin:4px 0 0;font-size:9px;line-height:1.6;color:var(--pp-muted);}
+#music .pm-album.pm-tape .pm-btn{grid-column:2;justify-self:start;margin-top:8px;}
+#music .pm-album.pm-tape:hover{background:transparent;}
+#music .pm-side-foot{display:flex;justify-content:space-between;margin-top:11px;font-size:7px;letter-spacing:1.8px;color:var(--pp-muted);}
+
+/* 明显的按钮 */
+#music .pm-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  background:var(--pp-blue);color:var(--pp-bone);border:1px solid var(--pp-ink);
+  padding:7px 11px;font-size:8px;letter-spacing:1.4px;font-style:normal;
+  text-decoration:none;font-weight:700;transition:.18s;
+}
+#music .pm-btn:hover{background:var(--pp-ink);color:var(--pp-bone);}
+#music .pmp-file span{white-space:nowrap;}
+
+/* 单曲架，替代原来的表格 */
+#music .pm-singles{max-width:1440px;margin:0 auto;padding:0 44px 84px;}
+#music .pm-singles-head{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:24px;
+  padding-top:18px;border-top:1px solid var(--pp-ink);margin-bottom:20px;
+}
+#music .pm-singles-head .k{font-size:8px;letter-spacing:3px;color:var(--pp-muted);}
+#music .pm-singles-head h2{margin:6px 0 0;font-size:40px;line-height:1;letter-spacing:-1.5px;font-weight:800;}
+#music .pm-singles-head p{margin:0 0 4px;font-size:9px;line-height:1.7;color:var(--pp-muted);text-align:right;max-width:280px;}
+#music .pm-single-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+#music .pm-single{
+  display:flex;flex-direction:column;align-items:flex-start;min-height:190px;
+  padding:18px 18px 16px;background:var(--pp-paper);border:1px solid var(--pp-ink);
+  text-decoration:none;color:var(--pp-ink);transition:.18s;
+}
+#music .pm-single:hover{background:var(--pp-bone);box-shadow:7px 8px 0 var(--pp-blue);transform:translateY(-3px);}
+#music .pm-single > span{font-family:var(--pp-serif);font-size:28px;line-height:1;color:var(--pp-blue);}
+#music .pm-single b{margin-top:7px;font-size:19px;line-height:1.25;letter-spacing:.2px;font-weight:800;}
+#music .pm-single p{margin:7px 0 0;font-size:9.5px;line-height:1.7;color:var(--pp-muted);}
+#music .pm-single .pm-btn{margin-top:auto;align-self:stretch;justify-content:space-between;padding:8px 10px;}
+#music .pm-more{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;
+  padding:14px 18px;background:var(--pp-ink);color:var(--pp-bone);text-decoration:none;
+  font-size:10px;letter-spacing:2.4px;font-weight:700;
+}
+#music .pm-more:hover{background:var(--pp-blue);}
+
+/* 全站明确的链接按钮 */
+.card-link{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--pp-blue)!important;border:1px solid var(--pp-blue)!important;
+  color:var(--pp-bone)!important;padding:6px 11px!important;border-radius:0!important;
+  font-size:9px!important;letter-spacing:1.4px!important;font-weight:600!important;
+  text-decoration:none!important;transition:.18s;
+}
+.card-link:hover{background:var(--pp-ink)!important;border-color:var(--pp-ink)!important;color:var(--pp-bone)!important;}
+.ph-link span{
+  display:inline-grid;place-items:center;min-width:28px;padding:3px 6px;
+  background:var(--pp-blue);color:var(--pp-bone)!important;font-size:8px;letter-spacing:1px;
+}
+.ph-link:hover span{background:var(--pp-bone);color:var(--pp-ink)!important;}
+
+@media(max-width:1100px){
+  #music .pm-deck{grid-template-columns:1fr;gap:34px;}
+  #music .pm-tapes{max-width:640px;}
+}
+@media(max-width:760px){
+  #music .pm-deck{grid-template-columns:1fr;gap:30px;padding:16px 18px 48px;}
+  #music .pm-player{transform:rotate(-.6deg);box-shadow:8px 9px 0 var(--pp-ink);padding:16px 14px 16px;}
+  #music .pmp-body{height:198px;grid-template-columns:1fr 138px;}
+  #music .pmp-side{padding:13px 12px;}
+  #music .pmp-side .now-title{font-size:13px;min-height:38px;}
+  #music .pmp-side .play{width:42px;height:42px;font-size:13px;}
+  #music .pmp-reels{gap:58px;left:31%;}
+  #music .pmp-reels i{width:40px;height:40px;}
+  #music .pmp-reels i::after{inset:14px;}
+  #music .pmp-ctl{flex-wrap:wrap;gap:9px;}
+  #music .pm-track-deck{grid-template-columns:repeat(2,minmax(0,1fr));}
+  #music .pm-track{min-height:58px;padding:9px 8px;}
+  #music .pmp-track-head span{display:none;}
+  #music .pm-tapes{max-width:100%;}
+  #music .pm-side-head h2{font-size:23px;}
+  #music .pm-album.pm-tape{padding:12px 0 13px;}
+  #music .pm-singles{padding:0 18px 52px;}
+  #music .pm-singles-head{display:block;padding-top:14px;}
+  #music .pm-singles-head h2{font-size:30px;margin-top:5px;}
+  #music .pm-singles-head p{text-align:left;margin-top:8px;max-width:none;}
+  #music .pm-single-grid{grid-template-columns:1fr;gap:8px;}
+  #music .pm-single{min-height:0;padding:14px;}
+  #music .pm-single b{font-size:17px;}
+  #music .pm-single .pm-btn{margin-top:12px;}
+  #music .pm-more{font-size:9px;letter-spacing:1.6px;padding:12px 14px;}
+}
+
+/* 首页/作品卡片里的外链统一成实心按钮 */
+#home .card-links .card-link,
+#work .card-links .card-link{
+  background:var(--pp-blue)!important;border:1px solid var(--pp-blue)!important;
+  color:var(--pp-bone)!important;padding:7px 12px!important;border-radius:0!important;
+  font-size:9px!important;letter-spacing:1.4px!important;font-weight:700!important;
+  text-decoration:none!important;
+}
+#home .card-links .card-link:hover,
+#work .card-links .card-link:hover{background:var(--pp-ink)!important;border-color:var(--pp-ink)!important;}
