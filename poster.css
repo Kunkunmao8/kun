@@ -2126,3 +2126,50 @@ figure,figure img,.gallery-item img,.photo-item img,.photo-item video,.clip-card
 #games .gx-title small{display:none!important;}
 #games .gx-cover-word b{font-size:36px!important;letter-spacing:.5px!important;}
 @media (min-width:901px){.ph-photo{width:900px!important;height:600px!important;}}
+
+/* V5.10 · 精选图集：上面三张小图，下面一张横向长图 */
+#work .gallery-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:14px!important;
+}
+#work .gallery-item{aspect-ratio:3/4!important;}
+#work .gallery-item.wide{
+  grid-column:1/-1!important;
+  aspect-ratio:21/9!important;
+}
+@media(max-width:600px){
+  #work .gallery-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;}
+  #work .gallery-item.wide{aspect-ratio:16/8.5!important;}
+}
+
+/* V5.11 · 电脑端顶部大图占屏幕 4/5 宽 */
+@media (min-width:901px){
+  /* 首页 */
+  .p-hero-home{height:870px!important;}
+  .ph-big{top:42px!important;left:60px!important;font-size:96px!important;}
+  .ph-photo{width:80vw!important;max-width:calc(100% - 80px)!important;height:620px!important;right:40px!important;top:160px!important;}
+  .ph-links{
+    left:auto!important;right:40px!important;bottom:38px!important;width:80vw!important;max-width:calc(100% - 80px)!important;
+    display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;
+  }
+
+  /* 作品与舞台 */
+  .p-hero-work{height:900px!important;}
+  .pw-zh{top:54px!important;font-size:70px!important;}
+  .pw-photo{width:80vw!important;max-width:calc(100% - 80px)!important;height:620px!important;right:40px!important;top:160px!important;}
+
+  /* 留言墙 */
+  .p-hero-wall{height:810px!important;}
+  .cw-zh{top:54px!important;font-size:70px!important;}
+  .cw-photo{width:80vw!important;max-width:calc(100% - 80px)!important;height:560px!important;right:40px!important;top:160px!important;}
+
+  /* 游戏厅 */
+  .p-hero-games{height:800px!important;}
+  .pg-zh{top:54px!important;font-size:70px!important;}
+  .pg-photo{width:80vw!important;max-width:calc(100% - 80px)!important;height:560px!important;right:40px!important;top:160px!important;}
+  .pg-chips{left:40px!important;bottom:38px!important;}
+}
+@media (min-width:901px){
+  .ph-links{top:auto!important;height:52px!important;align-items:stretch!important;}
+  .ph-link{height:100%!important;min-height:0!important;padding:0 16px!important;}
+}
