@@ -1985,7 +1985,7 @@ html{scroll-padding-top:96px;}
 }
 </style>
 <link rel="stylesheet" href="./games.css?v=9">
-<link rel="stylesheet" href="./poster.css?v=11">
+<link rel="stylesheet" href="./poster.css?v=13">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -2040,16 +2040,13 @@ html{scroll-padding-top:96px;}
 				</div>
 			</div>
 			<input class="ag-field" id="agRPass" type="password" placeholder="设置密码，至少 6 位">
-			<div class="ag-code">
-				<input class="ag-field" id="agCode" placeholder="6 位验证码" maxlength="6" inputmode="numeric">
-				<button class="ag-mini" id="agSendCode" type="button">获取验证码</button>
-			</div>
-			<p class="ag-tip" id="agCodeTip"></p>
+			<p class="ag-codehint" id="agCodeTip">验证码会显示在这里</p>
+			<input class="ag-field" id="agCode" placeholder="输入上面的 6 位验证码" maxlength="6" inputmode="numeric">
 			<button class="ag-btn" id="agDoReg" type="button">注册</button>
 			<p class="ag-msg" id="agRegMsg"></p>
 		</div>
 
-		<p class="ag-foot">登录之后可以看全部的图片和舞台影像，也能在社区说话、投稿。<br>第一次来先注册，6 位验证码会发到你填的邮箱。</p>
+		<p class="ag-foot">登录之后可以看全部的图片和舞台影像，也能在社区说话、投稿。<br>第一次来先注册，验证码直接显示在密码下面，不用查邮箱。</p>
 	</div>
 </div>
 <script>
@@ -2091,6 +2088,7 @@ html{scroll-padding-top:96px;}
 			var t=b.getAttribute('data-t');
 			$('agLogin').classList.toggle('hide',t!=='login');
 			$('agReg').classList.toggle('hide',t!=='reg');
+			if(t==='reg') issueCode();
 		};
 	});
 
@@ -2099,6 +2097,7 @@ html{scroll-padding-top:96px;}
 		Array.prototype.forEach.call(g.querySelectorAll('.ag-tabs button'),function(x){ x.classList.toggle('on',x.getAttribute('data-t')===t); });
 		$('agLogin').classList.toggle('hide',t!=='login');
 		$('agReg').classList.toggle('hide',t!=='reg');
+		if(t==='reg') issueCode();
 	}
 	function exitReset(){
 		if(!resetMode) return;
@@ -2120,9 +2119,9 @@ html{scroll-padding-top:96px;}
 	function enterReset(){
 		resetMode=true;
 		$('agResetNote').hidden=false;
-		$('agResetNote').textContent='忘记密码就走这里：填原来的邮箱，验证码重新拿一次，密码换成新的，昵称也可以顺手改。';
+		$('agResetNote').textContent='忘记密码就走这里：填原来的邮箱，验证码会重新显示，密码换成新的，昵称也可以顺手改。';
 		$('agRMail').value=$('agLMail').value.trim();
-		$('agRPass').value=''; $('agCode').value=''; $('agCodeTip').textContent=''; $('agRegMsg').textContent='';
+		$('agRPass').value=''; $('agCode').value=''; $('agCodeTip').textContent=''; $('agRegMsg').textContent=''; issueCode();
 		pendCode=''; pendMail='';
 		$('agDoReg').textContent='重设密码并进门';
 		switchTab('reg');
@@ -2132,26 +2131,14 @@ html{scroll-padding-top:96px;}
 	$('agForgot').onclick=enterReset;
 	$('agRMail').addEventListener('blur',function(){ prefillMail($('agRMail').value.trim()); });
 	Array.prototype.forEach.call(g.querySelectorAll('.ag-tabs button'),function(b){ b.addEventListener('click',function(){ if(b.getAttribute('data-t')!=='reg') exitReset(); }); });
-	$('agSendCode').onclick=function(){
-		var mail=$('agRMail').value.trim();
-		if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){ $('agCodeTip').textContent='先填一个像样的邮箱'; return; }
-		pendMail=mail;
+	function issueCode(){
 		pendCode=String(Math.floor(100000+Math.random()*900000));
-		if(!ready()){ $('agCodeTip').textContent='验证码：'+pendCode+'（发信服务暂时不可用，先临时显示）'; return; }
-		$('agCodeTip').textContent='正在发到 '+mail+' …';
-		$('agSendCode').disabled=true;
-		fetch('https://api.emailjs.com/api/v1.0/email/send',{
-			method:'POST',headers:{'Content-Type':'application/json'},
-			body:JSON.stringify({service_id:CFG.serviceId,template_id:CFG.templateId,user_id:CFG.publicKey,
-				template_params:{to_email:mail,passcode:pendCode,code:pendCode,site_name:'KUN 星站 · IKUN 留言箱',note:'10 分钟内有效'}})
-		}).then(function(r){ if(!r.ok) throw new Error('mail '+r.status);
-			$('agSendCode').disabled=false;
-			$('agCodeTip').textContent='验证码已经发到 '+mail+'，去邮箱收一下（找不到看垃圾箱）';
-		}).catch(function(){
-			$('agSendCode').disabled=false;
-			$('agCodeTip').textContent='发信没成功，先临时把验证码放这儿：'+pendCode;
-		});
-	};
+		pendMail='';
+		var tip=$('agCodeTip');
+		if(tip){ tip.innerHTML='验证码 <b>'+pendCode+'</b>　不用查邮箱，直接输入'; }
+		var code=$('agCode'); if(code){ code.value=''; }
+	}
+	issueCode();
 
 
 	var pickAva='';
@@ -2200,8 +2187,8 @@ html{scroll-padding-top:96px;}
 		if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){ msg.textContent='邮箱格式不对'; return; }
 		if(name.length<1){ msg.textContent='给自己起个昵称'; return; }
 		if(pass.length<6){ msg.textContent='密码至少 6 位'; return; }
-		if(!pendCode){ msg.textContent='先点「获取验证码」'; return; }
-		if(code!==pendCode||mail.toLowerCase()!==pendMail.toLowerCase()){ msg.textContent='验证码不对，或者邮箱换了，重新获取一次'; return; }
+		if(!pendCode){ issueCode(); msg.textContent='验证码已经显示在密码下面，照着输入'; return; }
+		if(code!==pendCode){ msg.textContent='验证码不对，照密码下面那行小字重新输入'; return; }
 		msg.textContent='正在注册…';
 		$('agDoReg').disabled=true;
 		readUsers().then(function(list){
@@ -2297,7 +2284,7 @@ html{scroll-padding-top:96px;}
   <div class="ph-cn">星站</div>
   <figure class="ph-photo">
     <img decoding="async" fetchpriority="high" src="images/hero-kotw.jpg" alt="蔡徐坤站在屋顶上，黑色皮衣">
-    <div class="tint"></div><span class="cap">2026 · 现场</span>
+    <div class="tint"></div>
   </figure>
   <div class="ph-note"><h3>把声音<br>开到最大。</h3><p>第 04 号海报<br>1440 × 900</p></div>
   <div class="ph-links">
@@ -2398,7 +2385,7 @@ html{scroll-padding-top:96px;}
           <div class="tt-prog-row"><div class="tt-prog"><span id="wmProg"></span></div><span class="tt-time" id="wmTime">00:00</span></div>
           <label class="tt-file"><span>＋ 选本地音源</span><input type="file" id="kunAudioFile" accept="audio/*" hidden></label>
           <p class="tt-note">唱针落下，黑胶开始转。<br>下面十个小按钮，点一下就能放。</p>
-          <div class="tt-meta"><span>10 首曲目</span><span>立体声</span></div>
+          
         </div>
         <div class="tt-drawer">
           <div class="pmp-track-head"><b>曲目 · 10 首</b><span>点一个小按钮，唱针就落下去</span></div>
@@ -2520,7 +2507,7 @@ html{scroll-padding-top:96px;}
 
       <article class="pm-record">
         <div class="pmr-top">
-          <div class="pmr-cover-text"><span>SINGLES</span><b>S</b><small>2017—2025</small></div>
+          <img src="images/t/lover2.jpg" alt="单曲与返场封面">
           <div class="pmr-meta"><span>单曲 / 现场</span><h3>单曲 &amp; 返场</h3><p>不放进专辑里的那些，也有自己的位置。</p></div>
         </div>
         <div class="pmr-bar"><span>精选 / 06</span><span>1 首本地可播</span></div>
