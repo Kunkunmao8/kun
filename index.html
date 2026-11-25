@@ -1985,7 +1985,7 @@ html{scroll-padding-top:96px;}
 }
 </style>
 <link rel="stylesheet" href="./games.css?v=9">
-<link rel="stylesheet" href="./poster.css?v=15">
+<link rel="stylesheet" href="./poster.css?v=16">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -2007,7 +2007,7 @@ html{scroll-padding-top:96px;}
 </aside>
 <div id="authGate">
 	<div class="ag-card">
-		<div class="ag-brand">KUN 星站</div>
+		<div class="ag-brand">KUN</div>
 		<p class="ag-sub">蔡徐坤 · 先登录，再进门</p>
 		<div class="ag-tabs">
 			<button class="on" type="button" data-t="login">登录</button>
@@ -2265,7 +2265,7 @@ html{scroll-padding-top:96px;}
 </script>
 <header class="site-header">
 	<div class="container header-inner">
-		<a class="logo" href="#home">KUN 星站</a>
+		<a class="logo" href="#home">KUN</a>
 		<nav>
 			<ul class="nav">
 				<li><a href="#home" class="nav-link active" data-target="home">首页</a></li>
@@ -2281,8 +2281,7 @@ html{scroll-padding-top:96px;}
 <div class="page active" id="home">
 <section class="p-hero p-hero-home">
   <div class="ph-big">KUN</div>
-  <div class="ph-cn">星站</div>
-  <figure class="ph-photo">
+    <figure class="ph-photo">
     <img decoding="async" fetchpriority="high" src="images/hero-kotw.jpg" alt="蔡徐坤站在屋顶上，黑色皮衣">
     <div class="tint"></div>
   </figure>
@@ -3082,7 +3081,6 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		head.appendChild(faceEl(m.who,mine));
 		var nm=el('span','fname'+(m.who?' clickable':''));
 		nm.textContent=(m.who||'匿名');
-		if(mine){ var tag=el('span','me-tag'); tag.textContent='我'; nm.appendChild(tag); }
 		if(m.who){ nm.onclick=function(){ openDM(m.who); }; }
 		head.appendChild(nm);
 		if(m.who && m.who!==ME.name){ head.appendChild(followBtn(m.who)); }
@@ -6204,7 +6202,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 
 </script>
 
-<script src="./games.js?v=13"></script>
+<script src="./games.js?v=14"></script>
 <script>
 (function(){
   function init(){
