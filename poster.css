@@ -2269,3 +2269,12 @@ figure,figure img,.gallery-item img,.photo-item img,.photo-item video,.clip-card
 @media (max-width:560px){
   .wish-return-games{bottom:16px;min-height:44px;padding:11px 20px;font-size:13px;}
 }
+
+/* V5.20 · 游戏厅顶图用用户指定黑白横图，完整显示 */
+@media (min-width:901px){
+  .p-hero-games{height:calc(300px + 42.34vw)!important;}
+  .pg-photo{aspect-ratio:1179/624!important;}
+}
+@media (max-width:900px){
+  .pg-photo{aspect-ratio:1179/624!important;}
+}
