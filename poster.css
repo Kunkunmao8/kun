@@ -2321,3 +2321,19 @@ figure,figure img,.gallery-item img,.photo-item img,.photo-item video,.clip-card
 #authGate .ag-tabs button{border-radius:999px!important;}
 #authGate .ag-ava-item{border-radius:14px!important;}
 #authGate .ag-card,#authGate .ag-tabs{border-radius:20px!important;}
+
+/* V5.26 · 验证码小字 + 密码 */
+#authGate .ag-code .ag-field{margin-bottom:0;flex:1;}
+#authGate .ag-code-btn{flex:0 0 auto;height:44px;padding:0 14px;border:1px solid var(--pp-ink);border-radius:14px;background:transparent;color:var(--pp-ink);font-size:12px;letter-spacing:1px;cursor:pointer;font-family:inherit;}
+#authGate .ag-code-btn:hover{background:rgba(47,92,212,.08);}
+#authGate .ag-code-tip{margin:-1px 0 10px;min-height:15px;font-size:11px;line-height:1.6;color:var(--pp-muted);letter-spacing:.2px;}
+#authGate .ag-code-tip b{color:var(--pp-blue);font-size:13px;letter-spacing:2px;}
+#authGate .ag-code-tip.warn{color:#B23A2B;}
+
+/* V5.26 · 社区验证码小字 + 密码 */
+#pillow .code-row{display:flex;gap:8px;align-items:center;}
+#pillow .code-row .field{margin-bottom:0;flex:1;}
+#pillow .code-btn{flex:0 0 auto;height:42px;padding:0 13px;border:1px solid var(--pp-ink);border-radius:14px;background:transparent;color:var(--pp-ink);font-size:12px;cursor:pointer;font-family:inherit;}
+#pillow .code-tip{margin:6px 0 8px;min-height:15px;font-size:11px;line-height:1.6;color:var(--pp-muted);}
+#pillow .code-tip b{color:var(--pp-blue);font-size:13px;letter-spacing:2px;}
+#pillow .field{margin-bottom:10px;}
