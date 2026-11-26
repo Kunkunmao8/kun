@@ -1985,7 +1985,7 @@ html{scroll-padding-top:96px;}
 }
 </style>
 <link rel="stylesheet" href="./games.css?v=10">
-<link rel="stylesheet" href="./poster.css?v=36">
+<link rel="stylesheet" href="./poster.css?v=37">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -2017,11 +2017,6 @@ html{scroll-padding-top:96px;}
 		<div id="agLogin">
 			<input class="ag-field" id="agLMail" placeholder="数字账号（任意数字都能进）" inputmode="numeric" autocomplete="username" maxlength="20">
 			<input class="ag-field" id="agLPass" type="password" placeholder="密码" maxlength="20" autocomplete="current-password">
-			<div class="ag-code">
-				<input class="ag-field" id="agLCode" placeholder="验证码" inputmode="numeric" maxlength="4" autocomplete="off">
-				<button class="ag-code-btn" id="agGetCode" type="button">验证码</button>
-			</div>
-			<p class="ag-code-tip" id="agCodeTip">点「验证码」会在下面出现 4 位小字</p>
 			<button class="ag-btn" id="agDoLogin" type="button">进入</button>
 			<p class="ag-msg" id="agLoginMsg"></p>
 		</div>
@@ -2029,6 +2024,11 @@ html{scroll-padding-top:96px;}
 		<div id="agReg" class="hide">
 			<input class="ag-field" id="agRMail" placeholder="数字账号（自己定，任意数字）" inputmode="numeric" maxlength="20">
 			<input class="ag-field" id="agRPass" type="password" placeholder="设一个密码（至少 6 位）" maxlength="20" autocomplete="new-password">
+			<div class="ag-code">
+				<input class="ag-field" id="agRCode" placeholder="验证码" inputmode="numeric" maxlength="4" autocomplete="off">
+				<button class="ag-code-btn" id="agGetCode" type="button">验证码</button>
+			</div>
+			<p class="ag-code-tip" id="agCodeTip">点「验证码」会在下面出现 4 位小字</p>
 			<input class="ag-field" id="agRName" placeholder="昵称（社区里显示这个名字）" maxlength="10">
 			<div class="ag-ava">
 				<span class="ag-ava-label">选一个头像（也可以自己传）</span>
@@ -2046,7 +2046,7 @@ html{scroll-padding-top:96px;}
 			<p class="ag-msg" id="agRegMsg"></p>
 		</div>
 
-		<p class="ag-foot">不用邮箱。数字账号 + 密码，<br>再点验证码照着小字输入。</p>
+		<p class="ag-foot">不用邮箱。登录填数字账号 + 密码；<br>注册时再点验证码照小字输入。</p>
 	</div>
 </div>
 <script>
@@ -2131,15 +2131,17 @@ html{scroll-padding-top:96px;}
 	function genCode(){
 		codeNow=String(Math.floor(1000+Math.random()*9000));
 		$('agCodeTip').innerHTML='验证码：<b>'+codeNow+'</b>　照着小字填到上面';
-		$('agLCode').value='';
+		$('agRCode').value='';
 	}
 	$('agGetCode').onclick=genCode;
 
 	$('agDoReg').onclick=function(){
-		var acc=$('agRMail').value.trim(), pass=$('agRPass').value, name=$('agRName').value.trim(), msg=$('agRegMsg');
+		var acc=$('agRMail').value.trim(), pass=$('agRPass').value, name=$('agRName').value.trim(), code=$('agRCode').value.trim(), msg=$('agRegMsg');
 		if(!acc){ msg.textContent='先填一个数字账号'; return; }
 		if(!digits(acc)){ msg.textContent='账号只能填数字，1—20 位'; return; }
 		if(pass.length<6){ msg.textContent='密码至少 6 位'; return; }
+		if(!codeNow){ msg.textContent='先点「验证码」'; return; }
+		if(code!==codeNow){ msg.textContent='验证码不对，点「验证码」换一个再填'; return; }
 		if(name.length<1){ msg.textContent='给自己起个昵称'; return; }
 		if(readAccs()[acc]){ msg.textContent='这个数字账号已经注册过，直接去登录'; return; }
 		saveAcc(acc,name,pickAva,pass);
@@ -2149,12 +2151,10 @@ html{scroll-padding-top:96px;}
 	};
 
 	$('agDoLogin').onclick=function(){
-		var acc=$('agLMail').value.trim(), pass=$('agLPass').value, code=$('agLCode').value.trim(), msg=$('agLoginMsg');
+		var acc=$('agLMail').value.trim(), pass=$('agLPass').value, msg=$('agLoginMsg');
 		if(!acc){ msg.textContent='先填数字账号'; return; }
 		if(!digits(acc)){ msg.textContent='账号只能填数字，1—20 位'; return; }
 		if(pass.length<6){ msg.textContent='密码至少 6 位'; return; }
-		if(!codeNow){ msg.textContent='先点右边的「验证码」'; return; }
-		if(code!==codeNow){ msg.textContent='验证码不对，点「验证码」换一个再填'; return; }
 		var rec=readAccs()[acc];
 		if(rec && rec.pass && rec.pass!==pass){ msg.textContent='密码不对，再检查一下'; return; }
 		var name=(rec&&rec.name)||autoName(acc), av=(rec&&rec.avatar)||'';
@@ -2657,7 +2657,7 @@ html{scroll-padding-top:96px;}
 		<div class="gate" id="gate">
 			<div class="gate-card">
 				<h2>先登录，再发帖</h2>
-				<p class="gate-sub">不用邮箱。数字账号 + 密码，再点验证码照小字输入。</p>
+				<p class="gate-sub">不用邮箱。登录填数字账号 + 密码；注册再点验证码。</p>
 				<div class="tabs">
 					<button type="button" class="on" data-t="login">登录</button>
 					<button type="button" data-t="reg">注册</button>
@@ -2666,8 +2666,6 @@ html{scroll-padding-top:96px;}
 				<div id="paneLogin">
 					<input class="field" id="lMail" placeholder="数字账号（任意数字都能进）" inputmode="numeric" autocomplete="username" maxlength="20">
 					<input class="field" id="lPass" type="password" placeholder="密码" maxlength="20" autocomplete="current-password">
-					<div class="code-row"><input class="field" id="lCode" placeholder="验证码" inputmode="numeric" maxlength="4" autocomplete="off"><button class="code-btn" id="getCode" type="button">验证码</button></div>
-					<p class="code-tip" id="codeTip">点「验证码」会在下面出现 4 位小字</p>
 					<button class="send" id="doLogin" type="button">进入</button>
 					<p class="gmsg" id="loginMsg"></p>
 				</div>
@@ -2675,6 +2673,8 @@ html{scroll-padding-top:96px;}
 				<div id="paneReg" class="hide">
 					<input class="field" id="rMail" placeholder="数字账号（自己定，任意数字）" inputmode="numeric" maxlength="20">
 					<input class="field" id="rPass" type="password" placeholder="设一个密码（至少 6 位）" maxlength="20" autocomplete="new-password">
+					<div class="code-row"><input class="field" id="rCode" placeholder="验证码" inputmode="numeric" maxlength="4" autocomplete="off"><button class="code-btn" id="getCode" type="button">验证码</button></div>
+					<p class="code-tip" id="codeTip">点「验证码」会在下面出现 4 位小字</p>
 					<input class="field" id="rName" placeholder="昵称（留言时显示这个名字）" maxlength="10">
 					<div class="reg-ava"><span class="lbl">头像</span>
 						<button type="button" class="ava-pick on" data-src="images/fine-cover.jpg"><img decoding="async" loading="lazy" src="images/t/fine-cover.jpg" alt="头像1"></button>
@@ -2875,15 +2875,17 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 	function genCode(){
 		codeNow=String(Math.floor(1000+Math.random()*9000));
 		$('codeTip').innerHTML='验证码：<b>'+codeNow+'</b>　照着小字填到上面';
-		$('lCode').value='';
+		$('rCode').value='';
 	}
 	$('getCode').onclick=genCode;
 
 	$('doReg').onclick=function(){
-		var acc=$('rMail').value.trim(), pass=$('rPass').value, name=$('rName').value.trim(), msg=$('regMsg');
+		var acc=$('rMail').value.trim(), pass=$('rPass').value, name=$('rName').value.trim(), code=$('rCode').value.trim(), msg=$('regMsg');
 		if(!acc){ msg.textContent='先填一个数字账号'; return; }
 		if(!digits(acc)){ msg.textContent='账号只能填数字，1—20 位'; return; }
 		if(pass.length<6){ msg.textContent='密码至少 6 位'; return; }
+		if(!codeNow){ msg.textContent='先点「验证码」'; return; }
+		if(code!==codeNow){ msg.textContent='验证码不对，点「验证码」换一个再填'; return; }
 		if(name.length<1){ msg.textContent='给自己起个昵称'; return; }
 		if(readAccs()[acc]){ msg.textContent='这个数字账号已经注册过，直接去登录'; return; }
 		saveAcc(acc,name,pickAva,pass);
@@ -2895,12 +2897,10 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 	};
 
 	$('doLogin').onclick=function(){
-		var acc=$('lMail').value.trim(), pass=$('lPass').value, code=$('lCode').value.trim(), msg=$('loginMsg');
+		var acc=$('lMail').value.trim(), pass=$('lPass').value, msg=$('loginMsg');
 		if(!acc){ msg.textContent='先填数字账号'; return; }
 		if(!digits(acc)){ msg.textContent='账号只能填数字，1—20 位'; return; }
 		if(pass.length<6){ msg.textContent='密码至少 6 位'; return; }
-		if(!codeNow){ msg.textContent='先点右边的「验证码」'; return; }
-		if(code!==codeNow){ msg.textContent='验证码不对，点「验证码」换一个再填'; return; }
 		var rec=readAccs()[acc];
 		if(rec && rec.pass && rec.pass!==pass){ msg.textContent='密码不对，再检查一下'; return; }
 		var name=(rec&&rec.name)||autoName(acc), av=(rec&&rec.avatar)||'';
@@ -3552,8 +3552,10 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 			<div class="me-row"><span>头像</span><button type="button" id="mdAva">换一张</button></div>
 			<div class="me-row"><span>背景图</span><button type="button" id="mdCover">换一张</button></div>
             <div class="me-row"><span>遮罩透明度</span><input type="range" id="mdVeil" min="35" max="95" step="5" value="86"></div>
+			<label class="me-field"><span>新密码</span><input type="password" id="mdNewPass" maxlength="20" placeholder="至少 6 位，改完用新密码登录"></label>
 			<div class="me-drawer-btns" style="margin-top:14px;">
 				<button class="me-save" id="mdSave" type="button">保存资料</button>
+				<button class="me-pass" id="mdPass" type="button">改密码</button>
 			</div>
 			<button class="me-out" id="mdLogout" type="button">退出登录</button>
 			<p class="me-dmsg" id="mdMsg"></p>
@@ -5198,6 +5200,21 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 	function readUsers(){ return fetch(U,{cache:'no-store'}).then(function(r){ return r.ok?r.json():[]; }).catch(function(){ return []; }); }
 	function writeUsers(list){ return fetch(U,{method:'PUT',headers:{'Content-Type':'application/json','Cache-Control':'no-cache'},body:JSON.stringify(list)}).then(function(r){ if(!r.ok) throw new Error('账号表写入失败 '+r.status); }); }
 
+	var ACC_KEY='kun_accounts';
+	function readAccs(){
+		try{ var o=JSON.parse(localStorage.getItem(ACC_KEY)||'{}'); return (o&&typeof o==='object')?o:{}; }catch(e){ return {}; }
+	}
+	function writeAccs(list){ try{ localStorage.setItem(ACC_KEY,JSON.stringify(list)); }catch(e){} }
+	function keepAccInfo(name,avatar){
+		if(!me||!me.mail) return;
+		var list=readAccs(), rec=list[me.mail]||{};
+		rec.name=name||rec.name||me.name||'IKUN';
+		if(avatar) rec.avatar=avatar;
+		if(!rec.avatar) rec.avatar=me.avatar||'';
+		rec.ts=Date.now();
+		list[me.mail]=rec; writeAccs(list);
+	}
+
 	document.getElementById('mdSave').onclick=function(){
 		if(!me||!me.name){ alert('先登录'); return; }
 		var nm=document.getElementById('mdName').value.trim().slice(0,10);
@@ -5206,15 +5223,25 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 		if(!nm){ msg.textContent='昵称不能空着'; return; }
 		var pf=prof(); pf.birthday=bd;
 		saveProf(pf);
-		me.name=nm; ss('kun_site_user', JSON.stringify(me));
+		me.name=nm; if(pf.avatar) me.avatar=pf.avatar;
+		ss('kun_site_user', JSON.stringify(me));
+		keepAccInfo(nm,me.avatar||'');
 		document.getElementById('meName').textContent=nm;
 		document.getElementById('meBirthLine').textContent=birthText(bd);
 		msg.textContent='资料存好了。';
-		readUsers().then(function(list){
-			var u=list.filter(function(x){ return (x.mail||'').toLowerCase()===(me.mail||'').toLowerCase(); })[0];
-			if(!u) return;
-			u.name=nm; return writeUsers(list);
-		}).catch(function(){});
+	};
+
+	document.getElementById('mdPass').onclick=function(){
+		if(!me||!me.mail){ alert('先登录'); return; }
+		var v=document.getElementById('mdNewPass').value, msg=document.getElementById('mdMsg');
+		if(v.length<6){ msg.textContent='新密码至少 6 位'; return; }
+		var list=readAccs(), rec=list[me.mail]||{};
+		rec.name=rec.name||me.name||'IKUN';
+		rec.avatar=rec.avatar||me.avatar||prof().avatar||'';
+		rec.pass=v; rec.ts=Date.now();
+		list[me.mail]=rec; writeAccs(list);
+		document.getElementById('mdNewPass').value='';
+		msg.textContent='密码改好了，下次用账号 '+me.mail+' + 新密码登录。';
 	};
 
 	document.getElementById('mdLogout').onclick=function(){
@@ -5258,12 +5285,8 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 				else { pf.cover=data; }
 				saveProf(pf);
 				if(square && me && me.mail){
-					readUsers().then(function(list){
-						var u=list.filter(function(x){ return (x.mail||'').toLowerCase()===(me.mail||'').toLowerCase(); })[0];
-						if(!u) return;
-						u.avatar=data; u.name=me.name;
-						return writeUsers(list);
-					}).catch(function(){});
+					me.avatar=data; ss('kun_site_user', JSON.stringify(me));
+					keepAccInfo(me.name,data);
 				}
 				if(square){ document.getElementById('meAvaImg').src=data; document.getElementById('meAvaImg').hidden=false; document.getElementById('meAvaTxt').hidden=true; }
 				else { document.getElementById('meCover').src=data; }
