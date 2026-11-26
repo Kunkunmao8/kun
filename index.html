@@ -1985,7 +1985,7 @@ html{scroll-padding-top:96px;}
 }
 </style>
 <link rel="stylesheet" href="./games.css?v=10">
-<link rel="stylesheet" href="./poster.css?v=34">
+<link rel="stylesheet" href="./poster.css?v=35">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -2015,17 +2015,13 @@ html{scroll-padding-top:96px;}
 		</div>
 
 		<div id="agLogin">
-			<input class="ag-field" id="agLMail" placeholder="邮箱" autocomplete="username">
-			<input class="ag-field" id="agLPass" type="password" placeholder="密码" autocomplete="current-password">
-			<button class="ag-btn" id="agDoLogin" type="button">登录</button>
+			<input class="ag-field" id="agLMail" placeholder="数字账号（任意数字都能进）" inputmode="numeric" autocomplete="username" maxlength="20">
+			<button class="ag-btn" id="agDoLogin" type="button">进入</button>
 			<p class="ag-msg" id="agLoginMsg"></p>
-
-			<button class="ag-link" id="agForgot" type="button">忘记密码了？用原来的邮箱重新注册一遍 →</button>
 		</div>
 
 		<div id="agReg" class="hide">
-			<p class="ag-reset" id="agResetNote" hidden></p>
-			<input class="ag-field" id="agRMail" placeholder="邮箱">
+			<input class="ag-field" id="agRMail" placeholder="数字账号（自己定，任意数字）" inputmode="numeric" maxlength="20">
 			<input class="ag-field" id="agRName" placeholder="昵称（社区里显示这个名字）" maxlength="10">
 			<div class="ag-ava">
 				<span class="ag-ava-label">选一个头像（也可以自己传）</span>
@@ -2039,14 +2035,11 @@ html{scroll-padding-top:96px;}
 					<input type="file" id="agAvaFile" accept="image/*" hidden>
 				</div>
 			</div>
-			<input class="ag-field" id="agRPass" type="password" placeholder="设置密码，至少 6 位">
-			<p class="ag-codehint" id="agCodeTip">验证码会显示在这里</p>
-			<input class="ag-field" id="agCode" placeholder="输入上面的 6 位验证码" maxlength="6" inputmode="numeric">
-			<button class="ag-btn" id="agDoReg" type="button">注册</button>
+			<button class="ag-btn" id="agDoReg" type="button">注册并进入</button>
 			<p class="ag-msg" id="agRegMsg"></p>
 		</div>
 
-		<p class="ag-foot">登录之后可以看全部的图片和舞台影像，也能在社区说话、投稿。<br>第一次来先注册，验证码直接显示在密码下面，不用查邮箱。</p>
+		<p class="ag-foot">不用邮箱，也不用密码。<br>登录填任意数字就能进；想改昵称和头像，再走注册。</p>
 	</div>
 </div>
 <script>
@@ -2060,25 +2053,19 @@ html{scroll-padding-top:96px;}
 	if(sess&&sess.mail){ g.parentNode.removeChild(g); return; }
 	document.documentElement.style.overflow='hidden';
 
-	var U='data/users.json';
-	var CFG=window.AYLIO_MAIL||{};
-	var pendCode='', pendMail='';
-
 	function $(id){ return document.getElementById(id); }
-	function ready(){ return !!(CFG.serviceId&&CFG.templateId&&CFG.publicKey); }
-	function buf2hex(b){ var a=new Uint8Array(b), s=''; for(var i=0;i<a.length;i++) s+=('0'+a[i].toString(16)).slice(-2); return s; }
-	function hashPass(mail,pass){
-		var s=(mail||'').trim().toLowerCase()+':'+pass+':aylio-pillow';
-		if(window.crypto && crypto.subtle && crypto.subtle.digest){
-			return crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)).then(buf2hex);
-		}
-		var h=5381; for(var i=0;i<s.length;i++) h=((h<<5)+h+s.charCodeAt(i))|0;
-		return Promise.resolve('w'+Math.abs(h));
+	var ACC_KEY='kun_accounts';
+	function readAccs(){
+		try{ var o=JSON.parse(localStorage.getItem(ACC_KEY)||'{}'); return (o&&typeof o==='object')?o:{}; }catch(e){ return {}; }
 	}
-	function readUsers(){ return fetch(U,{cache:'no-store'}).then(function(r){ return r.ok?r.json():[]; }).catch(function(){ return []; }); }
-	function writeUsers(u){ return fetch(U,{method:'PUT',headers:{'Content-Type':'application/json','Cache-Control':'no-cache'},body:JSON.stringify(u)}).then(function(r){ if(!r.ok) throw new Error('账号表写入失败 '+r.status); }); }
-	function done(mail,name,ava){
-		localStorage.setItem('kun_site_user',JSON.stringify({mail:mail,name:name,avatar:ava||''}));
+	function saveAcc(acc,name,av){
+		var list=readAccs(); list[acc]={name:name,avatar:av||'',ts:Date.now()};
+		try{ localStorage.setItem(ACC_KEY, JSON.stringify(list)); }catch(e){}
+	}
+	function digits(v){ return /^\d{1,20}$/.test(v); }
+	function autoName(acc){ return 'IKUN' + String(acc).slice(-4); }
+	function done(acc,name,av){
+		localStorage.setItem('kun_site_user',JSON.stringify({mail:acc,name:name,avatar:av||''}));
 		location.reload();
 	}
 
@@ -2088,58 +2075,9 @@ html{scroll-padding-top:96px;}
 			var t=b.getAttribute('data-t');
 			$('agLogin').classList.toggle('hide',t!=='login');
 			$('agReg').classList.toggle('hide',t!=='reg');
-			if(t==='reg') issueCode();
+			if(t==='reg'&&!$('agRMail').value.trim()) $('agRMail').value=$('agLMail').value.trim();
 		};
 	});
-
-	var resetMode=false;
-	function switchTab(t){
-		Array.prototype.forEach.call(g.querySelectorAll('.ag-tabs button'),function(x){ x.classList.toggle('on',x.getAttribute('data-t')===t); });
-		$('agLogin').classList.toggle('hide',t!=='login');
-		$('agReg').classList.toggle('hide',t!=='reg');
-		if(t==='reg') issueCode();
-	}
-	function exitReset(){
-		if(!resetMode) return;
-		resetMode=false;
-		$('agResetNote').hidden=true; $('agResetNote').textContent='';
-		$('agDoReg').textContent='注册';
-		$('agRegMsg').textContent='';
-	}
-	function prefillMail(mail){
-		if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) return;
-		readUsers().then(function(list){
-			var u=list.filter(function(x){ return (x.mail||'').toLowerCase()===mail.toLowerCase(); })[0];
-			if(u&&resetMode){
-				if(!$('agRName').value.trim()) $('agRName').value=u.name||'';
-				$('agRegMsg').textContent='找到这个邮箱了，重设后昵称还是「'+(u.name||'原来的昵称')+'」，想改也可以改。';
-			}
-		});
-	}
-	function enterReset(){
-		resetMode=true;
-		$('agResetNote').hidden=false;
-		$('agResetNote').textContent='忘记密码就走这里：填原来的邮箱，验证码会重新显示，密码换成新的，昵称也可以顺手改。';
-		$('agRMail').value=$('agLMail').value.trim();
-		$('agRPass').value=''; $('agCode').value=''; $('agCodeTip').textContent=''; $('agRegMsg').textContent=''; issueCode();
-		pendCode=''; pendMail='';
-		$('agDoReg').textContent='重设密码并进门';
-		switchTab('reg');
-		var m=$('agRMail').value; if(m) prefillMail(m);
-		$('agRMail').focus();
-	}
-	$('agForgot').onclick=enterReset;
-	$('agRMail').addEventListener('blur',function(){ prefillMail($('agRMail').value.trim()); });
-	Array.prototype.forEach.call(g.querySelectorAll('.ag-tabs button'),function(b){ b.addEventListener('click',function(){ if(b.getAttribute('data-t')!=='reg') exitReset(); }); });
-	function issueCode(){
-		pendCode=String(Math.floor(100000+Math.random()*900000));
-		pendMail='';
-		var tip=$('agCodeTip');
-		if(tip){ tip.innerHTML='验证码 <b>'+pendCode+'</b>　不用查邮箱，直接输入'; }
-		var code=$('agCode'); if(code){ code.value=''; }
-	}
-	issueCode();
-
 
 	var pickAva='';
 	function readAsAva(file, cb){
@@ -2181,56 +2119,27 @@ html{scroll-padding-top:96px;}
 			});
 		};
 	})();
+
 	$('agDoReg').onclick=function(){
-		var mail=$('agRMail').value.trim(), name=$('agRName').value.trim(), pass=$('agRPass').value, code=$('agCode').value.trim();
-		var msg=$('agRegMsg');
-		if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){ msg.textContent='邮箱格式不对'; return; }
+		var acc=$('agRMail').value.trim(), name=$('agRName').value.trim(), msg=$('agRegMsg');
+		if(!acc){ msg.textContent='先填一个数字账号'; return; }
+		if(!digits(acc)){ msg.textContent='账号只能填数字，1—20 位'; return; }
 		if(name.length<1){ msg.textContent='给自己起个昵称'; return; }
-		if(pass.length<6){ msg.textContent='密码至少 6 位'; return; }
-		if(!pendCode){ issueCode(); msg.textContent='验证码已经显示在密码下面，照着输入'; return; }
-		if(code!==pendCode){ msg.textContent='验证码不对，照密码下面那行小字重新输入'; return; }
-		msg.textContent='正在注册…';
+		saveAcc(acc,name,pickAva);
+		msg.textContent='注册好了，正在进入…';
 		$('agDoReg').disabled=true;
-		readUsers().then(function(list){
-			var exist=list.filter(function(u){ return (u.mail||'').toLowerCase()===mail.toLowerCase(); })[0];
-				if(exist&&!resetMode) throw new Error('这个邮箱已经注册过了；忘记密码就点下面的「忘记密码」');
-			return hashPass(mail,pass).then(function(ph){
-				if(exist){ exist.ph=ph; exist.name=name; exist.ts=Date.now(); }
-					else { list.push({mail:mail,name:name,ph:ph,ts:Date.now()}); }
-				return writeUsers(list);
-			});
-		}).then(function(){
-			msg.textContent=resetMode?'密码换好了，正在进门…':'注册好了，正在进门…';
-			done(mail,name,pickAva);
-		}).catch(function(e){
-			$('agDoReg').disabled=false;
-			msg.textContent=e.message||'注册失败，稍后再试';
-		});
+		setTimeout(function(){ done(acc,name,pickAva); },180);
 	};
 
 	$('agDoLogin').onclick=function(){
-		var mail=$('agLMail').value.trim(), pass=$('agLPass').value, msg=$('agLoginMsg');
-		if(!mail&&!pass){ msg.textContent='邮箱和密码都要填'; return; }
-		if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){ msg.textContent='邮箱格式不对，检查一下 @ 前后'; return; }
-		if(!pass){ msg.textContent='密码还没填'; return; }
-		if(pass.length<6){ msg.textContent='密码至少 6 位，是不是输错了'; return; }
-		msg.textContent='正在登录…';
+		var acc=$('agLMail').value.trim(), msg=$('agLoginMsg');
+		if(!acc){ msg.textContent='填任意数字就能进'; return; }
+		if(!digits(acc)){ msg.textContent='账号只能填数字，1—20 位'; return; }
+		var rec=readAccs()[acc];
+		var name=(rec&&rec.name)||autoName(acc), av=(rec&&rec.avatar)||'';
+		msg.textContent='正在进入…';
 		$('agDoLogin').disabled=true;
-		var uname='';
-		readUsers().then(function(list){
-			var u=list.filter(function(x){ return (x.mail||'').toLowerCase()===mail.toLowerCase(); })[0];
-			if(!u) throw new Error('没找到这个邮箱，先注册一下');
-			uname=u.name;
-			return hashPass(mail,pass).then(function(ph){
-				if(ph!==u.ph) throw new Error('密码不对；忘记密码就点下面的「忘记密码」重设一次');
-			});
-		}).then(function(){
-			msg.textContent='登录成功，正在进门…';
-			done(mail,uname);
-		}).catch(function(e){
-			$('agDoLogin').disabled=false;
-			msg.textContent=e.message||'登录失败';
-		});
+		setTimeout(function(){ done(acc,name,av); },180);
 	};
 })();
 
@@ -2726,21 +2635,20 @@ html{scroll-padding-top:96px;}
 		<div class="gate" id="gate">
 			<div class="gate-card">
 				<h2>先登录，再发帖</h2>
-				<p class="gate-sub">用邮箱注册一个账号，注册完就能盖楼、回帖、发图片和视频。没登录也能围观。</p>
+				<p class="gate-sub">不用邮箱，填任意数字就能进。想改昵称和头像，再走注册。</p>
 				<div class="tabs">
 					<button type="button" class="on" data-t="login">登录</button>
 					<button type="button" data-t="reg">注册</button>
 				</div>
 
 				<div id="paneLogin">
-					<input class="field" id="lMail" placeholder="邮箱" autocomplete="username">
-					<input class="field" id="lPass" type="password" placeholder="密码" autocomplete="current-password">
-					<button class="send" id="doLogin" type="button">登录</button>
+					<input class="field" id="lMail" placeholder="数字账号（任意数字都能进）" inputmode="numeric" autocomplete="username" maxlength="20">
+					<button class="send" id="doLogin" type="button">进入</button>
 					<p class="gmsg" id="loginMsg"></p>
 				</div>
 
 				<div id="paneReg" class="hide">
-					<input class="field" id="rMail" placeholder="邮箱">
+					<input class="field" id="rMail" placeholder="数字账号（自己定，任意数字）" inputmode="numeric" maxlength="20">
 					<input class="field" id="rName" placeholder="昵称（留言时显示这个名字）" maxlength="10">
 					<div class="reg-ava"><span class="lbl">头像</span>
 						<button type="button" class="ava-pick on" data-src="images/fine-cover.jpg"><img decoding="async" loading="lazy" src="images/t/fine-cover.jpg" alt="头像1"></button>
@@ -2749,10 +2657,7 @@ html{scroll-padding-top:96px;}
 						<button type="button" class="ava-pick" data-src="images/award-stage.jpg"><img decoding="async" loading="lazy" src="images/t/award-stage.jpg" alt="头像4"></button>
 						<button type="button" class="ava-pick" data-src="images/stage-opening.jpg"><img decoding="async" loading="lazy" src="images/t/stage-opening.jpg" alt="头像5"></button>
 					</div>
-					<input class="field" id="rPass" type="password" placeholder="设置密码，至少 6 位">
-					<p class="code-tip" id="codeTip">验证码会显示在这里</p>
-					<input class="field" id="rCode" placeholder="输入上面的 6 位验证码" maxlength="6" inputmode="numeric">
-					<button class="send" id="doReg" type="button">注册</button>
+					<button class="send" id="doReg" type="button">注册并进入</button>
 					<p class="gmsg" id="regMsg"></p>
 				</div>
 			</div>
@@ -2923,57 +2828,49 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 	}
 	issueCode2();
 
+	var ACC_KEY='kun_accounts';
+	function readAccs(){
+		try{ var o=JSON.parse(localStorage.getItem(ACC_KEY)||'{}'); return (o&&typeof o==='object')?o:{}; }catch(e){ return {}; }
+	}
+	function saveAcc(acc,name,av){
+		var list=readAccs(); list[acc]={name:name,avatar:av||'',ts:Date.now()};
+		try{ localStorage.setItem(ACC_KEY, JSON.stringify(list)); }catch(e){}
+	}
+	function digits(v){ return /^\d{1,20}$/.test(v); }
+	function autoName(acc){ return 'IKUN' + String(acc).slice(-4); }
+
+	var pickAva='images/fine-cover.jpg';
+	document.querySelectorAll('#paneReg .ava-pick').forEach(function(b){
+		b.onclick=function(){
+			document.querySelectorAll('#paneReg .ava-pick').forEach(function(x){ x.classList.remove('on'); });
+			b.classList.add('on'); pickAva=b.getAttribute('data-src')||'';
+		};
+	});
+
 	$('doReg').onclick=function(){
-		var mail=$('rMail').value.trim(), name=$('rName').value.trim(), pass=$('rPass').value, code=$('rCode').value.trim();
-		var msg=$('regMsg');
-		if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){ msg.textContent='邮箱格式不对'; return; }
+		var acc=$('rMail').value.trim(), name=$('rName').value.trim(), msg=$('regMsg');
+		if(!acc){ msg.textContent='先填一个数字账号'; return; }
+		if(!digits(acc)){ msg.textContent='账号只能填数字，1—20 位'; return; }
 		if(name.length<1){ msg.textContent='给自己起个昵称'; return; }
-		if(pass.length<6){ msg.textContent='密码至少 6 位'; return; }
-		if(!pendingCode){ issueCode2(); msg.textContent='验证码已经显示在密码下面，照着输入'; return; }
-		if(code!==pendingCode){ msg.textContent='验证码不对，照密码下面那行小字重新输入'; return; }
-		msg.textContent='正在注册…';
-		$('doReg').disabled=true;
-		readUsers().then(function(list){
-			if(list.some(function(u){ return (u.mail||'').toLowerCase()===mail.toLowerCase(); })) throw new Error('这个邮箱已经注册过了，直接登录');
-			return hashPass(mail,pass).then(function(ph){
-				if(exist){ exist.ph=ph; exist.name=name; exist.ts=Date.now(); }
-					else { list.push({mail:mail,name:name,ph:ph,ts:Date.now()}); }
-				return writeUsers(list);
-			});
-		}).then(function(){
-			ME={mail:mail,name:name};
-			save('kun_site_user',JSON.stringify(ME));
-			$('doReg').disabled=false;
-			msg.textContent='注册好了，现在可以留言了';
-			showComposer();
-		}).catch(function(e){
-			$('doReg').disabled=false;
-			msg.textContent=e.message||'注册失败，稍后再试';
-		});
+		saveAcc(acc,name,pickAva);
+		ME={mail:acc,name:name,avatar:pickAva};
+		if(ME.avatar) avatarMap[ME.name]=ME.avatar;
+		save('kun_site_user',JSON.stringify(ME));
+		msg.textContent='注册好了，现在可以留言了';
+		showComposer();
 	};
 
 	$('doLogin').onclick=function(){
-		var mail=$('lMail').value.trim(), pass=$('lPass').value, msg=$('loginMsg');
-		if(!mail||!pass){ msg.textContent='邮箱和密码都要填'; return; }
-		msg.textContent='正在登录…';
-		$('doLogin').disabled=true;
-		readUsers().then(function(list){
-			var u=list.filter(function(x){ return (x.mail||'').toLowerCase()===mail.toLowerCase(); })[0];
-			if(!u) throw new Error('没找到这个邮箱，先注册一下');
-			return hashPass(mail,pass).then(function(ph){
-				if(ph!==u.ph) throw new Error('密码不对；忘记密码就点下面的「忘记密码」重设一次');
-				ME={mail:u.mail,name:u.name};
-				save('kun_site_user',JSON.stringify(ME));
-			});
-		}).then(function(){
-			$('doLogin').disabled=false;
-			msg.textContent='登录成功';
-			$('loginMsg').textContent='';
-			showComposer();
-		}).catch(function(e){
-			$('doLogin').disabled=false;
-			msg.textContent=e.message||'登录失败';
-		});
+		var acc=$('lMail').value.trim(), msg=$('loginMsg');
+		if(!acc){ msg.textContent='填任意数字就能进'; return; }
+		if(!digits(acc)){ msg.textContent='账号只能填数字，1—20 位'; return; }
+		var rec=readAccs()[acc];
+		var name=(rec&&rec.name)||autoName(acc), av=(rec&&rec.avatar)||'';
+		ME={mail:acc,name:name,avatar:av};
+		if(av) avatarMap[name]=av;
+		save('kun_site_user',JSON.stringify(ME));
+		msg.textContent='进入成功';
+		showComposer();
 	};
 
 	function logout(){
@@ -3616,12 +3513,8 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 			<div class="me-row"><span>头像</span><button type="button" id="mdAva">换一张</button></div>
 			<div class="me-row"><span>背景图</span><button type="button" id="mdCover">换一张</button></div>
             <div class="me-row"><span>遮罩透明度</span><input type="range" id="mdVeil" min="35" max="95" step="5" value="86"></div>
-			<div class="me-divider"></div>
-			<label class="me-field"><span>原密码</span><input type="password" id="mdOld" placeholder="要改密码先填原密码"></label>
-			<label class="me-field"><span>新密码</span><input type="password" id="mdNew" placeholder="至少 6 位"></label>
-			<div class="me-drawer-btns">
+			<div class="me-drawer-btns" style="margin-top:14px;">
 				<button class="me-save" id="mdSave" type="button">保存资料</button>
-				<button class="me-pass" id="mdPass" type="button">改密码</button>
 			</div>
 			<button class="me-out" id="mdLogout" type="button">退出登录</button>
 			<p class="me-dmsg" id="mdMsg"></p>
@@ -5216,7 +5109,7 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 			if(pf.cover) cover.src=pf.cover;
 			bline.textContent=birthText(pf.birthday||'');
 			bio.textContent=pf.bio||ls('kun_mine_bio')||'还没有简介，点按钮写一句。';
-			note.textContent='登录邮箱：'+(me.mail||'—');
+			note.textContent='数字账号：'+(me.mail||'—');
 			var wall=[];
 			try{ wall=JSON.parse(ls('aylio_wall_list')||'[]'); }catch(e){}
 			pic.textContent=wall.length||0;
@@ -5283,28 +5176,6 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 			if(!u) return;
 			u.name=nm; return writeUsers(list);
 		}).catch(function(){});
-	};
-
-	document.getElementById('mdPass').onclick=function(){
-		if(!me||!me.name){ alert('先登录'); return; }
-		var o=document.getElementById('mdOld').value, n=document.getElementById('mdNew').value;
-		var msg=document.getElementById('mdMsg');
-		if(o.length<1||n.length<6){ msg.textContent='原密码要填，新密码至少 6 位'; return; }
-		msg.textContent='正在改…';
-		readUsers().then(function(list){
-			var u=list.filter(function(x){ return (x.mail||'').toLowerCase()===(me.mail||'').toLowerCase(); })[0];
-			if(!u) throw new Error('没找到这个账号');
-			return hashPass(me.mail,o).then(function(ph){
-				if(ph!==u.ph) throw new Error('原密码不对');
-				return hashPass(me.mail,n).then(function(nh){
-					u.ph=nh; u.ts=Date.now();
-					return writeUsers(list);
-				});
-			});
-		}).then(function(){
-			msg.textContent='密码改好了，下次用新密码登录。';
-			document.getElementById('mdOld').value=''; document.getElementById('mdNew').value='';
-		}).catch(function(e){ msg.textContent=e.message||'改密码失败'; });
 	};
 
 	document.getElementById('mdLogout').onclick=function(){
