@@ -2337,3 +2337,12 @@ figure,figure img,.gallery-item img,.photo-item img,.photo-item video,.clip-card
 #pillow .code-tip{margin:6px 0 8px;min-height:15px;font-size:11px;line-height:1.6;color:var(--pp-muted);}
 #pillow .code-tip b{color:var(--pp-blue);font-size:13px;letter-spacing:2px;}
 #pillow .field{margin-bottom:10px;}
+
+/* V5.28 · 编辑资料显示账号 / 重设密码 / 3 台设备 */
+#mine .me-acc{display:block;margin-top:5px;font-size:15px;letter-spacing:1px;color:var(--pp-ink);word-break:break-all;}
+#mine .me-devices{margin:-4px 0 10px;font-size:10.5px;line-height:1.7;color:var(--pp-muted);}
+#mine .me-code-row{display:flex;gap:8px;align-items:center;}
+#mine .me-code-row input{flex:1;width:auto;height:42px;border:1px solid #C9DCF7;border-radius:14px;background:#F8FBFF;padding:0 12px;font-size:14px;color:#1B2A45;font-family:inherit;box-sizing:border-box;}
+#mine .me-code-btn{flex:0 0 auto;height:42px;padding:0 12px;border:1px solid #C9DCF7;border-radius:14px;background:#EAF2FE;color:#24479F;font-size:12.5px;cursor:pointer;font-family:inherit;}
+#mine .me-code-tip{margin:6px 0 0;min-height:15px;font-size:10.5px;line-height:1.6;color:var(--pp-muted);}
+#mine .me-code-tip b{color:var(--pp-blue);font-size:13px;letter-spacing:2px;}

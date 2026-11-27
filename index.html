@@ -1985,7 +1985,7 @@ html{scroll-padding-top:96px;}
 }
 </style>
 <link rel="stylesheet" href="./games.css?v=10">
-<link rel="stylesheet" href="./poster.css?v=37">
+<link rel="stylesheet" href="./poster.css?v=38">
 </head>
 <body>
 <div class="dm-mask" id="dmMask"></div>
@@ -2050,6 +2050,74 @@ html{scroll-padding-top:96px;}
 	</div>
 </div>
 <script>
+/* 账号云同步：同一数字账号可跨设备登录，最多 3 台设备 */
+window.KUN_ACC=(function(){
+	var CFG=window.AYLIO_CLOUD||{url:'https://yzzktnkfprpystxbhnln.supabase.co',key:'sb_publishable_TwGiULzD9sdEX9p_laO9ow_rVQw8O3w',photoBucket:'photos'};
+	var base=String(CFG.url||'').replace(/\/$/,''), key=CFG.key, bucket=CFG.photoBucket||'photos';
+	function deviceId(){
+		var k='kun_device_id', v='';
+		try{ v=localStorage.getItem(k)||''; }catch(e){}
+		if(!v){ v='d'+Date.now().toString(36)+Math.random().toString(36).slice(2,8); try{ localStorage.setItem(k,v); }catch(e){} }
+		return v;
+	}
+	function get(acc){
+		var q=base+'/rest/v1/photos?select=id,created_at,caption,storage_path&storage_path=like.acct-'+encodeURIComponent(acc)+'-*&order=created_at.desc&limit=1';
+		return fetch(q,{headers:{'apikey':key,'Authorization':'Bearer '+key},cache:'no-store'}).then(function(r){
+			if(!r.ok) return {ok:false,data:null,status:r.status};
+			return r.json().then(function(rows){
+				if(!rows || !rows.length) return {ok:true,data:null};
+				try{ return {ok:true,data:JSON.parse(rows[0].caption||'{}')}; }catch(e){ return {ok:true,data:null}; }
+			});
+		}).catch(function(){ return {ok:false,data:null}; });
+	}
+	function put(acc,obj){
+		var payload={acc:String(acc),name:obj.name||'',avatar:obj.avatar||'',passHash:obj.passHash||'',devices:Array.isArray(obj.devices)?obj.devices:[],ts:obj.ts||Date.now()};
+		var row={author:'acct',caption:JSON.stringify(payload),url:'',storage_path:'acct-'+acc+'-'+Date.now()+'-'+Math.random().toString(36).slice(2,6)};
+		return fetch(base+'/rest/v1/photos',{
+			method:'POST',
+			headers:{'apikey':key,'Authorization':'Bearer '+key,'Content-Type':'application/json','Prefer':'return=minimal'},
+			body:JSON.stringify([row]),
+			keepalive:true
+		}).then(function(r){ if(!r.ok) throw new Error('账号云同步失败 '+r.status); return true; });
+	}
+	function hex(buf){
+		var a=new Uint8Array(buf), s=''; for(var i=0;i<a.length;i++) s+=('0'+a[i].toString(16)).slice(-2); return s;
+	}
+	function hash(acc,pass){
+		var txt=String(acc)+':'+String(pass)+':kun-site-v2';
+		if(window.crypto&&crypto.subtle&&crypto.subtle.digest){
+			return crypto.subtle.digest('SHA-256',new TextEncoder().encode(txt)).then(hex);
+		}
+		var h=5381; for(var i=0;i<txt.length;i++) h=((h<<5)+h+txt.charCodeAt(i))|0;
+		return Promise.resolve('w'+Math.abs(h));
+	}
+	function verify(rec,acc,pass){
+		if(!rec) return Promise.resolve(false);
+		if(rec.passHash) return hash(acc,pass).then(function(h){ return h===rec.passHash; });
+		return Promise.resolve(rec.pass===pass);
+	}
+	function claim(rec){
+		var id=deviceId(), dev=Array.isArray(rec.devices)?rec.devices.slice():[];
+		if(dev.indexOf(id)<0){
+			if(dev.length>=3) return {ok:false,devices:dev};
+			dev.push(id);
+		}
+		rec.devices=dev;
+		return {ok:true,devices:dev};
+	}
+	function leave(acc){
+		return get(acc).then(function(r){
+			if(!r.ok||!r.data) return false;
+			var dev=Array.isArray(r.data.devices)?r.data.devices:[];
+			var i=dev.indexOf(deviceId()); if(i>=0) dev.splice(i,1);
+			r.data.devices=dev; r.data.ts=Date.now();
+			return put(acc,r.data).catch(function(){ return false; });
+		}).catch(function(){ return false; });
+	}
+	return {id:deviceId,get:get,put:put,hash:hash,verify:verify,claim:claim,leave:leave,max:3};
+})();
+</script>
+<script>
 
 (function(){
 	var g=document.getElementById('authGate');
@@ -2065,8 +2133,10 @@ html{scroll-padding-top:96px;}
 	function readAccs(){
 		try{ var o=JSON.parse(localStorage.getItem(ACC_KEY)||'{}'); return (o&&typeof o==='object')?o:{}; }catch(e){ return {}; }
 	}
-	function saveAcc(acc,name,av,pass){
-		var list=readAccs(); list[acc]={name:name,avatar:av||'',pass:pass||'',ts:Date.now()};
+	function saveAcc(acc,name,av,pass,extra){
+		var list=readAccs(), item={name:name,avatar:av||'',pass:pass||'',ts:Date.now()};
+		if(extra){ item.passHash=extra.passHash||''; item.devices=extra.devices||[]; item.acc=extra.acc||acc; }
+		list[acc]=item;
 		try{ localStorage.setItem(ACC_KEY, JSON.stringify(list)); }catch(e){}
 	}
 	function digits(v){ return /^\d{1,20}$/.test(v); }
@@ -2136,7 +2206,7 @@ html{scroll-padding-top:96px;}
 	$('agGetCode').onclick=genCode;
 
 	$('agDoReg').onclick=function(){
-		var acc=$('agRMail').value.trim(), pass=$('agRPass').value, name=$('agRName').value.trim(), code=$('agRCode').value.trim(), msg=$('agRegMsg');
+		var acc=$('agRMail').value.trim(), pass=$('agRPass').value, name=$('agRName').value.trim(), code=$('agRCode').value.trim(), msg=$('agRegMsg'), btn=this;
 		if(!acc){ msg.textContent='先填一个数字账号'; return; }
 		if(!digits(acc)){ msg.textContent='账号只能填数字，1—20 位'; return; }
 		if(pass.length<6){ msg.textContent='密码至少 6 位'; return; }
@@ -2144,24 +2214,59 @@ html{scroll-padding-top:96px;}
 		if(code!==codeNow){ msg.textContent='验证码不对，点「验证码」换一个再填'; return; }
 		if(name.length<1){ msg.textContent='给自己起个昵称'; return; }
 		if(readAccs()[acc]){ msg.textContent='这个数字账号已经注册过，直接去登录'; return; }
-		saveAcc(acc,name,pickAva,pass);
-		msg.textContent='注册好了，正在进入…';
-		$('agDoReg').disabled=true;
-		setTimeout(function(){ done(acc,name,pickAva); },180);
+		btn.disabled=true; msg.textContent='正在检查账号…';
+		KUN_ACC.get(acc).then(function(r){
+			if(r.ok && r.data){ msg.textContent='这个数字账号已经注册过，直接去登录'; btn.disabled=false; return; }
+			if(!r.ok){ msg.textContent='网络不太好，账号要同步到云端，稍后再试'; btn.disabled=false; return; }
+			return KUN_ACC.hash(acc,pass).then(function(h){
+				var rec={acc:acc,name:name,avatar:pickAva||'',passHash:h,devices:[KUN_ACC.id()],ts:Date.now()};
+				saveAcc(acc,name,pickAva,pass,rec);
+				KUN_ACC.put(acc,rec).catch(function(){}).then(function(){
+					msg.textContent='注册好了，正在进入…';
+					setTimeout(function(){ done(acc,name,pickAva); },180);
+				});
+			});
+		}).catch(function(){ msg.textContent='网络不太好，稍后再试'; btn.disabled=false; });
 	};
 
 	$('agDoLogin').onclick=function(){
-		var acc=$('agLMail').value.trim(), pass=$('agLPass').value, msg=$('agLoginMsg');
+		var acc=$('agLMail').value.trim(), pass=$('agLPass').value, msg=$('agLoginMsg'), btn=this;
 		if(!acc){ msg.textContent='先填数字账号'; return; }
 		if(!digits(acc)){ msg.textContent='账号只能填数字，1—20 位'; return; }
 		if(pass.length<6){ msg.textContent='密码至少 6 位'; return; }
-		var rec=readAccs()[acc];
-		if(rec && rec.pass && rec.pass!==pass){ msg.textContent='密码不对，再检查一下'; return; }
-		var name=(rec&&rec.name)||autoName(acc), av=(rec&&rec.avatar)||'';
-		if(!rec || !rec.pass) saveAcc(acc,name,av,pass);
-		msg.textContent='正在进入…';
-		$('agDoLogin').disabled=true;
-		setTimeout(function(){ done(acc,name,av); },180);
+		btn.disabled=true; msg.textContent='正在登录…';
+		KUN_ACC.get(acc).then(function(r){
+			var local=readAccs()[acc], rec=r.ok?r.data:local;
+			if(!r.ok && !local){ msg.textContent='网络不太好，稍后再试'; btn.disabled=false; return; }
+			if(!rec){
+				return KUN_ACC.hash(acc,pass).then(function(h){
+					var nr={acc:acc,name:autoName(acc),avatar:'',passHash:h,devices:[KUN_ACC.id()],ts:Date.now()};
+					saveAcc(acc,nr.name,'',pass,nr);
+					KUN_ACC.put(acc,nr).catch(function(){}).then(function(){
+						msg.textContent='正在进入…';
+						setTimeout(function(){ done(acc,nr.name,''); },180);
+					});
+				});
+			}
+			return KUN_ACC.verify(rec,acc,pass).then(function(ok){
+				if(!ok){ msg.textContent='密码不对，再检查一下'; btn.disabled=false; return; }
+				var c=KUN_ACC.claim(rec);
+				if(!c.ok){ msg.textContent='这个账号已经在 3 台设备登录，先在旧设备退出，再试'; btn.disabled=false; return; }
+				var name=rec.name||autoName(acc), av=rec.avatar||'';
+				function go(){ msg.textContent='正在进入…'; setTimeout(function(){ done(acc,name,av); },180); }
+				if(r.ok && !rec.passHash){
+					KUN_ACC.hash(acc,pass).then(function(h){
+						rec.passHash=h; rec.acc=acc;
+						saveAcc(acc,name,av,pass,rec);
+						KUN_ACC.put(acc,rec).catch(function(){}).then(go);
+					});
+				}else{
+					saveAcc(acc,name,av,pass,rec);
+					if(r.ok) KUN_ACC.put(acc,rec).catch(function(){}).then(go);
+					else go();
+				}
+			});
+		}).catch(function(){ msg.textContent='网络不太好，稍后再试'; btn.disabled=false; });
 	};
 })();
 
@@ -2856,8 +2961,10 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 	function readAccs(){
 		try{ var o=JSON.parse(localStorage.getItem(ACC_KEY)||'{}'); return (o&&typeof o==='object')?o:{}; }catch(e){ return {}; }
 	}
-	function saveAcc(acc,name,av,pass){
-		var list=readAccs(); list[acc]={name:name,avatar:av||'',pass:pass||'',ts:Date.now()};
+	function saveAcc(acc,name,av,pass,extra){
+		var list=readAccs(), item={name:name,avatar:av||'',pass:pass||'',ts:Date.now()};
+		if(extra){ item.passHash=extra.passHash||''; item.devices=extra.devices||[]; item.acc=extra.acc||acc; }
+		list[acc]=item;
 		try{ localStorage.setItem(ACC_KEY, JSON.stringify(list)); }catch(e){}
 	}
 	function digits(v){ return /^\d{1,20}$/.test(v); }
@@ -2880,7 +2987,7 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 	$('getCode').onclick=genCode;
 
 	$('doReg').onclick=function(){
-		var acc=$('rMail').value.trim(), pass=$('rPass').value, name=$('rName').value.trim(), code=$('rCode').value.trim(), msg=$('regMsg');
+		var acc=$('rMail').value.trim(), pass=$('rPass').value, name=$('rName').value.trim(), code=$('rCode').value.trim(), msg=$('regMsg'), btn=this;
 		if(!acc){ msg.textContent='先填一个数字账号'; return; }
 		if(!digits(acc)){ msg.textContent='账号只能填数字，1—20 位'; return; }
 		if(pass.length<6){ msg.textContent='密码至少 6 位'; return; }
@@ -2888,28 +2995,70 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 		if(code!==codeNow){ msg.textContent='验证码不对，点「验证码」换一个再填'; return; }
 		if(name.length<1){ msg.textContent='给自己起个昵称'; return; }
 		if(readAccs()[acc]){ msg.textContent='这个数字账号已经注册过，直接去登录'; return; }
-		saveAcc(acc,name,pickAva,pass);
-		ME={mail:acc,name:name,avatar:pickAva};
-		if(ME.avatar) avatarMap[ME.name]=ME.avatar;
-		save('kun_site_user',JSON.stringify(ME));
-		msg.textContent='注册好了，现在可以留言了';
-		showComposer();
+		btn.disabled=true; msg.textContent='正在检查账号…';
+		KUN_ACC.get(acc).then(function(r){
+			if(r.ok && r.data){ msg.textContent='这个数字账号已经注册过，直接去登录'; btn.disabled=false; return; }
+			if(!r.ok){ msg.textContent='网络不太好，稍后再试'; btn.disabled=false; return; }
+			return KUN_ACC.hash(acc,pass).then(function(h){
+				var rec={acc:acc,name:name,avatar:pickAva||'',passHash:h,devices:[KUN_ACC.id()],ts:Date.now()};
+				saveAcc(acc,name,pickAva,pass,rec);
+				KUN_ACC.put(acc,rec).catch(function(){}).then(function(){
+					ME={mail:acc,name:name,avatar:pickAva};
+					if(ME.avatar) avatarMap[ME.name]=ME.avatar;
+					save('kun_site_user',JSON.stringify(ME));
+					msg.textContent='注册好了，现在可以留言了';
+					showComposer();
+				});
+			});
+		}).catch(function(){ msg.textContent='网络不太好，稍后再试'; btn.disabled=false; });
 	};
 
 	$('doLogin').onclick=function(){
-		var acc=$('lMail').value.trim(), pass=$('lPass').value, msg=$('loginMsg');
+		var acc=$('lMail').value.trim(), pass=$('lPass').value, msg=$('loginMsg'), btn=this;
 		if(!acc){ msg.textContent='先填数字账号'; return; }
 		if(!digits(acc)){ msg.textContent='账号只能填数字，1—20 位'; return; }
 		if(pass.length<6){ msg.textContent='密码至少 6 位'; return; }
-		var rec=readAccs()[acc];
-		if(rec && rec.pass && rec.pass!==pass){ msg.textContent='密码不对，再检查一下'; return; }
-		var name=(rec&&rec.name)||autoName(acc), av=(rec&&rec.avatar)||'';
-		if(!rec || !rec.pass) saveAcc(acc,name,av,pass);
-		ME={mail:acc,name:name,avatar:av};
-		if(av) avatarMap[name]=av;
-		save('kun_site_user',JSON.stringify(ME));
-		msg.textContent='进入成功';
-		showComposer();
+		btn.disabled=true; msg.textContent='正在登录…';
+		KUN_ACC.get(acc).then(function(r){
+			var local=readAccs()[acc], rec=r.ok?r.data:local;
+			if(!r.ok && !local){ msg.textContent='网络不太好，稍后再试'; btn.disabled=false; return; }
+			if(!rec){
+				return KUN_ACC.hash(acc,pass).then(function(h){
+					var nr={acc:acc,name:autoName(acc),avatar:'',passHash:h,devices:[KUN_ACC.id()],ts:Date.now()};
+					saveAcc(acc,nr.name,'',pass,nr);
+					KUN_ACC.put(acc,nr).catch(function(){}).then(function(){
+						ME={mail:acc,name:nr.name,avatar:''};
+						save('kun_site_user',JSON.stringify(ME));
+						msg.textContent='进入成功';
+						showComposer();
+					});
+				});
+			}
+			return KUN_ACC.verify(rec,acc,pass).then(function(ok){
+				if(!ok){ msg.textContent='密码不对，再检查一下'; btn.disabled=false; return; }
+				var c=KUN_ACC.claim(rec);
+				if(!c.ok){ msg.textContent='这个账号已经在 3 台设备登录，先在旧设备退出，再试'; btn.disabled=false; return; }
+				var name=rec.name||autoName(acc), av=rec.avatar||'';
+				saveAcc(acc,name,av,pass,rec);
+				ME={mail:acc,name:name,avatar:av};
+				if(av) avatarMap[name]=av;
+				(function(){
+					var done=function(){
+						save('kun_site_user',JSON.stringify(ME));
+						msg.textContent='进入成功';
+						showComposer();
+					};
+					if(r.ok && !rec.passHash){
+						KUN_ACC.hash(acc,pass).then(function(h){
+							rec.passHash=h; rec.acc=acc;
+							saveAcc(acc,name,av,pass,rec);
+							KUN_ACC.put(acc,rec).catch(function(){}).then(done);
+						});
+					}else if(r.ok) KUN_ACC.put(acc,rec).catch(function(){}).then(done);
+					else done();
+				})();
+			});
+		}).catch(function(){ msg.textContent='网络不太好，稍后再试'; btn.disabled=false; });
 	};
 
 	function logout(){
@@ -3546,16 +3695,23 @@ var NEED_LOGIN = !/[?&]open=1/.test(location.search);   /* 加 ?open=1 就是免
 			<button type="button" id="meDrawerClose" aria-label="关闭">×</button>
 		</div>
 		<div class="me-drawer-body">
-			<label class="me-field"><span>昵称</span><input type="text" id="mdName" maxlength="10" placeholder="社区里显示这个名字"></label>
+			<div class="me-field"><span>账号</span><b class="me-acc" id="mdAcc">—</b></div>
+				<p class="me-devices" id="mdDevices">这个账号最多可登录 3 台设备</p>
+				<label class="me-field"><span>昵称</span><input type="text" id="mdName" maxlength="10" placeholder="社区里显示这个名字"></label>
 			<label class="me-field"><span>生日</span><input type="date" id="mdBirth"></label>
 			<div class="me-field"><span>星座</span><b id="mdZodiac" class="me-zodiac">—</b></div>
 			<div class="me-row"><span>头像</span><button type="button" id="mdAva">换一张</button></div>
 			<div class="me-row"><span>背景图</span><button type="button" id="mdCover">换一张</button></div>
             <div class="me-row"><span>遮罩透明度</span><input type="range" id="mdVeil" min="35" max="95" step="5" value="86"></div>
-			<label class="me-field"><span>新密码</span><input type="password" id="mdNewPass" maxlength="20" placeholder="至少 6 位，改完用新密码登录"></label>
+			<label class="me-field"><span>新密码</span><input type="password" id="mdNewPass" maxlength="20" placeholder="至少 6 位"></label>
+			<div class="me-code-row">
+				<input type="text" id="mdCode" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="验证码">
+				<button class="me-code-btn" id="mdGetCode" type="button">获取验证码</button>
+			</div>
+			<p class="me-code-tip" id="mdCodeTip">只要有账号，就能点「获取验证码」</p>
 			<div class="me-drawer-btns" style="margin-top:14px;">
 				<button class="me-save" id="mdSave" type="button">保存资料</button>
-				<button class="me-pass" id="mdPass" type="button">改密码</button>
+				<button class="me-pass" id="mdPass" type="button">重设密码</button>
 			</div>
 			<button class="me-out" id="mdLogout" type="button">退出登录</button>
 			<p class="me-dmsg" id="mdMsg"></p>
@@ -4561,7 +4717,7 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 		return SB.url+'/storage/v1/object/public/'+SB.bucket+'/'+path.split('/').map(encodeURIComponent).join('/');
 	}
 	function sbList(){
-		return fetch(SB.url+'/rest/v1/photos?select=id,created_at,author,caption,url,storage_path&storage_path=not.like.kun-*&order=created_at.desc&limit=300',{headers:sbHead(),cache:'no-store'})
+		return fetch(SB.url+'/rest/v1/photos?select=id,created_at,author,caption,url,storage_path&storage_path=not.like.kun-*&storage_path=not.like.acct-*&order=created_at.desc&limit=300',{headers:sbHead(),cache:'no-store'})
 			.then(function(r){ if(!r.ok) throw new Error('list '+r.status); return r.json(); })
 			.then(function(rows){
 				return (rows||[]).map(function(x){
@@ -5161,13 +5317,26 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 			note.textContent='先登录，才能在这里看到自己的名字。';
 		}
 	}
+	function paintDevices(rec){
+		var n=(rec&&Array.isArray(rec.devices))?rec.devices.length:1;
+		n=Math.max(1,Math.min(3,n));
+		document.getElementById('mdDevices').textContent='这个账号最多可登录 3 台设备，当前已用 '+n+' 台';
+	}
 	function openDrawer(){
 		if(!me||!me.name){ alert('先登录再编辑主页'); return; }
 		var pf=prof();
+		document.getElementById('mdAcc').textContent=me.mail||'—';
+		paintDevices(readAccs()[me.mail]);
+		if(me.mail && window.KUN_ACC){
+			KUN_ACC.get(me.mail).then(function(r){ if(r.ok&&r.data) paintDevices(r.data); });
+		}
 		document.getElementById('mdName').value=me.name||'';
 		document.getElementById('mdBirth').value=pf.birthday||'';
 		document.getElementById('mdZodiac').textContent=pf.birthday?birthText(pf.birthday).split('星座：')[1]:'—';
 		document.getElementById('mdMsg').textContent='';
+		document.getElementById('mdNewPass').value='';
+		document.getElementById('mdCode').value='';
+		document.getElementById('mdCodeTip').textContent='只要有账号，就能点「获取验证码」';
 		document.getElementById('meMask').classList.add('open');
 		document.getElementById('meDrawer').classList.add('open');
 		document.getElementById('meDrawer').setAttribute('aria-hidden','false');
@@ -5207,12 +5376,25 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 	function writeAccs(list){ try{ localStorage.setItem(ACC_KEY,JSON.stringify(list)); }catch(e){} }
 	function keepAccInfo(name,avatar){
 		if(!me||!me.mail) return;
-		var list=readAccs(), rec=list[me.mail]||{};
+		var acc=me.mail, list=readAccs(), rec=list[acc]||{};
+		rec.acc=acc;
 		rec.name=name||rec.name||me.name||'IKUN';
 		if(avatar) rec.avatar=avatar;
 		if(!rec.avatar) rec.avatar=me.avatar||'';
 		rec.ts=Date.now();
-		list[me.mail]=rec; writeAccs(list);
+		list[acc]=rec; writeAccs(list);
+		if(window.KUN_ACC){
+			if(rec.passHash){ KUN_ACC.put(acc,rec).catch(function(){}); }
+			else{
+				KUN_ACC.get(acc).then(function(r){
+					var c=(r.ok&&r.data)?r.data:{};
+					c.acc=acc; c.name=rec.name; c.avatar=rec.avatar;
+					c.devices=Array.isArray(c.devices)&&c.devices.length?c.devices:[KUN_ACC.id()];
+					c.ts=Date.now();
+					if(c.passHash) return KUN_ACC.put(acc,c);
+				}).catch(function(){});
+			}
+		}
 	}
 
 	document.getElementById('mdSave').onclick=function(){
@@ -5231,23 +5413,55 @@ window.AYLIO_MAIL = { serviceId: "service_4a91okx", templateId: "template_l7wdw9
 		msg.textContent='资料存好了。';
 	};
 
+	var resetCode='';
+	document.getElementById('mdGetCode').onclick=function(){
+		if(!me||!me.mail){ alert('先登录'); return; }
+		resetCode=String(Math.floor(1000+Math.random()*9000));
+		document.getElementById('mdCodeTip').innerHTML='验证码：<b>'+resetCode+'</b>　照着小字填到上面';
+		document.getElementById('mdCode').value='';
+	};
+
 	document.getElementById('mdPass').onclick=function(){
 		if(!me||!me.mail){ alert('先登录'); return; }
-		var v=document.getElementById('mdNewPass').value, msg=document.getElementById('mdMsg');
+		var v=document.getElementById('mdNewPass').value, code=document.getElementById('mdCode').value.trim(), msg=document.getElementById('mdMsg');
 		if(v.length<6){ msg.textContent='新密码至少 6 位'; return; }
-		var list=readAccs(), rec=list[me.mail]||{};
-		rec.name=rec.name||me.name||'IKUN';
-		rec.avatar=rec.avatar||me.avatar||prof().avatar||'';
-		rec.pass=v; rec.ts=Date.now();
-		list[me.mail]=rec; writeAccs(list);
-		document.getElementById('mdNewPass').value='';
-		msg.textContent='密码改好了，下次用账号 '+me.mail+' + 新密码登录。';
+		if(!resetCode){ msg.textContent='先点「获取验证码」'; return; }
+		if(code!==resetCode){ msg.textContent='验证码不对，点「获取验证码」换一个'; return; }
+		msg.textContent='正在重设…';
+		var account=me.mail, local=readAccs()[account]||{};
+		KUN_ACC.get(account).then(function(r){
+			var rec=(r.ok&&r.data)?r.data:local;
+			rec.acc=account;
+			rec.name=rec.name||me.name||'IKUN';
+			rec.avatar=rec.avatar||me.avatar||prof().avatar||'';
+			rec.devices=Array.isArray(rec.devices)?rec.devices:[KUN_ACC.id()];
+			return KUN_ACC.hash(account,v).then(function(h){
+				rec.passHash=h; rec.pass=v; rec.ts=Date.now();
+				var list=readAccs(); list[account]=rec; writeAccs(list);
+				function finish(){
+					document.getElementById('mdNewPass').value='';
+					document.getElementById('mdCode').value='';
+					resetCode='';
+					document.getElementById('mdCodeTip').textContent='密码重设好了';
+					msg.textContent='密码重设好了，下次用账号 '+account+' + 新密码登录。';
+					paintDevices(rec);
+				}
+				if(r.ok) KUN_ACC.put(account,rec).catch(function(){}).then(finish);
+				else finish();
+			});
+		}).catch(function(){ msg.textContent='网络不太好，稍后再试'; });
 	};
 
 	document.getElementById('mdLogout').onclick=function(){
 		if(!confirm('退出登录？')) return;
-		try{ localStorage.removeItem('kun_site_user'); }catch(e){}
-		location.reload();
+		var finished=false;
+		function done(){
+			if(finished) return; finished=true;
+			try{ localStorage.removeItem('kun_site_user'); }catch(e){}
+			location.reload();
+		}
+		if(me&&me.mail&&window.KUN_ACC){ KUN_ACC.leave(me.mail).then(done).catch(done); setTimeout(done,1200); }
+		else done();
 	};
 
 	/* 图片压缩 */
